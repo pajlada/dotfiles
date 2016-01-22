@@ -1,0 +1,10 @@
+[core]
+    pager = "less -x5,9"
+[push]
+	default = simple
+[alias]
+    st = status
+    ci = commit --verbose
+    co = checkout
+    df = diff
+    lg = log -p
