@@ -1,5 +1,6 @@
 [core]
     pager = "less -x5,9"
+    editor = "vim"
 [push]
 	default = simple
 [alias]
