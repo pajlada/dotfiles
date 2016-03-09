@@ -1,3 +1,17 @@
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'scrooloose/syntastic'
+
+
+call vundle#end()
+filetype plugin indent on
+
 syntax on
 set noswapfile
 set number
@@ -7,7 +21,6 @@ set incsearch
 set showmode
 set nocompatible
 filetype on
-filetype plugin indent on
 set wildmenu
 set ruler
 set lz
@@ -26,6 +39,9 @@ set mouse=a
 set cursorline
 set numberwidth=6
 set encoding=utf-8
+
+" Enable relative line numbering
+set rnu
 
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 set laststatus=2
@@ -72,12 +88,11 @@ function! BC_GetChar()
   return l:char
 endfunction 
 
+" Store an undo buffer in a file in $HOME/.vimundo
 set undofile
 set undodir=$HOME/.vimundo
 set undolevels=1000
 set undoreload=10000
-"ska ja sparra +?????????
-"ja Tack
 
 fu! FixSwe()
     :%s/å/\&aring;/
@@ -89,8 +104,6 @@ fu! FixSwe()
 endfunction
 
 nnoremap ; :
-
-execute pathogen#infect()
 
 "let g:syntastic_mode_map = { 'mode': 'passive',     
 "                          \ 'active_filetypes': [],     
@@ -104,8 +117,6 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-
-set rnu
 
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
