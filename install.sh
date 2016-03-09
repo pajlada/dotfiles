@@ -9,9 +9,9 @@ done
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 
-if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
-    echo "Installing pathogen for vim..."
-    curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
+    echo "Downloading Vundle.vim..."
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
 if [ ! -d ~/.vim/bundle/vim-material-theme ]; then
