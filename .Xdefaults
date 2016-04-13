@@ -36,8 +36,8 @@ urxvt*matcher.button:  1
 urxvt*cutchars:        '"'()*<>[]{|}
 !
 ! Appearance
-URxvt*font: xft:Monaco:pixelsize=14
-URxvt*boldFont: xft:Monaco:pixelsize=14
+URxvt*font: xft:Monaco for Powerline:pixelsize=14
+URxvt*boldFont: xft:Monaco for Powerline:pixelsize=14
 !
 ! Cursor
 urxvt*cursorColor: #DCDCCC
