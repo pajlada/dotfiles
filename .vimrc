@@ -8,6 +8,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'scrooloose/syntastic'
 
+Plugin 'fisadev/vim-isort'
 
 call vundle#end()
 filetype plugin indent on
