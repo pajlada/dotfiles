@@ -46,7 +46,12 @@ set encoding=utf-8
 " Enable relative line numbering
 set rnu
 
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
+" set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
+set statusline=%f\ 
+set statusline+=[%{&ff}]
+set statusline+=%=
+set statusline+=[\%03.3b/\%02.2B]\ [POS=%04v]
+
 set laststatus=2
 
 " colo sdac
