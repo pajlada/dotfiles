@@ -10,6 +10,8 @@ Plugin 'scrooloose/syntastic'
 
 Plugin 'fisadev/vim-isort'
 
+Plugin 'fatih/vim-go'
+
 call vundle#end()
 filetype plugin indent on
 
