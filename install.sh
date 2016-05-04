@@ -24,6 +24,8 @@ if [ ! -d ~/.vim/bundle/vim-material-theme ]; then
     # curl -LSso ~/.vim/colors/material-theme.vim https://raw.githubusercontent.com/jdkanani/vim-material-theme/master/colors/material-theme.vim
 fi
 
+ln -s `pwd`/awesome ~/.config/awesome 2>/dev/null
+
 git update-index --assume-unchanged .gitconfig
 echo "Don't forget to set your git shit"
 echo "git config --global user.name \"something\""
