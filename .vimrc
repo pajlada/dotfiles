@@ -12,10 +12,23 @@ Plugin 'fisadev/vim-isort'
 
 Plugin 'fatih/vim-go'
 
+Plugin 'neomake/neomake'
+
+Plugin 'ctrlpvim/ctrlp.vim'
+
+Plugin 'leafgarland/typescript-vim'
+
+Plugin 'editorconfig/editorconfig-vim'
+
+Plugin 'posva/vim-vue'
+
+Plugin 'junegunn/vim-easy-align'
+
 call vundle#end()
 filetype plugin indent on
 
 syntax on
+set wildignore+=*/node_modules/*,*/dist/*,*/__pycache__/*
 set noswapfile
 set number
 set nowrap
@@ -110,6 +123,14 @@ fu! FixSwe()
     :%s/Ä/\&Auml;/
     :%s/Ö/\&Ouml;/
 endfunction
+fu! FixSwe2()
+    :%s/aa/\&aring;/g
+    :%s/ae/\&auml;/g
+    :%s/oe/\&ouml;/g
+    :%s/Aa/\&Aring;/g
+    :%s/Ae/\&Auml;/g
+    :%s/Oe/\&Ouml;/g
+endfunction
 
 nnoremap ; :
 
@@ -117,6 +138,9 @@ nnoremap ; :
 "                          \ 'active_filetypes': [],     
 "                          \ 'passive_filetypes': [] } 
 "let g:syntastic_auto_loc_list=1     
+"
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+
 nnoremap <silent> <F5> :lnext<CR>
 nnoremap <silent> <F6> :lprev<CR>
 nnoremap <silent> <C-Space> :ll<CR>
@@ -124,8 +148,19 @@ nnoremap <silent> <C-Space> :ll<CR>
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 1
 
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*)}
+"
+
+let mapleader = "\<Space>"
+let g:go_fmt_command = "goimports"
+
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+
+autocmd! BufWritePost * Neomake
