@@ -4,35 +4,64 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+" Package manager KKona
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'scrooloose/syntastic'
 
+" Python import sorter
 Plugin 'fisadev/vim-isort'
 
+" Go plugin (does most things Go-related)
 Plugin 'fatih/vim-go'
 
 Plugin 'neomake/neomake'
 
+" Fuzzy file finder (like Ctrl+K in other apps)
 Plugin 'ctrlpvim/ctrlp.vim'
-
-Plugin 'leafgarland/typescript-vim'
 
 Plugin 'editorconfig/editorconfig-vim'
 
-Plugin 'posva/vim-vue'
+" clang-format plugin
+Plugin 'rhysd/vim-clang-format'
 
-Plugin 'junegunn/vim-easy-align'
+" Plugin which allows me to press a button to toggle between header and source
+" file. Currently bound to LEADER+H
+Plugin 'ericcurtin/CurtineIncSw.vim'
+
+" Completes ( with )
+Plugin 'jiangmiao/auto-pairs'
 
 call vundle#end()
 filetype plugin indent on
 
 syntax on
+
+" Ignore various cache/vendor folders
 set wildignore+=*/node_modules/*,*/dist/*,*/__pycache__/*
+
+" Ignore C/C++ Object files
+set wildignore+=*.o
+
+" Ignore generated C/C++ Qt files
+set wildignore+=moc_*.cpp,moc_*.h
+
+" Disable swap file. Some people say to keep swap file enabled but in a
+" temporary folder instead. I dislike the dialog that pops up every now and
+" then if a swapfile is left so I just leave it fully disabled
 set noswapfile
+
+" Enable line numbers
 set number
+
+" Don't wrap lines
 set nowrap
+
+" Let backspace delete indentations, newlines, and don't make it stop after
+" reaching the start of your insert mode
 set backspace=indent,eol,start
+
+" Other options that I just copied and haven't tried understanding yet
 set incsearch
 set showmode
 set nocompatible
@@ -59,7 +88,7 @@ set encoding=utf-8
 " Enable relative line numbering
 set rnu
 
-" set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
+" Customize our status line
 set statusline=%f%m%r%h%w\ 
 set statusline+=[%{&ff}]
 set statusline+=%=
@@ -67,47 +96,12 @@ set statusline+=[\%03.3b/\%02.2B]\ [POS=%04v]
 
 set laststatus=2
 
-" colo sdac
-colo ron
+" By default, use the "ron" colorscheme
+colorscheme ron
+
+" Make a slight customization with the cursorline to the ron theme
 set cursorline
 hi CursorLine term=bold cterm=bold guibg=Grey40
-" colo bithack
-
-if has("autocmd")
-    augroup c
-        autocmd BufReadPre,FileReadPre      *.c,*.h iabbrev /** /**<CR><BACKSPACE>*/<ESC>ka 
-    augroup END
-    augroup php
-        autocmd BufReadPre,FileReadPre      *.php inoremap $this $this->
-    augroup END
-endif
-
-
-" kod-relaterat
-inoremap {<CR> {<CR>}<ESC>:call BC_AddChar("}")<CR>ko
-inoremap { {}<ESC>:call BC_AddChar("}")<CR>i
-inoremap ( ()<ESC>:call BC_AddChar(")")<CR>i
-inoremap [ []<ESC>:call BC_AddChar("]")<CR>i
-imap <C-k> <ESC>:call search(BC_GetChar(), "W")<CR>:noh<CR>A
-
-" bajs-relaterat
-iabbrev bajs HEHE MAN FOR INTE SKRIVA BAJS !!!!!!!!!!!!!!!!
-iabbrev cant can't
-
-" stulet godis
-function! BC_AddChar(schar)
-  if exists("b:robstack")
-    let b:robstack = b:robstack . a:schar
-  else
-    let b:robstack = a:schar
-  endif
-endfunction
-
-function! BC_GetChar()
-  let l:char = b:robstack[strlen(b:robstack)-1]
-  let b:robstack = strpart(b:robstack, 0, strlen(b:robstack)-1)
-  return l:char
-endfunction 
 
 " Store an undo buffer in a file in $HOME/.vimundo
 set undofile
@@ -115,24 +109,12 @@ set undodir=$HOME/.vimundo
 set undolevels=1000
 set undoreload=10000
 
-fu! FixSwe()
-    :%s/å/\&aring;/
-    :%s/ä/\&auml;/
-    :%s/ö/\&ouml;/
-    :%s/Å/\&Aring;/
-    :%s/Ä/\&Auml;/
-    :%s/Ö/\&Ouml;/
-endfunction
-fu! FixSwe2()
-    :%s/aa/\&aring;/g
-    :%s/ae/\&auml;/g
-    :%s/oe/\&ouml;/g
-    :%s/Aa/\&Aring;/g
-    :%s/Ae/\&Auml;/g
-    :%s/Oe/\&Ouml;/g
-endfunction
-
+" Use ; as :
+" Very convenient as you don't have to press shift to run commands
 nnoremap ; :
+
+" Unbind Shift+K, it's previously used for opening manual or help or something
+map <S-k> <Nop>
 
 "let g:syntastic_mode_map = { 'mode': 'passive',     
 "                          \ 'active_filetypes': [],     
@@ -149,6 +131,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
+let g:syntastic_enable_cpp_checker = 0
+let g:syntastic_cpp_checkers=['']
 
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
@@ -163,4 +147,11 @@ au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 
-autocmd! BufWritePost * Neomake
+au FileType cpp nmap <leader>f :ClangFormat<CR>
+au FileType cpp nmap <leader>h :call CurtineIncSw()<CR>
+
+autocmd! BufWritePost *.go Neomake
+
+" ctrlpvim/ctrlp.vim extension options
+" let g:ctrlp_cmd = 'CtrlP .'
+let g:ctrlp_working_path_mode = 'rwa'
