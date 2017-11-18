@@ -22,6 +22,9 @@ Plugin 'ctrlpvim/ctrlp.vim'
 
 Plugin 'editorconfig/editorconfig-vim'
 
+" Allow plugins to define their own operator
+Plugin 'kana/vim-operator-user'
+
 " clang-format plugin
 Plugin 'rhysd/vim-clang-format'
 
@@ -31,6 +34,10 @@ Plugin 'ericcurtin/CurtineIncSw.vim'
 
 " Completes ( with )
 Plugin 'jiangmiao/auto-pairs'
+
+" Plugin 'Rip-Rip/clang_complete'
+
+Plugin 'Valloric/YouCompleteMe'
 
 call vundle#end()
 filetype plugin indent on
@@ -45,6 +52,12 @@ set wildignore+=*.o
 
 " Ignore generated C/C++ Qt files
 set wildignore+=moc_*.cpp,moc_*.h
+
+" Ignore generated C/C++ Qt files
+set wildignore+=moc_*.cpp,moc_*.h
+
+" Ignore Unity asset meta-files
+set wildignore+=*/Assets/*.meta
 
 " Disable swap file. Some people say to keep swap file enabled but in a
 " temporary folder instead. I dislike the dialog that pops up every now and
@@ -96,8 +109,13 @@ set statusline+=[\%03.3b/\%02.2B]\ [POS=%04v]
 
 set laststatus=2
 
-" By default, use the "ron" colorscheme
-colorscheme ron
+if &t_Co == 256
+    " If we're on a 256-color terminal, use pixelmuerto color scheme
+    colorscheme pixelmuerto
+else
+    " Else fall back to ron
+    colorscheme ron
+endif
 
 " Make a slight customization with the cursorline to the ron theme
 set cursorline
@@ -112,6 +130,12 @@ set undoreload=10000
 " Use ; as :
 " Very convenient as you don't have to press shift to run commands
 nnoremap ; :
+
+" Unbind Q (it used to take you into Ex mode)
+nnoremap Q <nop>
+
+" Unbind F1 (it used to show you a help menu)
+nnoremap <F1> <nop>
 
 " Unbind Shift+K, it's previously used for opening manual or help or something
 map <S-k> <Nop>
@@ -147,11 +171,35 @@ au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 
-au FileType cpp nmap <leader>f :ClangFormat<CR>
+au FileType cpp nmap <leader>f <Plug>(operator-clang-format)
 au FileType cpp nmap <leader>h :call CurtineIncSw()<CR>
+
+au FileType javascript setlocal ts=2 sw=2 sts=2
+au FileType html setlocal ts=2 sw=2 sts=2
 
 autocmd! BufWritePost *.go Neomake
 
 " ctrlpvim/ctrlp.vim extension options
 " let g:ctrlp_cmd = 'CtrlP .'
 let g:ctrlp_working_path_mode = 'rwa'
+
+nnoremap <silent> <C-B> :CtrlPBuffer<CR>
+nnoremap <silent> <C-K> :CtrlPMixed<CR>
+
+" clang-format extension options
+autocmd FileType c ClangFormatAutoEnable
+autocmd FileType cpp ClangFormatAutoEnable
+autocmd FileType javascript ClangFormatAutoDisable
+
+" clang_complete
+let g:clang_library_path='/usr/local/lib/libclang.so'
+let g:clang_auto_select=1
+let g:clang_close_preview=1
+
+" auto-pairs
+" let g:AutoPairsMapCR = 0
+" imap <silent><CR> <CR><Plug>AutoPairsReturn
+
+" YouCompleteMe
+let g:ycm_python_binary_path = '/usr/bin/python3'
+let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']

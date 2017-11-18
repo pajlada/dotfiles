@@ -2,11 +2,13 @@
     pager = "less -x5,9"
     editor = "vim"
 [push]
-	default = simple
+    default = simple
 [alias]
     st = status
     ci = commit --verbose
     co = checkout
     df = diff
     lg = log -p
-	permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
+    ap = add --patch
+    track = add -N
+    permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply

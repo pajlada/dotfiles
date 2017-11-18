@@ -29,15 +29,24 @@ urxvt*urgentOnBell:       true
 !
 ! Extensions
 urxvt*perl-lib:        /usr/lib/urxvt/perl/
-urxvt*perl-ext-common: default,matcher,searchable-scrollback
+urxvt*perl-ext-common: default,searchable-scrollback,font-size
 urxvt*urlLauncher:     /usr/local/bin/firefox
 urxvt*matcher.button:  1
 ! Catch ugly URLs
 urxvt*cutchars:        '"'()*<>[]{|}
 !
 ! Appearance
-URxvt*font: xft:Monaco for Powerline:pixelsize=14
-URxvt*boldFont: xft:Monaco for Powerline:pixelsize=14
+! URxvt*font: xft:Monaco for Powerline:pixelsize=14
+! URxvt*boldFont: xft:Monaco for Powerline:pixelsize=14
+! URxvt*font: xft:DejaVu Serif Condensed:pixelsize=14
+! URxvt*boldFont: xft:DejaVu Serif Condensed:pixelsize=14
+URxvt*font: xft:Oxygen Mono:pixelsize=14
+URxvt*boldFont: xft:Oxygen Mono:pixelsize=14
+
+! bindings
+URxvt.keysym.C-Up:     perl:font-size:increase
+URxvt.keysym.C-Down:   perl:font-size:decrease
+URxvt.keysym.C-slash:  perl:font-size:show
 !
 ! Cursor
 urxvt*cursorColor: #DCDCCC
