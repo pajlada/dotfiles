@@ -8,7 +8,7 @@ for dotfile in ${dotfiles[*]}; do
 done
 
 echo "Installing custom oh-my-zsh themes..."
-ln -s `pwd`/themes ~/.oh-my-zsh/custom/themes 2>/dev/null
+cp themes/* ~/.oh-my-zsh/custom/themes/ 2>/dev/null
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 
