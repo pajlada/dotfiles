@@ -17,6 +17,11 @@ if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
+if [ ! -d ~/.vim/colors/pixelmuerto.vim ]; then
+    git clone https://github.com/pixelmuerto/vim-pixelmuerto.git
+    cp vim-pixelmuerto/colors/* ~/.vim/colors/
+fi
+
 if [ ! -d ~/.vim/bundle/vim-material-theme ]; then
     cd ~/.vim/bundle
     echo "Downloading material-theme for vim..."
