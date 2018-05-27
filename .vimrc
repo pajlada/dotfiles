@@ -55,6 +55,7 @@ set wildignore+=moc_*.cpp,moc_*.h
 
 " Ignore generated C/C++ Qt files
 set wildignore+=moc_*.cpp,moc_*.h
+set wildignore+=*/lib/*
 
 " Ignore Unity asset meta-files
 set wildignore+=*/Assets/*.meta
@@ -145,7 +146,7 @@ map <S-k> <Nop>
 "                          \ 'passive_filetypes': [] } 
 "let g:syntastic_auto_loc_list=1     
 "
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_go_checkers = ['govet', 'errcheck']
 
 nnoremap <silent> <F5> :lnext<CR>
 nnoremap <silent> <F6> :lprev<CR>
