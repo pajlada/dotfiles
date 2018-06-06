@@ -31,6 +31,11 @@ fi
 
 ln -s `pwd`/awesome ~/.config/awesome 2>/dev/null
 
+rm -rf ~/.config/i3
+ln -s `pwd`/i3 ~/.config/i3 2>/dev/null
+rm -rf ~/.config/i3status
+ln -s `pwd`/i3status ~/.config/i3status 2>/dev/null
+
 git update-index --assume-unchanged .gitconfig
 echo "Don't forget to set your git shit"
 echo "git config --global user.name \"something\""
