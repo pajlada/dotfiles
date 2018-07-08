@@ -55,7 +55,7 @@ set wildignore+=moc_*.cpp,moc_*.h
 
 " Ignore generated C/C++ Qt files
 set wildignore+=moc_*.cpp,moc_*.h
-set wildignore+=*/lib/*
+" set wildignore+=*/lib/*
 
 " Ignore Unity asset meta-files
 set wildignore+=*/Assets/*.meta
