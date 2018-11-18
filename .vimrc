@@ -15,7 +15,7 @@ Plugin 'fisadev/vim-isort'
 " Go plugin (does most things Go-related)
 Plugin 'fatih/vim-go'
 
-Plugin 'neomake/neomake'
+" Plugin 'neomake/neomake'
 
 " Fuzzy file finder (like Ctrl+K in other apps)
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -39,6 +39,10 @@ Plugin 'jiangmiao/auto-pairs'
 
 Plugin 'Valloric/YouCompleteMe'
 
+" Plugin 'rust-lang/rust.vim'
+
+Plugin 'leafgarland/typescript-vim'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -48,7 +52,10 @@ syntax on
 set wildignore+=*/node_modules/*,*/dist/*,*/__pycache__/*
 
 " Ignore C/C++ Object files
-set wildignore+=*.o
+set wildignore+=*.o,*.obj
+set wildignore+=*.ilk
+set wildignore+=*/build/*
+set wildignore+=*/build_native/*
 
 " Ignore generated C/C++ Qt files
 set wildignore+=moc_*.cpp,moc_*.h
@@ -56,6 +63,8 @@ set wildignore+=moc_*.cpp,moc_*.h
 " Ignore generated C/C++ Qt files
 set wildignore+=moc_*.cpp,moc_*.h
 " set wildignore+=*/lib/*
+set wildignore+=*/target/debug/*
+set wildignore+=*/target/release/*
 
 " Ignore Unity asset meta-files
 set wildignore+=*/Assets/*.meta
@@ -146,18 +155,19 @@ map <S-k> <Nop>
 "                          \ 'passive_filetypes': [] } 
 "let g:syntastic_auto_loc_list=1     
 "
-let g:syntastic_go_checkers = ['govet', 'errcheck']
+" let g:syntastic_go_checkers = ['govet', 'errcheck']
+let g:syntastic_go_checkers = ['go']
 
 nnoremap <silent> <F5> :lnext<CR>
 nnoremap <silent> <F6> :lprev<CR>
 nnoremap <silent> <C-Space> :ll<CR>
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
-let g:syntastic_enable_cpp_checker = 0
-let g:syntastic_cpp_checkers=['']
+let g:syntastic_enable_cpp_checker = 1
+let g:syntastic_cpp_checkers=['clang_tidy']
 
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
@@ -178,7 +188,7 @@ au FileType cpp nmap <leader>h :call CurtineIncSw()<CR>
 au FileType javascript setlocal ts=2 sw=2 sts=2
 au FileType html setlocal ts=2 sw=2 sts=2
 
-autocmd! BufWritePost *.go Neomake
+" autocmd! BufWritePost *.go Neomake
 
 " ctrlpvim/ctrlp.vim extension options
 " let g:ctrlp_cmd = 'CtrlP .'
@@ -204,3 +214,11 @@ let g:clang_close_preview=1
 " YouCompleteMe
 let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
+
+let g:rustfmt_autosave = 1
+
+let g:go_list_type = "quickfix"
+
+au FocusGained,BufEnter * :silent! checktime
+
+let g:clang_format#enable_fallback_style = 0
