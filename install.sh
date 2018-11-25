@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install all dotfiles
-dotfiles=(.vimrc .Xdefaults .bash_profile .gitconfig .xinitrc .gvimrc .gvimrc4k)
+dotfiles=(.vimrc .Xdefaults .bash_profile .gitconfig .xinitrc .gvimrc .gvimrc4k .Xmodmap)
 for dotfile in ${dotfiles[*]}; do
     printf "Installing %s...\n" $dotfile
     ln -s `pwd`/$dotfile ~/$dotfile 2>/dev/null

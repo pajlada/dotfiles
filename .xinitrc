@@ -19,4 +19,7 @@ xrandr --output DP-4 --mode 2560x1440 --pos 2160x2400
 # 27" 1440p     right
 xrandr --output DP-2 --mode 2560x1440 --pos 4720x2400
 
+
+[[ -f ~/.Xmodmap ]] && setxkbmap -layout us -variant altgr-intl -option nodeadkeys && xmodmap ~/.Xmodmap
+
 exec i3
