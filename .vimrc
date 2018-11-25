@@ -84,15 +84,16 @@ set nowrap
 " reaching the start of your insert mode
 set backspace=indent,eol,start
 
-" Other options that I just copied and haven't tried understanding yet
+" Incremental search. start searching and moving through the file while typing
+" the search phrase
 set incsearch
+
+" Other options that I just copied and haven't tried understanding yet
 set showmode
 set nocompatible
-filetype on
 set wildmenu
-set ruler
-set lz
-set hid
+set lazyredraw
+set hidden
 set softtabstop=4
 set tabstop=4
 set shiftwidth=4
@@ -100,9 +101,6 @@ set expandtab
 set autoindent
 set smartindent
 set cindent
-set ai
-set si
-set cin
 set mouse=a
 set cursorline
 set numberwidth=6
