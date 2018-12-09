@@ -1,0 +1,12 @@
+# your mileage may vary with this file
+# the options below are very personalized for my current setup
+
+xset r rate 175 50
+
+setxkbmap -option caps:none pajlada
+xrandr --auto --dpi 200
+
+
+[[ -f ~/.Xmodmap ]] && setxkbmap -layout us -variant altgr-intl -option nodeadkeys && xmodmap ~/.Xmodmap
+
+exec i3
