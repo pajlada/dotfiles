@@ -10,4 +10,4 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR='vim'
 
-source ~/.zsh_local
+[[ -f ~/.zsh_local ]] && source ~/.zsh_local
