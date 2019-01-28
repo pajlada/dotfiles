@@ -11,7 +11,7 @@ xrandr --dpi 90
 xrandr --output HDMI-0 --off
 
 # 24" 4k        left
-xrandr --output DP-0 --mode 3840x2160 --rotate left --pos 0x0
+xrandr --output DP-0 --mode 3840x2160 --rotate right --pos 0x0
 
 # 27" 1440p     center
 xrandr --output DP-4 --mode 2560x1440 --pos 2160x2400
