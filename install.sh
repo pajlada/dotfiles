@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Usage: make_home_symlink path_to_file name_of_file_in_home_to_symlink_to
+make_home_symlink() {
+    printf "Installing %s...\n" $1
+
+    # Remove pre-existing symlink
+    unlink ~/$2 2>/dev/null
+
+    # Make new symlink
+    ln -s `pwd`/$1 ~/$2 2>/dev/null
+}
+
+# Possible devices: desktop, laptop
+DEVICE="${1:-desktop}"
+
+echo "Install symlinks as device $DEVICE"
+
 # Install all dotfiles
 dotfiles=(.vimrc .Xdefaults .gitconfig .xinitrc .gvimrc .gvimrc4k .Xmodmap .gdbinit .zshrc)
 for dotfile in ${dotfiles[*]}; do
@@ -16,8 +32,13 @@ for dotfile in ${dotfiles[*]}; do
     if [ ! -L ~/$dotfile ]; then
         printf "Installing %s...\n" $dotfile
         ln -s `pwd`/$dotfile ~/$dotfile 2>/dev/null
+        make_home_symlink $dotfile $dotfile
     fi
 done
+
+# Device-specific symlinks
+make_home_symlink .xinitrc-${DEVICE} .xinitrc
+make_home_symlink .Xdefaults-${DEVICE} .Xdefaults
 
 echo "Installing custom oh-my-zsh themes..."
 cp themes/* ~/.oh-my-zsh/custom/themes/ 2>/dev/null
@@ -25,30 +46,20 @@ cp themes/* ~/.oh-my-zsh/custom/themes/ 2>/dev/null
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 
 if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
-    echo "Downloading Vundle.vim..."
+    echo "Installing Vundle.vim..."
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
-if [ ! -d ~/.vim/colors/pixelmuerto.vim ]; then
+if [ ! -f ~/.vim/colors/pixelmuerto.vim ]; then
+    echo "Installing vim pixelmuerto color theme"
     git clone https://github.com/pixelmuerto/vim-pixelmuerto.git
     cp vim-pixelmuerto/colors/* ~/.vim/colors/
 fi
 
-if [ ! -d ~/.vim/bundle/vim-material-theme ]; then
-    cd ~/.vim/bundle
-    echo "Downloading material-theme for vim..."
-    git clone https://github.com/jdkanani/vim-material-theme
-    # curl -LSso ~/.vim/colors/material-theme.vim https://raw.githubusercontent.com/jdkanani/vim-material-theme/master/colors/material-theme.vim
-fi
-
-ln -s `pwd`/awesome ~/.config/awesome 2>/dev/null
-
-rm -rf ~/.config/i3
-ln -s `pwd`/i3 ~/.config/i3 2>/dev/null
-rm -rf ~/.config/i3status
-ln -s `pwd`/i3status ~/.config/i3status 2>/dev/null
+make_home_symlink i3-${DEVICE} .config/i3
+make_home_symlink i3status-${DEVICE} .config/i3status
 
 git update-index --assume-unchanged .gitconfig
-echo "Don't forget to set your git shit"
+echo "Don't forget to set your personal git configs"
 echo "git config --global user.name \"something\""
 echo "git config --global user.email \"something@something.com\""
