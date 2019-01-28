@@ -1,10 +1,22 @@
 #!/bin/bash
 
 # Install all dotfiles
-dotfiles=(.vimrc .Xdefaults .bash_profile .gitconfig .xinitrc .gvimrc .gvimrc4k .Xmodmap .gdbinit)
+dotfiles=(.vimrc .Xdefaults .gitconfig .xinitrc .gvimrc .gvimrc4k .Xmodmap .gdbinit .zshrc)
 for dotfile in ${dotfiles[*]}; do
-    printf "Installing %s...\n" $dotfile
-    ln -s `pwd`/$dotfile ~/$dotfile 2>/dev/null
+    if [ -f ~/$dotfile ] && [ ! -L ~/$dotfile ]; then
+        echo -n "You already have a regular file at ~/$dotfile. Do you want to overwrite it? (y/n) "
+        read response
+        if [ "$response" == "y" ] || [ $"response" == "Y" ]; then
+            rm ~/$dotfile
+        else
+            continue
+        fi
+    fi
+
+    if [ ! -L ~/$dotfile ]; then
+        printf "Installing %s...\n" $dotfile
+        ln -s `pwd`/$dotfile ~/$dotfile 2>/dev/null
+    fi
 done
 
 echo "Installing custom oh-my-zsh themes..."
