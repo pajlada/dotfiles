@@ -43,6 +43,10 @@ make_home_symlink .Xdefaults-${DEVICE} .Xdefaults
 echo "Installing custom oh-my-zsh themes..."
 # Create oh-my-zsh custom themes folder if it doesn't exist already
 mkdir -p ~/.oh-my-zsh/custom/themes
+if [ -f ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme ] && [ ! -L ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme ]; then
+    echo "Removing old oh-my-zsh custom 'pajlada' theme"
+    rm ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme
+fi
 ln -s `pwd`/themes/pajlada.zsh-theme ~/.oh-my-zsh/custom/themes 2>/dev/null
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
