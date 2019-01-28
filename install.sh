@@ -59,7 +59,12 @@ fi
 make_home_symlink i3-${DEVICE} .config/i3
 make_home_symlink i3status-${DEVICE} .config/i3status
 
-git update-index --assume-unchanged .gitconfig
+echo "To make your .gitconfig up-to-date again, you might need to type: git update-index --no-assume-unchanged .gitconfig"
+echo "Put your git 'credentials' in ~/.gitcredentials in the following format:"
+echo "[user]"
+echo "    name = Your Name"
+echo "    email = your@email.com"
+echo "Or set it with these commands"
 echo "Don't forget to set your personal git configs"
-echo "git config --global user.name \"something\""
-echo "git config --global user.email \"something@something.com\""
+echo "git config --file ~/.gitcredentials user.name \"Your Name\""
+echo "git config --file ~/.gitcredentials user.email \"your@email.com\""
