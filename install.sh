@@ -41,7 +41,9 @@ make_home_symlink .xinitrc-${DEVICE} .xinitrc
 make_home_symlink .Xdefaults-${DEVICE} .Xdefaults
 
 echo "Installing custom oh-my-zsh themes..."
-cp themes/* ~/.oh-my-zsh/custom/themes/ 2>/dev/null
+# Create oh-my-zsh custom themes folder if it doesn't exist already
+mkdir -p ~/.oh-my-zsh/custom/themes
+ln -s `pwd`/themes/pajlada.zsh-theme ~/.oh-my-zsh/custom/themes 2>/dev/null
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 

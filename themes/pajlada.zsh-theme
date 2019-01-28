@@ -29,6 +29,17 @@ function get_current_user() {
     fi
 }
 
+function get_current_host() {
+   hn=$(hostname)
+
+   # Local machines
+   if [ ! "$hn" = "billy" ]; then
+       echo -n "%{$fg[red]%}"
+   fi
+
+   echo -n "$hn"
+}
+
 function get_symbol() {
     if [ "$(whoami)" = "root" ]; then
         echo -n "#"
@@ -37,4 +48,4 @@ function get_symbol() {
     fi
 }
 
-PROMPT='$(get_current_user)%m%{$reset_color%}%{$fg[cyan]%}[%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$(get_symbol)%b '
+PROMPT='$(get_current_user)$(get_current_host)%{$reset_color%}%{$fg[cyan]%}[%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$(get_symbol)%b '
