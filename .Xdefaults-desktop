@@ -43,8 +43,10 @@ urxvt*cutchars:        '"'()*<>[]{|}
 ! URxvt*boldFont: xft:Monaco for Powerline:pixelsize=14
 ! URxvt*font: xft:DejaVu Serif Condensed:pixelsize=14
 ! URxvt*boldFont: xft:DejaVu Serif Condensed:pixelsize=14
-URxvt*font: xft:Oxygen Mono:pixelsize=14
-URxvt*boldFont: xft:Oxygen Mono:pixelsize=14
+! URxvt*font: xft:Oxygen Mono:pixelsize=14
+! URxvt*boldFont: xft:Oxygen Mono:pixelsize=14
+URxvt*font: xft:PragmataPro:pixelsize=16
+URxvt*boldFont: xft:PragmataPro:pixelsize=16
 
 ! bindings
 URxvt.keysym.C-Up:     perl:font-size:increase
