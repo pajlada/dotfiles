@@ -14,6 +14,9 @@ Xft.rgba:      rgb
 !{{{ URXVT
 !
 ! General
+urxvt*scrollTtyOutput: false
+urxvt*scrollWithBuffer: true
+urxvt*scrollTtyKeypress: true
 urxvt*termName:           rxvt-unicode-256color
 urxvt*loginShell:         true
 urxvt*scrollBar:         false
