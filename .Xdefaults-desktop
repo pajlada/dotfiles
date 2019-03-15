@@ -31,8 +31,8 @@ urxvt*urgentOnBell:       true
 !urxvt*externalBorder:       0
 !
 ! Extensions
-urxvt*perl-lib:        /usr/lib/urxvt/perl/
-urxvt*perl-ext-common: default,searchable-scrollback,font-size
+urxvt*perl-lib:        .urxvt/:/usr/lib/urxvt/perl/
+urxvt*perl-ext-common: default,searchable-scrollback,font-size,selection-to-clipboard
 urxvt*urlLauncher:     /usr/local/bin/firefox
 urxvt*matcher.button:  1
 ! Catch ugly URLs
