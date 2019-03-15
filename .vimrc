@@ -7,15 +7,14 @@ call vundle#begin()
 " Package manager KKona
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
+Plugin 'w0rp/ale'
 
 " Python import sorter
 Plugin 'fisadev/vim-isort'
 
 " Go plugin (does most things Go-related)
 Plugin 'fatih/vim-go'
-
-" Plugin 'neomake/neomake'
 
 " Fuzzy file finder (like Ctrl+K in other apps)
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -37,7 +36,7 @@ Plugin 'jiangmiao/auto-pairs'
 
 " Plugin 'Rip-Rip/clang_complete'
 
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 
 " Plugin 'rust-lang/rust.vim'
 
@@ -56,6 +55,7 @@ set wildignore+=*.o,*.obj
 set wildignore+=*.ilk
 set wildignore+=*/build/*
 set wildignore+=*/build_native/*
+set wildignore+=*/build-*/*
 
 " Ignore generated C/C++ Qt files
 set wildignore+=moc_*.cpp,moc_*.h
@@ -148,12 +148,12 @@ nnoremap <F1> <nop>
 " Unbind Shift+K, it's previously used for opening manual or help or something
 map <S-k> <Nop>
 
-"let g:syntastic_mode_map = { 'mode': 'passive',     
-"                          \ 'active_filetypes': [],     
-"                          \ 'passive_filetypes': [] } 
+let g:syntastic_mode_map = { 'mode': 'active',
+                          \ 'active_filetypes': [],
+                          \ 'passive_filetypes': ['cpp', 'c'] }
 "let g:syntastic_auto_loc_list=1     
 "
-" let g:syntastic_go_checkers = ['govet', 'errcheck']
+" let g:syntastic_go_checkers = ['gometalinter']
 let g:syntastic_go_checkers = ['go']
 
 nnoremap <silent> <F5> :lnext<CR>
@@ -162,10 +162,13 @@ nnoremap <silent> <C-Space> :ll<CR>
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_cpp_checker = 1
 let g:syntastic_cpp_checkers=['clang_tidy']
+let g:syntastic_cpp_clang_tidy_post_args=""
+let g:ale_linters = { 'cpp': ['clangcheck', 'clangtidy', 'clang-format', 'clazy', 'cppcheck', 'cquery', 'uncrustify'] }
+" let g:syntastic_cpp_clang_tidy_config_file=['/home/pajlada/work/vapour/.clang-tidy']
 
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
@@ -180,13 +183,17 @@ au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 
+au FileType cpp nmap <leader>c :call SyntasticCheck()<CR>
 au FileType cpp nmap <leader>f <Plug>(operator-clang-format)
 au FileType cpp nmap <leader>h :call CurtineIncSw()<CR>
+au FileType c nmap <leader>f <Plug>(operator-clang-format)
+au FileType c nmap <leader>h :call CurtineIncSw()<CR>
 
 au FileType javascript setlocal ts=2 sw=2 sts=2
 au FileType html setlocal ts=2 sw=2 sts=2
 
 " autocmd! BufWritePost *.go Neomake
+" autocmd! BufWritePost *.go :GoMetaLinter
 
 " ctrlpvim/ctrlp.vim extension options
 " let g:ctrlp_cmd = 'CtrlP .'
@@ -216,7 +223,17 @@ let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
 let g:rustfmt_autosave = 1
 
 let g:go_list_type = "quickfix"
+let g:go_metalinter_autosave = 0
 
 au FocusGained,BufEnter * :silent! checktime
 
 let g:clang_format#enable_fallback_style = 0
+
+let g:vim_isort_python_version = 'python3'
+
+" SPACE+Y = Yank  (SPACE being leader)
+" SPACE+P = Paste
+vmap <silent> <leader>y y:new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/.vim/reg.txt<CR>
+" nmap <silent> <leader>y :new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/.vim/reg.txt<CR>
+nmap <silent> <leader>p :sview ~/.vim/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>p
+nmap <silent> <leader>P :sview ~/.vim/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>P
