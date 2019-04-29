@@ -176,7 +176,10 @@ let g:ale_linters = { 'cpp': ['clangcheck', 'clangtidy', 'clang-format', 'clazy'
 "
 
 let mapleader = "\<Space>"
-let g:go_fmt_command = "goimports"
+let g:go_fmt_command = "gofmt"
+let g:go_fmt_options = {
+  \ 'gofmt': '-s',
+  \ }
 
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
@@ -192,7 +195,7 @@ au FileType c nmap <leader>h :call CurtineIncSw()<CR>
 au FileType javascript setlocal ts=2 sw=2 sts=2
 au FileType html setlocal ts=2 sw=2 sts=2
 
-" autocmd! BufWritePost *.go Neomake
+autocmd! BufWritePost *.go :GoImports
 " autocmd! BufWritePost *.go :GoMetaLinter
 
 " ctrlpvim/ctrlp.vim extension options
