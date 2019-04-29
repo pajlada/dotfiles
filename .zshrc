@@ -13,3 +13,8 @@ export EDITOR='vim'
 [[ -f ~/.zsh_local ]] && source ~/.zsh_local
 
 alias qreset='tput reset'
+pgodeps() {
+    go list -f '{{range .Imports}}
+{{.}}
+{{end}}' $1 | sort | uniq
+}
