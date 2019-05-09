@@ -9,4 +9,6 @@ xrandr --auto --dpi 200
 
 [[ -f ~/.Xmodmap ]] && setxkbmap -layout us -variant altgr-intl -option nodeadkeys && xmodmap ~/.Xmodmap
 
+xbanish & disown
+
 exec i3
