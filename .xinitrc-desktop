@@ -1,9 +1,18 @@
 # your mileage may vary with this file
 # the options below are very personalized for my current setup
 
+# Keyboard repeat rate (175ms delay before starting repeat, 50 repeats per second)
 xset r rate 175 50
+# Load my custom keyboard layout (basically standard US layout, but altgr+['; = åäö)
+[[ -f ~/.Xmodmap ]] && setxkbmap -layout us -variant altgr-intl -option nodeadkeys && xmodmap ~/.Xmodmap
 
-setxkbmap -option caps:none pajlada
+# Hide mouse when typing
+xbanish & disown
+
+# Clipboard manager
+parcellite & disown
+
+# DPI
 xrandr --dpi 90
 
 # TV
@@ -18,10 +27,5 @@ xrandr --output DP-4 --mode 2560x1440 --pos 2160x2400
 
 # 27" 1440p     right
 xrandr --output DP-2 --mode 2560x1440 --pos 4720x2400
-
-
-[[ -f ~/.Xmodmap ]] && setxkbmap -layout us -variant altgr-intl -option nodeadkeys && xmodmap ~/.Xmodmap
-
-xbanish & disown
 
 exec i3
