@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # stop motd from showing up
 touch ~/.hushlogin
@@ -7,7 +7,7 @@ touch ~/.hushlogin
 sudo apt install zsh
 
 # set zsh as the default shell
-sudo chsh -s /usr/bin/zsh  $USER
+sudo chsh -s /usr/bin/zsh "$USER"
 
 # install oh-my-zsh
 if [ ! -d ~/.oh-my-zsh ]; then

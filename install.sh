@@ -1,14 +1,27 @@
-#!/bin/bash
+#!/bin/sh
 
 # Usage: make_home_symlink path_to_file name_of_file_in_home_to_symlink_to
 make_home_symlink() {
-    printf "Installing %s...\n" $1
+    THIS_DOTFILE_PATH=$1
+    HOME_DOTFILE_PATH=$2
+    echo "Installing $THIS_DOTFILE_PATH into $HOME_DOTFILE_PATH..."
 
-    # Remove pre-existing symlink
-    unlink ~/$2 2>/dev/null
+    if [ ! -L "$HOME_DOTFILE_PATH" ]; then
+        echo "Skipping, because $HOME_DOTFILE_PATH is a symlink"
+        return
+    fi
 
-    # Make new symlink
-    ln -s `pwd`/$1 ~/$2 2>/dev/null
+    if [ -f "$HOME_DOTFILE_PATH" ] && [ ! -L "$HOME_DOTFILE_PATH" ]; then
+        printf "You already have a regular file at %s. Do you want to remove it? (y/n) " "$HOME_DOTFILE_PATH"
+        read -r response
+        if [ "$response" = "y" ] || [ "$response" = "Y" ]; then
+            rm "$HOME/$dotfile"
+        else
+            return
+        fi
+    fi
+
+    ln -s "$THIS_DOTFILE_PATH" "$HOME_DOTFILE_PATH" 2>/dev/null
 }
 
 # Possible devices: desktop, laptop
@@ -17,28 +30,22 @@ DEVICE="${1:-desktop}"
 echo "Install symlinks as device $DEVICE"
 
 # Install all dotfiles
-dotfiles=(.vimrc .Xdefaults .gitconfig .xinitrc .gvimrc .gvimrc4k .Xmodmap .gdbinit .zshrc)
-for dotfile in ${dotfiles[*]}; do
-    if [ -f ~/$dotfile ] && [ ! -L ~/$dotfile ]; then
-        echo -n "You already have a regular file at ~/$dotfile. Do you want to overwrite it? (y/n) "
-        read response
-        if [ "$response" == "y" ] || [ $"response" == "Y" ]; then
-            rm ~/$dotfile
-        else
-            continue
-        fi
-    fi
-
-    if [ ! -L ~/$dotfile ]; then
-        printf "Installing %s...\n" $dotfile
-        ln -s `pwd`/$dotfile ~/$dotfile 2>/dev/null
-        make_home_symlink $dotfile $dotfile
-    fi
+dotfiles=".vimrc .Xdefaults .gitconfig .xinitrc .gvimrc .gvimrc4k .Xmodmap .gdbinit .zshrc"
+for dotfile in $dotfiles; do
+    make_home_symlink "$(pwd)/$dotfile" "$HOME/$dotfile"
 done
 
 # Device-specific symlinks
-make_home_symlink .xinitrc-${DEVICE} .xinitrc
-make_home_symlink .Xdefaults-${DEVICE} .Xdefaults
+make_home_symlink ".xinitrc-${DEVICE}" .xinitrc
+make_home_symlink ".Xdefaults-${DEVICE}" .Xdefaults
+
+# install oh-my-zsh
+if [ ! -d ~/.oh-my-zsh ]; then
+    echo "Installing oh-my-zsh"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+else
+    echo "oh-my-zsh is already installed"
+fi
 
 echo "Installing custom oh-my-zsh themes..."
 # Create oh-my-zsh custom themes folder if it doesn't exist already
@@ -47,7 +54,7 @@ if [ -f ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme ] && [ ! -L ~/.oh-my-zsh/cu
     echo "Removing old oh-my-zsh custom 'pajlada' theme"
     rm ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme
 fi
-ln -s `pwd`/themes/pajlada.zsh-theme ~/.oh-my-zsh/custom/themes 2>/dev/null
+ln -s "$HOME/themes/pajlada.zsh-theme" ~/.oh-my-zsh/custom/themes 2>/dev/null
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 
@@ -62,8 +69,8 @@ if [ ! -f ~/.vim/colors/pixelmuerto.vim ]; then
     cp vim-pixelmuerto/colors/* ~/.vim/colors/
 fi
 
-make_home_symlink i3-${DEVICE} .config/i3
-make_home_symlink i3status-${DEVICE} .config/i3status
+make_home_symlink "i3-$DEVICE" .config/i3
+make_home_symlink "i3status-$DEVICE" .config/i3status
 
 echo "To make your .gitconfig up-to-date again, you might need to type: git update-index --no-assume-unchanged .gitconfig"
 echo "Put your git 'credentials' in ~/.gitcredentials in the following format:"
