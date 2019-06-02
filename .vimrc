@@ -185,12 +185,16 @@ au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <leader>d <Plug>(go-doc)
 
 au FileType cpp nmap <leader>c :call SyntasticCheck()<CR>
 au FileType cpp nmap <leader>f <Plug>(operator-clang-format)
 au FileType cpp nmap <leader>h :call CurtineIncSw()<CR>
 au FileType c nmap <leader>f <Plug>(operator-clang-format)
 au FileType c nmap <leader>h :call CurtineIncSw()<CR>
+
+" Python leader-bindings (Space+Key)
+au FileType python nmap <leader>f <Plug>(ale_fix)
 
 au FileType javascript setlocal ts=2 sw=2 sts=2
 au FileType html setlocal ts=2 sw=2 sts=2
@@ -214,6 +218,8 @@ autocmd FileType javascript ClangFormatAutoDisable
 let g:clang_library_path='/usr/local/lib/libclang.so'
 let g:clang_auto_select=1
 let g:clang_close_preview=1
+
+let g:ale_fixers = ['black']
 
 " auto-pairs
 " let g:AutoPairsMapCR = 0
