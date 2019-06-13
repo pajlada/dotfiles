@@ -109,6 +109,9 @@ set encoding=utf-8
 " Enable relative line numbering
 set rnu
 
+" Disable mode line
+set nomodeline
+
 " Customize our status line
 set statusline=%f%m%r%h%w\ 
 set statusline+=[%{&ff}]
