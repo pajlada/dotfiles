@@ -30,8 +30,10 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+t exec urxvt -pe tabbed
-bindsym $mod+Shift+t exec urxvt
+bindsym $mod+t exec st tmux
+bindsym $mod+y exec st
+bindsym $mod+Shift+t exec urxvt -pe tabbed
+# bindsym $mod+Shift+t exec urxvt
 
 # kill focused window
 bindsym $mod+Shift+q kill
