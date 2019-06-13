@@ -181,3 +181,5 @@ new_window 1pixel
 client.focused          #4c7899 #285577 #ffffff #2e9ef4   #aaaaff
 
 focus_wrapping off
+
+mouse_warping none
