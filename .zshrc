@@ -2,9 +2,7 @@ export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="pajlada"
 
-plugins=(
-  git
-)
+plugins=()
 
 source $ZSH/oh-my-zsh.sh
 
