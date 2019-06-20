@@ -16,3 +16,5 @@ pgodeps() {
 {{.}}
 {{end}}' $1 | sort | uniq
 }
+
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
