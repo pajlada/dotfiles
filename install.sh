@@ -6,7 +6,7 @@ make_home_symlink() {
     HOME_DOTFILE_PATH=$2
     echo "Installing $THIS_DOTFILE_PATH into $HOME_DOTFILE_PATH..."
 
-    if [ ! -L "$HOME_DOTFILE_PATH" ]; then
+    if [ -L "$HOME_DOTFILE_PATH" ]; then
         echo "Skipping, because $HOME_DOTFILE_PATH is a symlink"
         return
     fi
@@ -54,7 +54,7 @@ if [ -f ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme ] && [ ! -L ~/.oh-my-zsh/cu
     echo "Removing old oh-my-zsh custom 'pajlada' theme"
     rm ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme
 fi
-ln -s "$HOME/themes/pajlada.zsh-theme" ~/.oh-my-zsh/custom/themes 2>/dev/null
+ln -s "$PWD/themes/pajlada.zsh-theme" ~/.oh-my-zsh/custom/themes >/dev/null
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 
