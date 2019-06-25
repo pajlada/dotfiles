@@ -33,7 +33,7 @@ function get_current_host() {
    hn=$(hostname)
 
    # Local machines
-   if [ ! "$hn" = "billy" ]; then
+   if [ ! "$hn" = "billy" ] && [ ! "$hn" = "sarsonist" ]; then
        echo -n "%{$fg[red]%}"
    fi
 
