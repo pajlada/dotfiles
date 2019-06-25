@@ -30,7 +30,7 @@ DEVICE="${1:-desktop}"
 echo "Install symlinks as device $DEVICE"
 
 # Install all dotfiles
-dotfiles=".vimrc .Xdefaults .gitconfig .xinitrc .gvimrc .gvimrc4k .Xmodmap .gdbinit .zshrc"
+dotfiles=".vimrc .Xdefaults .gitconfig .xinitrc .gvimrc .gvimrc4k .Xmodmap .gdbinit .zshrc .tmux.conf"
 for dotfile in $dotfiles; do
     make_home_symlink "$(pwd)/$dotfile" "$HOME/$dotfile"
 done
