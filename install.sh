@@ -63,11 +63,12 @@ if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
-if [ ! -f ~/.vim/colors/pixelmuerto.vim ]; then
-    echo "Installing vim pixelmuerto color theme"
-    git clone https://github.com/pixelmuerto/vim-pixelmuerto.git
-    cp vim-pixelmuerto/colors/* ~/.vim/colors/
+if [ ! -d vim-pixelmuerto-fork ]; then
+    echo "Cloning pajlada's fork of pixelmuerto's VIM theme"
+    git clone https://github.com/pajlada/vim-pixelmuerto.git vim-pixelmuerto-fork
 fi
+
+cp vim-pixelmuerto-fork/colors/pixelmuerto.vim ~/.vim/colors/
 
 make_home_symlink "i3-$DEVICE" .config/i3
 make_home_symlink "i3status-$DEVICE" .config/i3status
