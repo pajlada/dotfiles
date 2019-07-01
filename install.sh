@@ -79,12 +79,14 @@ cp vim-pixelmuerto-fork/colors/pixelmuerto.vim ~/.vim/colors/
 make_home_symlink "i3-$DEVICE" .config/i3
 make_home_symlink "i3status-$DEVICE" .config/i3status
 
-echo "To make your .gitconfig up-to-date again, you might need to type: git update-index --no-assume-unchanged .gitconfig"
-echo "Put your git 'credentials' in ~/.gitcredentials in the following format:"
-echo "[user]"
-echo "    name = Your Name"
-echo "    email = your@email.com"
-echo "Or set it with these commands"
-echo "Don't forget to set your personal git configs"
-echo "git config --file ~/.gitcredentials user.name \"Your Name\""
-echo "git config --file ~/.gitcredentials user.email \"your@email.com\""
+if [ ! -f ~/.gitcredentials ]; then
+    echo "To make your .gitconfig up-to-date again, you might need to type: git update-index --no-assume-unchanged .gitconfig"
+    echo "Put your git 'credentials' in ~/.gitcredentials in the following format:"
+    echo "[user]"
+    echo "    name = Your Name"
+    echo "    email = your@email.com"
+    echo "Or set it with these commands"
+    echo "Don't forget to set your personal git configs"
+    echo "git config --file ~/.gitcredentials user.name \"Your Name\""
+    echo "git config --file ~/.gitcredentials user.email \"your@email.com\""
+fi
