@@ -45,14 +45,22 @@ if [ ! -d ~/.oh-my-zsh ]; then
     git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 fi
 
-echo "Installing custom oh-my-zsh themes..."
 # Create oh-my-zsh custom themes folder if it doesn't exist already
 mkdir -p ~/.oh-my-zsh/custom/themes
+
+printf "Installing custom oh-my-zsh theme..."
+
 if [ -f ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme ] && [ ! -L ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme ]; then
-    echo "Removing old oh-my-zsh custom 'pajlada' theme"
+    # Remove file theme if it already existed
+    printf " removing old file..."
     rm ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme
 fi
-ln -s "$PWD/themes/pajlada.zsh-theme" ~/.oh-my-zsh/custom/themes >/dev/null
+if [ ! -L "$HOME/.oh-my-zsh/custom/themes/pajlada.zsh-theme" ]; then
+    ln -s "$PWD/themes/pajlada.zsh-theme" ~/.oh-my-zsh/custom/themes >/dev/null
+    echo " done"
+else
+    echo " skip"
+fi
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 
