@@ -2,17 +2,17 @@
 
 # Usage: make_home_symlink path_to_file name_of_file_in_home_to_symlink_to
 make_home_symlink() {
-    THIS_DOTFILE_PATH=$1
-    HOME_DOTFILE_PATH=$2
-    echo "Installing $THIS_DOTFILE_PATH into $HOME_DOTFILE_PATH..."
+    THIS_DOTFILE_PATH="$PWD/$1"
+    HOME_DOTFILE_PATH="$HOME/$2"
+    printf "Installing %s into %s" "$1" "$HOME_DOTFILE_PATH"
 
     if [ -L "$HOME_DOTFILE_PATH" ]; then
-        echo "Skipping, because $HOME_DOTFILE_PATH is a symlink"
+        echo " skipping, target is already a symlink"
         return
     fi
 
     if [ -f "$HOME_DOTFILE_PATH" ] && [ ! -L "$HOME_DOTFILE_PATH" ]; then
-        printf "You already have a regular file at %s. Do you want to remove it? (y/n) " "$HOME_DOTFILE_PATH"
+        printf " You already have a regular file at %s. Do you want to remove it? (y/n) " "$HOME_DOTFILE_PATH"
         read -r response
         if [ "$response" = "y" ] || [ "$response" = "Y" ]; then
             rm "$HOME/$dotfile"
@@ -22,6 +22,7 @@ make_home_symlink() {
     fi
 
     ln -s "$THIS_DOTFILE_PATH" "$HOME_DOTFILE_PATH" 2>/dev/null
+    echo " done!"
 }
 
 # Possible devices: desktop, laptop
@@ -30,14 +31,14 @@ DEVICE="${1:-desktop}"
 echo "Install symlinks as device $DEVICE"
 
 # Install all dotfiles
-dotfiles=".vimrc .Xdefaults .gitconfig .xinitrc .gvimrc .gvimrc4k .Xmodmap .gdbinit .zshrc .tmux.conf"
+dotfiles=".vimrc .gitconfig .gvimrc .gvimrc4k .Xmodmap .gdbinit .zshrc .tmux.conf"
 for dotfile in $dotfiles; do
-    make_home_symlink "$(pwd)/$dotfile" "$HOME/$dotfile"
+    make_home_symlink "$dotfile" "$dotfile"
 done
 
 # Device-specific symlinks
-make_home_symlink ".xinitrc-${DEVICE}" .xinitrc
-make_home_symlink ".Xdefaults-${DEVICE}" .Xdefaults
+make_home_symlink ".xinitrc-${DEVICE}" ".xinitrc"
+make_home_symlink ".Xdefaults-${DEVICE}" ".Xdefaults"
 
 # install oh-my-zsh
 if [ ! -d ~/.oh-my-zsh ]; then
