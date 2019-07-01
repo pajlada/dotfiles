@@ -40,12 +40,9 @@ done
 make_home_symlink ".xinitrc-${DEVICE}" ".xinitrc"
 make_home_symlink ".Xdefaults-${DEVICE}" ".Xdefaults"
 
-# install oh-my-zsh
 if [ ! -d ~/.oh-my-zsh ]; then
-    echo "Installing oh-my-zsh"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-else
-    echo "oh-my-zsh is already installed"
+    echo "Installing oh-my-zsh..."
+    git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 fi
 
 echo "Installing custom oh-my-zsh themes..."
