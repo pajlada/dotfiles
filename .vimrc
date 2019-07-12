@@ -42,6 +42,8 @@ Plugin 'jiangmiao/auto-pairs'
 
 Plugin 'leafgarland/typescript-vim'
 
+Plugin 'liuchengxu/graphviz.vim'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -249,3 +251,14 @@ vmap <silent> <leader>y y:new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/
 " nmap <silent> <leader>y :new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/.vim/reg.txt<CR>
 nmap <silent> <leader>p :sview ~/.vim/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>p
 nmap <silent> <leader>P :sview ~/.vim/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>P
+
+" Graphviz
+"" Compile .dot-files to png
+let g:graphviz_output_format = 'png'
+
+"" Open Graphviz results with sxiv
+let g:graphviz_viewer = 'sxiv'
+
+"" Automatically compile dot files when saving
+"" XXX: For some reason, setting the output format is not respected so I need to specify png here too
+autocmd BufWritePost *.dot GraphvizCompile png
