@@ -44,6 +44,9 @@ Plugin 'leafgarland/typescript-vim'
 
 Plugin 'liuchengxu/graphviz.vim'
 
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/vim-lsp'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -128,11 +131,11 @@ if &t_Co == 256
 else
     " Else fall back to ron
     colorscheme ron
+    hi CursorLine term=bold cterm=bold guibg=Grey40
 endif
 
 " Make a slight customization with the cursorline to the ron theme
 set cursorline
-hi CursorLine term=bold cterm=bold guibg=Grey40
 
 " Store an undo buffer in a file in $HOME/.vimundo
 set undofile
@@ -172,7 +175,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_cpp_checker = 1
 let g:syntastic_cpp_checkers=['clang_tidy']
 let g:syntastic_cpp_clang_tidy_post_args=""
-let g:ale_linters = { 'cpp': ['clangcheck', 'clangtidy', 'clang-format', 'clazy', 'cppcheck', 'cquery', 'uncrustify'] }
+let g:ale_linters = { 'cpp': ['clangcheck', 'clangtidy', 'clang-format', 'clazy', 'cquery', 'uncrustify'] }
 " let g:syntastic_cpp_clang_tidy_config_file=['/home/pajlada/work/vapour/.clang-tidy']
 
 "set statusline+=%#warningmsg#
@@ -213,6 +216,7 @@ let g:ctrlp_working_path_mode = 'rwa'
 
 nnoremap <silent> <C-B> :CtrlPBuffer<CR>
 nnoremap <silent> <C-K> :CtrlPMixed<CR>
+nnoremap <silent> <C-Y> :CtrlPTag<CR>
 
 " clang-format extension options
 autocmd FileType c ClangFormatAutoEnable
@@ -247,10 +251,7 @@ let g:vim_isort_python_version = 'python3'
 
 " SPACE+Y = Yank  (SPACE being leader)
 " SPACE+P = Paste
-vmap <silent> <leader>y y:new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/.vim/reg.txt<CR>
-" nmap <silent> <leader>y :new<CR>:call setline(1,getregtype())<CR>o<Esc>P:wq! ~/.vim/reg.txt<CR>
-nmap <silent> <leader>p :sview ~/.vim/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>p
-nmap <silent> <leader>P :sview ~/.vim/reg.txt<CR>"zdddG:q!<CR>:call setreg('"', @", @z)<CR>P
+vmap <silent> <leader>y :w !xsel -i -b<CR><CR>
 
 " Graphviz
 "" Compile .dot-files to png
@@ -262,3 +263,19 @@ let g:graphviz_viewer = 'sxiv'
 "" Automatically compile dot files when saving
 "" XXX: For some reason, setting the output format is not respected so I need to specify png here too
 autocmd BufWritePost *.dot GraphvizCompile png
+
+if executable('cquery')
+   au User lsp_setup call lsp#register_server({
+      \ 'name': 'cquery',
+      \ 'cmd': {server_info->['cquery']},
+      \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+      \ 'initialization_options': { 'cacheDirectory': '/home/pajlada/.cache/cquery' },
+      \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
+      \ })
+endif
+
+nn <f2> :LspRename<cr>
+nn <silent> <C-h> :LspHover<cr>
+nn <silent> <C-g> :LspPeekDefinition<cr>
+
+let g:lsp_preview_keep_focus = 0
