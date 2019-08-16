@@ -279,4 +279,12 @@ nn <f2> :LspRename<cr>
 nn <silent> <C-h> :LspHover<cr>
 nn <silent> <C-g> :LspPeekDefinition<cr>
 
+" Macro @e will take your default register (whatever you last yanked) and create an ostream operator for it as if it's an enum.
+" This expected your register to be formatted like this:
+" A,
+" B,
+" C,
+" Enums with values do not work.
+let @e='POinline std::ostream &operator<<(std::ostream &os, Type v){€ýadd}i}%oswitch (v) {€ýa%O}€ýa%jVi{:norm ^veyIcase Type::$i: return os << "p$s";joreturn os << static_cast<int>(v);'
+
 let g:lsp_preview_keep_focus = 0
