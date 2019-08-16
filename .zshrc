@@ -18,3 +18,6 @@ pgodeps() {
 }
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
+nvm-init() {
+    source /usr/share/nvm/init-nvm.sh
+}
