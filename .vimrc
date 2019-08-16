@@ -61,6 +61,7 @@ set wildignore+=*.ilk
 set wildignore+=*/build/*
 set wildignore+=*/build_native/*
 set wildignore+=*/build-*/*
+set wildignore+=*/vendor/*
 
 " Ignore generated C/C++ Qt files
 set wildignore+=moc_*.cpp,moc_*.h
