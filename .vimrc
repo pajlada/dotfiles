@@ -195,6 +195,7 @@ au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <leader>d <Plug>(go-doc)
+au FileType go nmap <leader>e :GoIfErr<CR>
 
 au FileType cpp nmap <leader>c :call SyntasticCheck()<CR>
 au FileType cpp nmap <leader>f <Plug>(operator-clang-format)
