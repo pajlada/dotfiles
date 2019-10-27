@@ -174,12 +174,16 @@ bar {
         status_command i3status
 }
 
+show_marks yes
+
 focus_follows_mouse no
+
+focus_on_window_activation none
 
 new_window 1pixel
 
 client.focused          #4c7899 #285577 #ffffff #2e9ef4   #aaaaff
 
-focus_wrapping off
+focus_wrapping no
 
 mouse_warping none
