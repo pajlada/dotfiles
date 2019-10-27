@@ -13,6 +13,9 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 alias cleanvim='vim -u NORC'
 alias qreset='tput reset'
+alias tmpdir='cd $(mktemp -d)'
+alias tempdir='tmpdir'
+
 pgodeps() {
     go list -f '{{range .Imports}}
 {{.}}
