@@ -64,3 +64,15 @@ full-release() {
     branch-release "$_version"
     git push -u origin "$_branch_name"
 }
+
+full-release-npm() {
+    local _version="$1"
+    if [ -z "$_version" ]; then
+        echo "Missing version. usage: $0 version (e.g. $0 v0.7.3)"
+        return 1
+    fi
+    npm version "$_version"
+    git push --follow-tags
+    branch-release "$_version"
+    git push -u origin "$_branch_name"
+}
