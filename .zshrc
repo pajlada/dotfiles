@@ -7,6 +7,7 @@ plugins=()
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR='vim'
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 [[ -f ~/.zsh_local ]] && source ~/.zsh_local
 
@@ -17,7 +18,6 @@ pgodeps() {
 {{end}}' $1 | sort | uniq
 }
 
-export DOTNET_CLI_TELEMETRY_OPTOUT=1
 nvm-init() {
     source /usr/share/nvm/init-nvm.sh
 }
