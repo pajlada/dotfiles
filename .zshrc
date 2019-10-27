@@ -11,6 +11,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 [[ -f ~/.zsh_local ]] && source ~/.zsh_local
 
+alias cleanvim='vim -u NORC'
 alias qreset='tput reset'
 pgodeps() {
     go list -f '{{range .Imports}}
