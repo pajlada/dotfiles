@@ -229,7 +229,10 @@ let g:clang_library_path='/usr/local/lib/libclang.so'
 let g:clang_auto_select=1
 let g:clang_close_preview=1
 
-let g:ale_fixers = ['black']
+let g:ale_fixers = {
+    \ 'python': ['black'],
+    \ 'typescript': ['tslint'],
+  \ }
 
 " auto-pairs
 " let g:AutoPairsMapCR = 0
