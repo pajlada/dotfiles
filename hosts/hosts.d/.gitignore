@@ -1,0 +1,2 @@
+# Ignore host.conf as this should be created by the install script
+host.conf

@@ -1,0 +1,10 @@
+[Unit]
+Description=Combine hosts timer
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=10min
+Unit=pajlada-combine-hosts.service
+
+[Install]
+WantedBy=timers.target

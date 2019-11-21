@@ -1,0 +1,5 @@
+[Unit]
+Description=Combine hosts
+
+[Service]
+ExecStart=/opt/pajlada-dotfiles/combine-hosts.sh
