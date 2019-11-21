@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 12
+font pango:Liberation Mono:monospace 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -30,8 +30,10 @@ font pango:monospace 12
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+t exec urxvt -pe tabbed
-bindsym $mod+Shift+t exec urxvt
+bindsym $mod+t exec st tmux
+bindsym $mod+y exec st
+bindsym $mod+Shift+t exec urxvt -pe tabbed
+# bindsym $mod+Shift+t exec urxvt
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -179,3 +181,5 @@ new_window 1pixel
 client.focused          #4c7899 #285577 #ffffff #2e9ef4   #aaaaff
 
 focus_wrapping off
+
+mouse_warping none
