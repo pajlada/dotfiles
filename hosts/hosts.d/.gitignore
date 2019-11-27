@@ -1,2 +1,3 @@
-# Ignore host.conf as this should be created by the install script
-host.conf
+# Ignore any added *.conf folders
+*.conf
+!default.conf

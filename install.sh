@@ -1,9 +1,21 @@
 #!/bin/sh
 
+set -e
+
 # Usage: make_home_symlink path_to_file name_of_file_in_home_to_symlink_to
 make_home_symlink() {
+    if [ -z "$1" ]; then
+        >&2 echo "make_home_symlink: missing first argument: path to file"
+        exit 1
+    fi
+
     THIS_DOTFILE_PATH="$PWD/$1"
-    HOME_DOTFILE_PATH="$HOME/$2"
+    if [ -z "$2" ]; then
+        HOME_DOTFILE_PATH="$HOME/$1"
+    else
+        HOME_DOTFILE_PATH="$HOME/$2"
+    fi
+
     printf "Installing %s into %s" "$1" "$HOME_DOTFILE_PATH"
 
     if [ -L "$HOME_DOTFILE_PATH" ]; then
@@ -30,37 +42,37 @@ DEVICE="${1:-desktop}"
 
 echo "Install symlinks as device $DEVICE"
 
-# Install all dotfiles
-dotfiles=".vimrc .gitconfig .gvimrc .gvimrc4k .Xmodmap .gdbinit .zshrc .tmux.conf"
+mkdir -p "$HOME/.config"
+
+# zsh
+## Create zsh config dir
+mkdir -p "$HOME/.cache/zsh"
+
+## Symlink our zsh dir into ~/.config
+make_home_symlink ".config/zsh"
+
+## Symlink our .zprofile file into ~/
+make_home_symlink ".zprofile"
+
+# vim
+## Create vim config dir
+mkdir -p "$HOME/.vim"
+
+## Symlink our .vimrc into ~/.vim/vimrc
+make_home_symlink ".vimrc" ".vim/vimrc"
+
+# Bulk install various dotfiles
+dotfiles=".vimrc .gitconfig .gvimrc .gvimrc4k .Xmodmap .gdbinit .tmux.conf"
 for dotfile in $dotfiles; do
-    make_home_symlink "$dotfile" "$dotfile"
+    make_home_symlink "$dotfile"
 done
+
+# Install aliases used by our shell
+make_home_symlink ".config/aliasrc"
 
 # Device-specific symlinks
 make_home_symlink ".xinitrc-${DEVICE}" ".xinitrc"
 make_home_symlink ".Xdefaults-${DEVICE}" ".Xdefaults"
-
-if [ ! -d ~/.oh-my-zsh ]; then
-    echo "Installing oh-my-zsh..."
-    git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-fi
-
-# Create oh-my-zsh custom themes folder if it doesn't exist already
-mkdir -p ~/.oh-my-zsh/custom/themes
-
-printf "Installing custom oh-my-zsh theme..."
-
-if [ -f ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme ] && [ ! -L ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme ]; then
-    # Remove file theme if it already existed
-    printf " removing old file..."
-    rm ~/.oh-my-zsh/custom/themes/pajlada.zsh-theme
-fi
-if [ ! -L "$HOME/.oh-my-zsh/custom/themes/pajlada.zsh-theme" ]; then
-    ln -s "$PWD/themes/pajlada.zsh-theme" ~/.oh-my-zsh/custom/themes >/dev/null
-    echo " done"
-else
-    echo " skip"
-fi
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 

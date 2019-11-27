@@ -292,3 +292,5 @@ nn <silent> <C-g> :LspPeekDefinition<cr>
 let @e='POinline std::ostream &operator<<(std::ostream &os, Type v){€ýadd}i}%oswitch (v) {€ýa%O}€ýa%jVi{:norm ^veyIcase Type::$i: return os << "p$s";joreturn os << static_cast<int>(v);'
 
 let g:lsp_preview_keep_focus = 0
+
+set viminfo+=n~/.vim/viminfo
