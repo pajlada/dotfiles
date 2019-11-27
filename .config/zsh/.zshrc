@@ -2,7 +2,7 @@
 #
 autoload -U colors && colors
 
-ps1_user="%{$fg[green]%}%n"
+ps1_user="%(!.%{$fg[red]%}.%{$fg[green]%})%n"
 ps1_host="%{$fg[blue]%}%M"
 ps1_remote_host="%{$fg[red]%}%M"
 ps1_remote_prefix="%{$fg[red]%}R>"
