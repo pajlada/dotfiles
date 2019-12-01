@@ -81,3 +81,7 @@ compinit
 HISTSIZE=50000
 SAVEHIST=10000
 HISTFILE="$HOME/.cache/zsh/zsh_history"
+
+# Change word-selection style to be like bash. This makes alt+backspace delete "bar" in "foo/bar" instead of the entire thing.
+autoload -U select-word-style
+select-word-style bash
