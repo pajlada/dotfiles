@@ -64,3 +64,7 @@ adddate() {
         printf '%s %s\n' "$(date)" "$line"
     done
 }
+
+update-dotfiles() {
+    ( cd "$HOME/git/dotfiles" && git pull )
+}
