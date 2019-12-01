@@ -7,7 +7,7 @@ ps1_host="%{$fg[blue]%}%M"
 ps1_remote_host="%{$fg[red]%}%M"
 ps1_remote_prefix="%{$fg[red]%}R>"
 ps1_path="%{$fg[cyan]%}[%~]"
-ps1_suffix="%(?.$fg[green].$fg[red])%(!.#.$)"
+ps1_suffix="%(?.%{$fg[green]%}.%{$fg[red]%})%(!.#.$)"
 
 if [ -z "$SSH_CLIENT" ]; then
     # Local login
