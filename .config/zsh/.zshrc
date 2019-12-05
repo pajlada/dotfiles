@@ -81,6 +81,8 @@ compinit
 HISTSIZE=50000
 SAVEHIST=10000
 HISTFILE="$HOME/.cache/zsh/zsh_history"
+# Share history between terminals
+setopt SHARE_HISTORY
 
 # Change word-selection style to be like bash. This makes alt+backspace delete "bar" in "foo/bar" instead of the entire thing.
 autoload -U select-word-style
