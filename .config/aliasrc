@@ -5,4 +5,4 @@ alias tempdir='tmpdir'
 alias ff='firefox'
 
 alias ls='ls --color=tty'
-alias grep='grep --color=auto --exclude-dir=.git'
+alias grep='grep --color=auto --exclude-dir={.git,vendor}'
