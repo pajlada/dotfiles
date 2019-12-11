@@ -1,53 +1,53 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-" Package manager KKona
-Plugin 'VundleVim/Vundle.vim'
-
-" Plugin 'scrooloose/syntastic'
-Plugin 'w0rp/ale'
+" Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 
 " Python import sorter
-Plugin 'fisadev/vim-isort'
+Plug 'fisadev/vim-isort'
 
 " Go plugin (does most things Go-related)
-Plugin 'fatih/vim-go'
+Plug 'fatih/vim-go'
 
 " Fuzzy file finder (like Ctrl+K in other apps)
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
-Plugin 'editorconfig/editorconfig-vim'
+Plug 'editorconfig/editorconfig-vim'
 
 " Allow plugins to define their own operator
-Plugin 'kana/vim-operator-user'
+Plug 'kana/vim-operator-user'
 
 " clang-format plugin
-Plugin 'rhysd/vim-clang-format'
+Plug 'rhysd/vim-clang-format'
 
-" Plugin which allows me to press a button to toggle between header and source
+" Plug which allows me to press a button to toggle between header and source
 " file. Currently bound to LEADER+H
-Plugin 'ericcurtin/CurtineIncSw.vim'
+Plug 'ericcurtin/CurtineIncSw.vim'
 
 " Completes ( with )
-Plugin 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'
 
-" Plugin 'Rip-Rip/clang_complete'
+" Plug 'Rip-Rip/clang_complete'
 
-" Plugin 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
 
-" Plugin 'rust-lang/rust.vim'
+" Plug 'rust-lang/rust.vim'
 
-Plugin 'leafgarland/typescript-vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plugin 'liuchengxu/graphviz.vim'
+Plug 'rust-analyzer/rust-analyzer'
 
-Plugin 'prabirshrestha/async.vim'
-Plugin 'prabirshrestha/vim-lsp'
+Plug 'leafgarland/typescript-vim'
 
-call vundle#end()
+Plug 'liuchengxu/graphviz.vim'
+
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+
+call plug#end()
 filetype plugin indent on
 
 syntax on
@@ -233,6 +233,7 @@ let g:clang_close_preview=1
 let g:ale_fixers = {
     \ 'python': ['black'],
     \ 'typescript': ['tslint'],
+    \ 'rust': ['rustfmt'],
   \ }
 
 " auto-pairs
@@ -294,3 +295,5 @@ let @e='POinline std::ostream &operator<<(std::ostream &os, Type v){€ýadd}i}
 let g:lsp_preview_keep_focus = 0
 
 set viminfo+=n~/.vim/viminfo
+
+let g:ale_fix_on_save = 1

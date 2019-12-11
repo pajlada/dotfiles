@@ -76,9 +76,9 @@ make_home_symlink ".Xdefaults-${DEVICE}" ".Xdefaults"
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 
-if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
-    echo "Installing Vundle.vim..."
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+if [ ! -f "$HOME/.vim/autoload/plug.vim" ]; then
+    echo "Installing vim-plug..."
+    curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
 if [ ! -d vim-pixelmuerto-fork ]; then
