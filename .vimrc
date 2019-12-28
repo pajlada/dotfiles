@@ -297,3 +297,5 @@ let g:lsp_preview_keep_focus = 0
 set viminfo+=n~/.vim/viminfo
 
 let g:ale_fix_on_save = 1
+
+set clipboard=
