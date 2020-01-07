@@ -27,7 +27,7 @@ make_home_symlink() {
         printf " You already have a regular file at %s. Do you want to remove it? (y/n) " "$HOME_DOTFILE_PATH"
         read -r response
         if [ "$response" = "y" ] || [ "$response" = "Y" ]; then
-            rm "$HOME/$dotfile"
+            rm "$HOME_DOTFILE_PATH"
         else
             return
         fi
