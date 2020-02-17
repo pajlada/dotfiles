@@ -233,6 +233,7 @@ let g:clang_close_preview=1
 let g:ale_fixers = {
     \ 'python': ['black'],
     \ 'typescript': ['tslint'],
+    \ 'javascript': ['eslint'],
     \ 'rust': ['rustfmt'],
   \ }
 
@@ -257,7 +258,9 @@ let g:vim_isort_python_version = 'python3'
 
 " SPACE+Y = Yank  (SPACE being leader)
 " SPACE+P = Paste
-vmap <silent> <leader>y :w !xsel -i -b<CR><CR>
+vmap <silent> <leader>y "+y
+vmap <silent> <leader>p "+p
+map <silent> <leader>p "+p
 
 " Graphviz
 "" Compile .dot-files to png
@@ -299,3 +302,11 @@ set viminfo+=n~/.vim/viminfo
 let g:ale_fix_on_save = 1
 
 set clipboard=
+
+let g:coc_enable_locationlist = 0
+
+let g:ale_list_window_size = 2
+
+let g:ale_set_quickfix = 1
+
+let g:ale_rust_rustfmt_options = "--edition 2018"
