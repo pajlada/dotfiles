@@ -6,3 +6,5 @@ alias ff='firefox'
 
 alias ls='ls --color=tty'
 alias grep='grep --color=auto --exclude-dir={.git,vendor}'
+alias vi='vim'
+alias vimrc='vim ~/.vim/vimrc'
