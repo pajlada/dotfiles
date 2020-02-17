@@ -4,6 +4,12 @@
 # Keyboard repeat rate (175ms delay before starting repeat, 50 repeats per second)
 xset r rate 175 50
 
+# Disable screen saver
+xset s off
+
+# Turn off monitor after 25 minuters
+xset dpms 0 0 1500
+
 # Load my custom keyboard layout (basically standard US layout, but altgr+['; = åäö)
 [[ -f ~/.Xmodmap ]] && setxkbmap -layout us -variant altgr-intl -option nodeadkeys && xmodmap ~/.Xmodmap
 
