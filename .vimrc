@@ -310,3 +310,6 @@ let g:ale_list_window_size = 2
 let g:ale_set_quickfix = 1
 
 let g:ale_rust_rustfmt_options = "--edition 2018"
+
+set list
+set listchars=tab:\ \ ,trail:·,extends:>
