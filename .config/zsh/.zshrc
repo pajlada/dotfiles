@@ -89,3 +89,6 @@ setopt HIST_IGNORE_SPACE
 # Change word-selection style to be like bash. This makes alt+backspace delete "bar" in "foo/bar" instead of the entire thing.
 autoload -U select-word-style
 select-word-style bash
+
+# Application configs. maybe this should go in another file at some point?
+export BC_ENV_ARGS="-l $HOME/.config/bc/config"

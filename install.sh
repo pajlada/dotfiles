@@ -54,6 +54,8 @@ make_home_symlink ".config/zsh"
 ## Symlink our .zprofile file into ~/
 make_home_symlink ".zprofile"
 
+make_home_symlink ".config/bc"
+
 # vim
 ## Create vim config dir
 mkdir -p "$HOME/.vim"
