@@ -68,3 +68,22 @@ adddate() {
 update-dotfiles() {
     ( cd "$HOME/git/dotfiles" && git pull )
 }
+
+download-bttv-emote() {
+    _url="$1"
+    if [ -z "$_url" ]; then
+        >&2 echo "No URL passed to the function. Usage: $0 url (e.g. $0 https://cdn.betterttv.net/emote/5e5cef4cddc7a054d7f0ff22/3x)"
+        exit 1
+    fi
+    if [ "$(echo $_url | tail -c 4)" = "/3x" ] || [ "$(echo $_url | tail -c 4)" = "/2x" ] || [ "$(echo $_url | tail -c 4)" = "/1x" ]; then
+        _url="$(echo $_url | head -c -4)"
+    fi
+    _emote_id=$(echo "$_url" | rev | cut -d / -f 1 | rev)
+    _emote_json=$(curl -s "https://api.betterttv.net/3/emotes/$_emote_id")
+    _emote_code=$(echo "$_emote_json" | jq -r '.code')
+    mkdir -p "$_emote_code"
+    echo "Downloading all sizes of the emote $_emote_code (id '$_emote_id')"
+    wget --quiet "$_url/1x" --output-document="$_emote_code"/"$_emote_code"-1x.png
+    wget --quiet "$_url/2x" --output-document="$_emote_code"/"$_emote_code"-2x.png
+    wget --quiet "$_url/3x" --output-document="$_emote_code"/"$_emote_code"-3x.png
+}
