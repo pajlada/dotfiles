@@ -1,5 +1,3 @@
-# export ZSH=~/.oh-my-zsh
-#
 autoload -U colors && colors
 
 ps1_user="%(!.%{$fg[red]%}.%{$fg[green]%})%n"
