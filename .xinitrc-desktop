@@ -20,7 +20,7 @@ xbanish & disown
 parcellite & disown
 
 # DPI
-xrandr --dpi 90
+xrandr --dpi 96
 
 # TV
 # xrandr --output HDMI-0 --mode 1920x1080 --pos 2160x0
