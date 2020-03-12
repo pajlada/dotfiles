@@ -187,3 +187,5 @@ client.focused          #4c7899 #285577 #ffffff #2e9ef4   #aaaaff
 focus_wrapping no
 
 mouse_warping none
+
+for_window [class="Sxiv"] floating enable
