@@ -87,3 +87,8 @@ download-bttv-emote() {
     wget --quiet "$_url/2x" --output-document="$_emote_code"/"$_emote_code"-2x.png
     wget --quiet "$_url/3x" --output-document="$_emote_code"/"$_emote_code"-3x.png
 }
+
+scrot-qr() {
+    _path=$(mktemp -u /tmp/scrot-qr-XXXXXX)
+    scrot "$_path" -o -s -e "zbarimg $_path" && rm "$_path"
+}
