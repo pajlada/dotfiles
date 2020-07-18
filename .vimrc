@@ -313,3 +313,9 @@ let g:ale_rust_rustfmt_options = "--edition 2018"
 
 set list
 set listchars=tab:\ \ ,trail:·,extends:>
+
+if $LEVELS_OF_VIM
+let $LEVELS_OF_VIM = $LEVELS_OF_VIM+1
+else
+let $LEVELS_OF_VIM = 1
+endif

@@ -6,13 +6,18 @@ ps1_remote_host="%{$fg[red]%}%M"
 ps1_remote_prefix="%{$fg[red]%}R>"
 ps1_path="%{$fg[cyan]%}[%~]"
 ps1_suffix="%(?.%{$fg[green]%}.%{$fg[red]%})%(!.#.$)"
+ps1_prefix=""
+
+if [ -n "$LEVELS_OF_VIM" ]; then
+    ps1_prefix="$ps1_prefix%B%{$fg[red]%}(VIM+$LEVELS_OF_VIM)%{$reset_color%}%b "
+fi
 
 if [ -z "$SSH_CLIENT" ]; then
     # Local login
-    PS1="%B$ps1_user $ps1_host%b$ps1_path%B$ps1_suffix%{$reset_color%}%b "
+    PS1="$ps1_prefix%B$ps1_user $ps1_host%b$ps1_path%B$ps1_suffix%{$reset_color%}%b "
 else
     # Login through SSH
-    PS1="%B$ps1_remote_prefix$ps1_user $ps1_remote_host%b$ps1_path%B$ps1_suffix%{$reset_color%}%b "
+    PS1="$ps1_prefix%B$ps1_remote_prefix$ps1_user $ps1_remote_host%b$ps1_path%B$ps1_suffix%{$reset_color%}%b "
 fi
 
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
