@@ -4,6 +4,10 @@ pgodeps() {
 {{end}}' $1 | sort | uniq
 }
 
+grepcppincludes() {
+    grep -rIh '#include ' $@ | sort -u
+}
+
 nvm-init() {
     source /usr/share/nvm/init-nvm.sh
 }
