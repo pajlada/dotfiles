@@ -1,5 +1,4 @@
 alias cleanvim='vim -u NORC'
-alias qreset='tput reset'
 alias tmpdir='cd $(mktemp -d)'
 alias tempdir='tmpdir'
 alias ff='firefox'

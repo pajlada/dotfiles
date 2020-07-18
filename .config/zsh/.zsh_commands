@@ -8,6 +8,11 @@ grepcppincludes() {
     grep -rIh '#include ' $@ | sort -u
 }
 
+qreset() {
+    tput reset
+    tmux clear-history
+}
+
 nvm-init() {
     source /usr/share/nvm/init-nvm.sh
 }
