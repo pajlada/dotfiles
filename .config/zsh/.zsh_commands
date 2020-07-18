@@ -101,3 +101,15 @@ scrot-qr() {
     _path=$(mktemp -u /tmp/scrot-qr-XXXXXX)
     scrot "$_path" -o -s -e "zbarimg $_path" && rm "$_path"
 }
+
+scrot-clipboard() {
+    _path=$(mktemp -u /tmp/scrot-clipboard-XXXXXX.png)
+
+    >&2 echo "Select portion to screenshot"
+
+    scrot -s "$_path" || return
+
+    xclip -selection clipboard -target image/png "$_path" || return
+
+    >&2 echo "Saved to clipboard"
+}
