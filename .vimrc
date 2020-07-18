@@ -232,9 +232,12 @@ let g:clang_close_preview=1
 
 let g:ale_fixers = {
     \ 'python': ['black'],
-    \ 'typescript': ['tslint'],
-    \ 'javascript': ['eslint'],
+    \ 'typescript': ['tslint', 'prettier'],
+    \ 'html': ['prettier'],
+    \ 'javascript': ['eslint', 'prettier'],
+    \ 'javascriptreact': ['eslint', 'prettier'],
     \ 'rust': ['rustfmt'],
+    \ 'markdown': ['prettier'],
   \ }
 
 " auto-pairs
