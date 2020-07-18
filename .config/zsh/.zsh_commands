@@ -113,3 +113,10 @@ scrot-clipboard() {
 
     >&2 echo "Saved to clipboard"
 }
+
+add-boost-submodule() {
+    for _library_name in $@; do
+        [ -d "boost-$_library_name" ] && continue
+        git submodule add https://github.com/boostorg/$_library_name boost-$_library_name
+    done
+}
