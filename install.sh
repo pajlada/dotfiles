@@ -56,15 +56,10 @@ make_home_symlink ".zprofile"
 
 make_home_symlink ".config/bc"
 
-# vim
-## Create vim config dir
-mkdir -p "$HOME/.vim"
-
-## Symlink our .vimrc into ~/.vim/vimrc
-make_home_symlink ".vimrc" ".vim/vimrc"
+make_home_symlink ".config/nvim"
 
 # Bulk install various dotfiles
-dotfiles=".vimrc .gitconfig .gvimrc .gvimrc4k .Xmodmap .gdbinit .tmux.conf"
+dotfiles=".gitconfig .Xmodmap .gdbinit .tmux.conf"
 for dotfile in $dotfiles; do
     make_home_symlink "$dotfile"
 done
@@ -88,7 +83,7 @@ if [ ! -d vim-pixelmuerto-fork ]; then
     git clone https://github.com/pajlada/vim-pixelmuerto.git vim-pixelmuerto-fork
 fi
 
-cp vim-pixelmuerto-fork/colors/pixelmuerto.vim ~/.vim/colors/
+cp vim-pixelmuerto-fork/colors/pixelmuerto.vim ~/.config/nvim/colors/
 
 make_home_symlink "i3-$DEVICE" .config/i3
 make_home_symlink "i3status-$DEVICE" .config/i3status

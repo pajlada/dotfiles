@@ -1,9 +1,10 @@
+scriptencoding utf-8
+
 set nocompatible
 filetype off
 
-call plug#begin('~/.vim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 
-" Plug 'scrooloose/syntastic'
 Plug 'w0rp/ale'
 
 " Python import sorter
@@ -45,7 +46,18 @@ Plug 'leafgarland/typescript-vim'
 Plug 'liuchengxu/graphviz.vim'
 
 Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+" Plug 'prabirshrestha/vim-lsp'
+"
+
+Plug 'martinda/Jenkinsfile-vim-syntax'
+
+Plug 'modille/groovy.vim'
+
+" Plug 'integralist/vim-mypy'
+
+Plug 'tomtom/tcomment_vim'
+
+Plug 'sk1418/HowMuch'
 
 call plug#end()
 filetype plugin indent on
@@ -121,6 +133,7 @@ set nomodeline
 " Customize our status line
 set statusline=%f%m%r%h%w\ 
 set statusline+=[%{&ff}]
+set statusline+=\ %{coc#status()}
 set statusline+=%=
 set statusline+=[\%03.3b/\%02.2B]\ [POS=%04v]
 
@@ -138,9 +151,8 @@ endif
 " Make a slight customization with the cursorline to the ron theme
 set cursorline
 
-" Store an undo buffer in a file in $HOME/.vimundo
+" Store an undo buffer in a file in nvims default folder ($XDG_DATA_HOME/nvim/undo)
 set undofile
-set undodir=$HOME/.vimundo
 set undolevels=1000
 set undoreload=10000
 
@@ -157,27 +169,16 @@ nnoremap <F1> <nop>
 " Unbind Shift+K, it's previously used for opening manual or help or something
 map <S-k> <Nop>
 
-let g:syntastic_mode_map = { 'mode': 'active',
-                          \ 'active_filetypes': [],
-                          \ 'passive_filetypes': ['cpp', 'c'] }
-"let g:syntastic_auto_loc_list=1
-"
-" let g:syntastic_go_checkers = ['gometalinter']
-let g:syntastic_go_checkers = ['go']
-
 nnoremap <silent> <F5> :lnext<CR>
 nnoremap <silent> <F6> :lprev<CR>
 nnoremap <silent> <C-Space> :ll<CR>
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_cpp_checker = 1
-let g:syntastic_cpp_checkers=['clang_tidy']
-let g:syntastic_cpp_clang_tidy_post_args=""
-let g:ale_linters = { 'cpp': ['clangcheck', 'clangtidy', 'clang-format', 'clazy', 'cquery', 'uncrustify'] }
-" let g:syntastic_cpp_clang_tidy_config_file=['/home/pajlada/work/vapour/.clang-tidy']
+let g:ale_linters = {
+ \ 'cpp': ['clangcheck', 'clangtidy', 'clang-format', 'clazy', 'cquery', 'uncrustify'],
+ \ 'go': ['staticcheck'],
+ \ }
+
+let g:ale_go_staticcheck_lint_package = 1
 
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
@@ -233,8 +234,9 @@ let g:clang_close_preview=1
 let g:ale_fixers = {
     \ 'python': ['black'],
     \ 'typescript': ['tslint', 'prettier'],
+    \ 'json': ['prettier'],
     \ 'html': ['prettier'],
-    \ 'javascript': ['eslint', 'prettier'],
+    \ 'javascript': ['eslint'],
     \ 'javascriptreact': ['eslint', 'prettier'],
     \ 'rust': ['rustfmt'],
     \ 'markdown': ['prettier'],
@@ -250,8 +252,8 @@ let g:ycm_key_list_stop_completion = ['<C-y>', '<CR>']
 
 let g:rustfmt_autosave = 1
 
-let g:go_list_type = "quickfix"
-let g:go_metalinter_autosave = 0
+" let g:go_list_type = "quickfix"
+" let g:go_metalinter_autosave = 0
 
 au FocusGained,BufEnter * :silent! checktime
 
@@ -276,12 +278,13 @@ let g:graphviz_viewer = 'sxiv'
 "" XXX: For some reason, setting the output format is not respected so I need to specify png here too
 autocmd BufWritePost *.dot GraphvizCompile png
 
+
 if executable('cquery')
    au User lsp_setup call lsp#register_server({
       \ 'name': 'cquery',
       \ 'cmd': {server_info->['cquery']},
       \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
-      \ 'initialization_options': { 'cacheDirectory': '/home/pajlada/.cache/cquery' },
+      \ 'initialization_options': { 'cacheDirectory': $HOME.'/.cache/cquery' },
       \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
       \ })
 endif
@@ -296,11 +299,9 @@ nn <silent> <C-g> :LspPeekDefinition<cr>
 " B,
 " C,
 " Enums with values do not work.
-let @e='POinline std::ostream &operator<<(std::ostream &os, Type v){€ýadd}i}%oswitch (v) {€ýa%O}€ýa%jVi{:norm ^veyIcase Type::$i: return os << "p$s";joreturn os << static_cast<int>(v);'
+let @e='POinline std::ostream &operator<<(std::ostream &os, Type v){Â€Ã½add}i}%oswitch (v) {Â€Ã½a%O}Â€Ã½a%jVi{:norm ^veyIcase Type::$i: return os << "p$s";joreturn os << static_cast<int>(v);'
 
 let g:lsp_preview_keep_focus = 0
-
-set viminfo+=n~/.vim/viminfo
 
 let g:ale_fix_on_save = 1
 
@@ -315,10 +316,31 @@ let g:ale_set_quickfix = 1
 let g:ale_rust_rustfmt_options = "--edition 2018"
 
 set list
-set listchars=tab:\ \ ,trail:·,extends:>
+set listchars=tab:\ \ ,trail:Â·,extends:>
 
 if $LEVELS_OF_VIM
 let $LEVELS_OF_VIM = $LEVELS_OF_VIM+1
 else
 let $LEVELS_OF_VIM = 1
 endif
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+nmap <silent> <leader>aj :ALENext<cr>
+nmap <silent> <leader>ak :ALEPrevious<cr>
+
+nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
