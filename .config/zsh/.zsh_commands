@@ -107,7 +107,7 @@ scrot-clipboard() {
 
     >&2 echo "Select portion to screenshot"
 
-    scrot -s "$_path" || return
+    scrot -s $@ "$_path" || return
 
     xclip -selection clipboard -target image/png "$_path" || return
 
