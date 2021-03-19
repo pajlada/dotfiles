@@ -23,3 +23,5 @@
 
 [include]
     path = ~/.gitcredentials
+[rerere]
+	enabled = true
