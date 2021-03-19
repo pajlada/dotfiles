@@ -120,3 +120,45 @@ add-boost-submodule() {
         git submodule add https://github.com/boostorg/$_library_name boost-$_library_name
     done
 }
+
+watch-and-run() {
+    _dir_or_file_to_watch="$1"
+    _command="$2"
+    _watch_path=$(mktemp -u /tmp/watch-output-XXXXXX)
+    _watch_path=/tmp/watch-xd
+    rm -f "$_watch_path"
+    echo "Watch path: $_watch_path"
+    inotifywait --format '%e' -mrq "$_dir_or_file_to_watch" > "$_watch_path" &
+    _in_pid=$$
+
+    ctrl_c() {
+        echo "killing $_in_pid"
+        kill $_in_pid
+    }
+
+    # trap ctrl_c SIGINT SIGTERM
+    # trap ctrl_c INT TERM
+    trap ctrl_c EXIT
+
+    tail -f "$_watch_path" | while read _events; do
+        for _event in $(echo $_events | tr "," "\n"); do
+            echo "single event: $_event"
+        done
+        echo "all events $_events"
+    done
+}
+
+ssh() {
+    if [ -n "$TMUX" ]; then
+        tmux rename-window "$(echo $* | cut -d . -f 1)"
+        command ssh "$@"
+        tmux set-window-option automatic-rename "on" 1>/dev/null
+    else
+        command ssh "$@"
+    fi
+}
+
+take() {
+    _dir="$1"
+    mkdir -p "$_dir" && cd "$_dir"
+}

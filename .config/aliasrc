@@ -8,3 +8,6 @@ alias grep='grep --color=auto --exclude-dir={.git,vendor}'
 alias vi='nvim'
 alias vim='nvim'
 alias vimrc='vim ~/.vim/vimrc'
+alias qgrep='qreset; grep'
+
+alias checkmake='make'
