@@ -234,6 +234,8 @@ let g:clang_close_preview=1
 let g:ale_fixers = {
     \ 'python': ['black'],
     \ 'typescript': ['tslint', 'prettier'],
+    \ 'css': ['prettier'],
+    \ 'scss': ['prettier'],
     \ 'json': ['prettier'],
     \ 'html': ['prettier'],
     \ 'javascript': ['eslint'],
