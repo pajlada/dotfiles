@@ -8,7 +8,7 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'w0rp/ale'
 
 " Python import sorter
-Plug 'fisadev/vim-isort'
+Plug 'brentyi/isort.vim'
 
 " Go plugin (does most things Go-related)
 Plug 'fatih/vim-go'
