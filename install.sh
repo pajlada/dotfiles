@@ -71,11 +71,10 @@ make_home_symlink ".config/aliasrc"
 make_home_symlink ".xinitrc-${DEVICE}" ".xinitrc"
 make_home_symlink ".Xdefaults-${DEVICE}" ".Xdefaults"
 
-mkdir -p ~/.vim/autoload ~/.vim/bundle ~/.vim/colors
 
 if [ ! -f "$HOME/.vim/autoload/plug.vim" ]; then
     echo "Installing vim-plug..."
-    curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
 if [ ! -d vim-pixelmuerto-fork ]; then
@@ -83,6 +82,7 @@ if [ ! -d vim-pixelmuerto-fork ]; then
     git clone https://github.com/pajlada/vim-pixelmuerto.git vim-pixelmuerto-fork
 fi
 
+mkdir -p ~/.config/nvim/colors
 cp vim-pixelmuerto-fork/colors/pixelmuerto.vim ~/.config/nvim/colors/
 
 make_home_symlink "i3-$DEVICE" .config/i3
