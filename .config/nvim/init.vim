@@ -365,3 +365,5 @@ inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(
 
 let g:terraform_fmt_on_save=1
 
+" ISORT
+autocmd FileType python vnoremap <buffer> <C-i> :Isort<CR>
