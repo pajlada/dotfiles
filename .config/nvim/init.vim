@@ -39,7 +39,7 @@ Plug 'jiangmiao/auto-pairs'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'rust-analyzer/rust-analyzer'
+" Plug 'rust-analyzer/rust-analyzer'
 
 Plug 'leafgarland/typescript-vim'
 
