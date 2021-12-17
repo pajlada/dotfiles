@@ -20,6 +20,7 @@
     dfh = diff HEAD
     diffh = diff HEAD
     permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
+    prune-tags = !git tag -l | xargs git tag -d && git fetch -t
 
 [include]
     path = ~/.gitcredentials
