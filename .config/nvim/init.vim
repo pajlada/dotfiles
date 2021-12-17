@@ -181,6 +181,7 @@ nnoremap <silent> <C-Space> :ll<CR>
 let g:ale_linters = {
  \ 'cpp': ['clangcheck', 'clangtidy', 'clang-format', 'clazy', 'cquery', 'uncrustify'],
  \ 'go': ['staticcheck'],
+ \ 'cmake': ['cmakelint'],
  \ }
 
 let g:ale_go_staticcheck_lint_package = 1
