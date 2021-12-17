@@ -59,6 +59,8 @@ Plug 'tomtom/tcomment_vim'
 
 Plug 'sk1418/HowMuch'
 
+Plug 'hashivim/vim-terraform'
+
 call plug#end()
 filetype plugin indent on
 
@@ -358,3 +360,6 @@ nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<
 nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
 inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+
+let g:terraform_fmt_on_save=1
+
