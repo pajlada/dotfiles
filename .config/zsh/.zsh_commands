@@ -114,6 +114,23 @@ scrot-clipboard() {
     >&2 echo "Saved to clipboard"
 }
 
+screen-record-clipboard() {
+    _path_avi=$(mktemp -u /tmp/screen-record-XXXXXX.avi)
+    _path_gif=$(mktemp -u /tmp/screen-record-XXXXXX.gif)
+
+    >&2 echo "Select portion to record (30fps)"
+
+    ffcast -s % ffmpeg -y -f x11grab -show_region 1 -framerate 30 \
+        -video_size %s -i %D+%c -codec:v huffyuv                  \
+        -vf crop="iw-mod(iw\\,2):ih-mod(ih\\,2)" "$_path_avi"
+
+    convert -set delay 5 -layers Optimize "$_path_avi" "$_path_gif" || return
+
+    xclip -selection clipboard -target image/gif "$_path_gif" || return
+
+    >&2 echo "Saved to clipboard"
+}
+
 add-boost-submodule() {
     for _library_name in $@; do
         [ -d "boost-$_library_name" ] && continue
