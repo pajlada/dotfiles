@@ -297,8 +297,12 @@ if executable('cquery')
       \ })
 endif
 
+function! s:show_documentation_tooltip()
+    call CocAction('doHover')
+endfunction
+
 nn <f2> :LspRename<cr>
-nn <silent> <C-h> :LspHover<cr>
+nnoremap <silent> <C-h> :call <SID>show_documentation_tooltip()<cr>
 nn <silent> <C-g> :LspPeekDefinition<cr>
 
 " Macro @e will take your default register (whatever you last yanked) and create an ostream operator for it as if it's an enum.
