@@ -64,6 +64,20 @@ filetype plugin indent on
 
 syntax on
 
+if &t_Co == 256
+    " If we're on a 256-color terminal, use pixelmuerto color scheme
+    hi clear
+    colorscheme pixelmuerto
+
+    hi CocErrorSign ctermfg=160
+    hi CocErrorFloat ctermfg=52
+    hi CocHintFloat ctermfg=233
+else
+    " Else fall back to ron
+    colorscheme ron
+    " hi CursorLine term=bold cterm=bold guibg=Grey40
+endif
+
 " Ignore various cache/vendor folders
 set wildignore+=*/node_modules/*,*/dist/*,*/__pycache__/*,*/venv/*,*/target/*
 
@@ -138,15 +152,6 @@ set statusline+=%=
 set statusline+=[\%03.3b/\%02.2B]\ [POS=%04v]
 
 set laststatus=2
-
-if &t_Co == 256
-    " If we're on a 256-color terminal, use pixelmuerto color scheme
-    colorscheme pixelmuerto
-else
-    " Else fall back to ron
-    colorscheme ron
-    hi CursorLine term=bold cterm=bold guibg=Grey40
-endif
 
 " Make a slight customization with the cursorline to the ron theme
 set cursorline
