@@ -61,6 +61,8 @@ Plug 'sk1418/HowMuch'
 
 Plug 'hashivim/vim-terraform'
 
+Plug 'jparise/vim-graphql'
+
 call plug#end()
 filetype plugin indent on
 
