@@ -65,7 +65,7 @@ filetype plugin indent on
 syntax on
 
 " Ignore various cache/vendor folders
-set wildignore+=*/node_modules/*,*/dist/*,*/__pycache__/*,*/venv/*
+set wildignore+=*/node_modules/*,*/dist/*,*/__pycache__/*,*/venv/*,*/target/*
 
 " Ignore C/C++ Object files
 set wildignore+=*.o,*.obj
