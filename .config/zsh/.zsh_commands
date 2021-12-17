@@ -179,3 +179,7 @@ take() {
     _dir="$1"
     mkdir -p "$_dir" && cd "$_dir"
 }
+
+gotestcover() {
+    go test -coverprofile=.coverage.out && go tool cover -html=.coverage.out
+}
