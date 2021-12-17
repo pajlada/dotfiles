@@ -88,6 +88,8 @@ HISTFILE="$HOME/.cache/zsh/zsh_history"
 setopt SHARE_HISTORY
 # Don't store history entries that start with a space
 setopt HIST_IGNORE_SPACE
+# Don't close the terminal when pressing CTRL+D
+setopt IGNORE_EOF
 
 # Change word-selection style to be like bash. This makes alt+backspace delete "bar" in "foo/bar" instead of the entire thing.
 autoload -U select-word-style
