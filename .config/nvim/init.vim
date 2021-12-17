@@ -327,6 +327,8 @@ let g:ale_set_quickfix = 1
 
 let g:ale_rust_rustfmt_options = "--edition 2018"
 
+let g:ale_rust_cargo_use_clippy = 1
+
 set list
 set listchars=tab:\ \ ,trail:·,extends:>
 
