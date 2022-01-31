@@ -83,7 +83,7 @@ else
 endif
 
 " Ignore various cache/vendor folders
-set wildignore+=*/node_modules/*,*/dist/*,*/__pycache__/*,*/venv/*,*/target/*
+set wildignore+=*/node_modules/*,*/dist/*,*/__pycache__/*,*/venv/*,*/target/*,*/doc/*html
 
 " Ignore C/C++ Object files
 set wildignore+=*.o,*.obj
@@ -210,9 +210,9 @@ au FileType go nmap <leader>e :GoIfErr<CR>
 
 au FileType cpp nmap <leader>c :call SyntasticCheck()<CR>
 au FileType cpp nmap <leader>f <Plug>(operator-clang-format)
-au FileType cpp nmap <leader>h :call CurtineIncSw()<CR>
+au FileType cpp nmap <leader>h :CocCommand clangd.switchSourceHeader<CR>
 au FileType c nmap <leader>f <Plug>(operator-clang-format)
-au FileType c nmap <leader>h :call CurtineIncSw()<CR>
+au FileType c nmap <leader>h :CocCommand clangd.switchSourceHeader<CR>
 
 " Python leader-bindings (Space+Key)
 au FileType python nmap <leader>f <Plug>(ale_fix)
@@ -366,7 +366,8 @@ inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(
 let g:terraform_fmt_on_save=1
 
 let g:coc_global_extensions = [
-  \ 'coc-tsserver'
+  \ 'coc-tsserver',
+  \ 'coc-clangd'
   \ ]
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
