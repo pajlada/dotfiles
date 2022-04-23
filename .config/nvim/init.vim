@@ -5,7 +5,7 @@ filetype off
 
 call plug#begin(stdpath('data') . '/plugged')
 
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 
 " Python import sorter
 Plug 'brentyi/isort.vim'
@@ -63,10 +63,18 @@ Plug 'hashivim/vim-terraform'
 
 Plug 'jparise/vim-graphql'
 
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+Plug 'nvim-treesitter/playground'
+
+Plug 'navarasu/onedark.nvim'
+
 call plug#end()
 filetype plugin indent on
 
 syntax on
+
+set termguicolors
 
 if &t_Co == 256
     " If we're on a 256-color terminal, use pixelmuerto color scheme
@@ -76,6 +84,8 @@ if &t_Co == 256
     hi CocErrorSign ctermfg=160
     hi CocErrorFloat ctermfg=52
     hi CocHintFloat ctermfg=233
+    hi Comment ctermfg=102
+    hi Visual ctermbg=239
 else
     " Else fall back to ron
     colorscheme ron
@@ -209,7 +219,7 @@ au FileType go nmap <leader>d <Plug>(go-doc)
 au FileType go nmap <leader>e :GoIfErr<CR>
 
 au FileType cpp nmap <leader>c :call SyntasticCheck()<CR>
-au FileType cpp nmap <leader>f <Plug>(operator-clang-format)
+au FileType cpp nmap <leader>f :CocFix<CR>
 au FileType cpp nmap <leader>h :CocCommand clangd.switchSourceHeader<CR>
 au FileType c nmap <leader>f <Plug>(operator-clang-format)
 au FileType c nmap <leader>h :CocCommand clangd.switchSourceHeader<CR>
@@ -380,3 +390,38 @@ endif
 
 " ISORT
 autocmd FileType python vnoremap <buffer> <C-i> :Isort<CR>
+
+autocmd FileType python let b:coc_root_patterns = ['.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json']
+
+let g:python3_host_prog = "/home/pajlada/.local/share/nvim/venv/bin/python3"
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all"
+  ensure_installed = { "cpp", "c", "lua", "rust" },
+
+  context_commentstring = {
+      enable = true,
+      enable_autocmd = false,
+  },
+
+  highlight = {
+      enable = true,
+  },
+}
+EOF
+
+lua << EOF
+require('onedark').setup {
+    style = 'darker',
+  colors = {
+    grey = "#878787",    -- define a new color
+    green = '#00ffaa',            -- redefine an existing color
+  },
+  highlights = {
+      Visual = {bg = '#4a4a4a'},
+      },
+}
+require('onedark').load()
+EOF
+
