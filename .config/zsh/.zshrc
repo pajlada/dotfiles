@@ -98,3 +98,4 @@ select-word-style bash
 # Application configs. maybe this should go in another file at some point?
 export BC_ENV_ARGS="-l $HOME/.config/bc/config"
 export ANSIBLE_NOCOWS=1
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
