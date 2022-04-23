@@ -99,3 +99,8 @@ select-word-style bash
 export BC_ENV_ARGS="-l $HOME/.config/bc/config"
 export ANSIBLE_NOCOWS=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
+
+# For custom-built version of git
+export GIT_PRINT_HEADER_EVERY_HUNK=1
+export GIT_RUN_ON_NEW_HUNK="tput reset
+tmux clear-history"
