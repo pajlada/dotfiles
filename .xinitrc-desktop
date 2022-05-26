@@ -17,7 +17,7 @@ xset dpms 0 0 1500
 xbanish & disown
 
 # Clipboard manager
-parcellite & disown
+parcellite -n & disown
 
 # DPI
 xrandr --dpi 96
