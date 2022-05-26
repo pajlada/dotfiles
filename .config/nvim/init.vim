@@ -3,6 +3,8 @@ scriptencoding utf-8
 set nocompatible
 filetype off
 
+let g:python3_host_prog = $HOME . '/.local/share/nvin/venv/bin/python'
+
 call plug#begin(stdpath('data') . '/plugged')
 
 " Plug 'w0rp/ale'
@@ -35,7 +37,7 @@ Plug 'jiangmiao/auto-pairs'
 
 " Plug 'Valloric/YouCompleteMe'
 
-" Plug 'rust-lang/rust.vim'
+Plug 'rust-lang/rust.vim'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -398,7 +400,7 @@ let g:python3_host_prog = "/home/pajlada/.local/share/nvim/venv/bin/python3"
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "cpp", "c", "lua", "rust" },
+  ensure_installed = { "cpp", "c", "lua", "rust", "python" },
 
   context_commentstring = {
       enable = true,
@@ -424,4 +426,3 @@ require('onedark').setup {
 }
 require('onedark').load()
 EOF
-
