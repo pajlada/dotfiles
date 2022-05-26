@@ -23,6 +23,7 @@ memory {
 order += "disk /"
 order += "disk /home"
 order += "ethernet _first_"
+order += "read_file mouse_battery"
 order += "load"
 order += "tztime local"
 
@@ -60,5 +61,12 @@ disk "/" {
 }
 disk "/home" {
         format = "~ %avail"
+    separator_block_width = 30
+}
+
+
+read_file mouse_battery {
+    path="/tmp/mouse-battery-percentage"
+    format = "🔋 %content%"
     separator_block_width = 30
 }
