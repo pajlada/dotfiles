@@ -1,0 +1,3 @@
+#!/bin/sh
+# Keyboard repeat rate (175ms delay before starting repeat, 50 repeats per second (or 20ms interval))
+exec /bin/sh /etc/X11/xinit/xserverrc -ardelay 175 -arinterval 20 "$@"

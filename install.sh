@@ -67,6 +67,8 @@ done
 # Install aliases used by our shell
 make_home_symlink ".config/aliasrc"
 
+make_home_symlink ".xserverrc"
+
 # Device-specific symlinks
 make_home_symlink ".xinitrc-${DEVICE}" ".xinitrc"
 make_home_symlink ".Xdefaults-${DEVICE}" ".Xdefaults"
