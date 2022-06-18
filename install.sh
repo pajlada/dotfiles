@@ -102,3 +102,24 @@ if [ ! -f ~/.gitcredentials ]; then
     echo "git config --file ~/.gitcredentials user.name \"Your Name\""
     echo "git config --file ~/.gitcredentials user.email \"your@email.com\""
 fi
+
+_distro="$(grep '^ID=' /etc/*-release | cut -d= -f2)"
+
+if [ "$_distro" = "arch" ]; then
+    if ! command -v yay; then
+        # Install yay
+        # TODO: Check if this works xd
+        echo "Installing yay"
+        _yay_dir="$(mktemp -d)"
+        mkdir -p "$_yay_dir"
+        cd "$_yay_dir" && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin
+    fi
+fi
+
+if [ ! -f "$HOME/.config/zsh/.zsh_local" ]; then
+    echo "You do not have a $HOME/.config/zsh/.zsh_local on your system"
+    echo "You can create one and fill it in with things to, for example, automatically load your private key when your shell starts"
+fi
+
+echo "Installing all pacman packages:"
+echo "jq -r '.packages[]' archinstall/user_configuration.json | xargs sudo pacman -S --noconfirm --needed"
