@@ -183,3 +183,19 @@ take() {
 gotestcover() {
     go test -coverprofile=.coverage.out $@ && go tool cover -html=.coverage.out
 }
+
+pico-install() {
+    sudo cp "$1" /mnt/rpi/
+}
+
+pico-mount() {
+    _rp2_dev="$(fdisk -l | grep --before=1 'RP2')"
+    if [ -z "$_rp2_dev" ]; then
+        >&2 echo "$0: No RP2 disk mounted"
+        return
+    fi
+    _dev="$(echo "$_rp2_dev" | grep 'Disk /dev/' | cut -d':' -f1 | cut -d' ' -f2)"
+    _drive="${_dev}1"
+    sudo mount "$_drive" /mnt/rpi
+    echo "$0: Mounted $_drive"
+}

@@ -71,6 +71,8 @@ Plug 'nvim-treesitter/playground'
 
 Plug 'navarasu/onedark.nvim'
 
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+
 call plug#end()
 filetype plugin indent on
 
@@ -207,23 +209,28 @@ let g:ale_go_staticcheck_lint_package = 1
 "set statusline+=%*)}
 "
 
+nnoremap <SPACE> <Nop>
+
 let mapleader = "\<Space>"
 let g:go_fmt_command = "gofmt"
 let g:go_fmt_options = {
   \ 'gofmt': '-s',
   \ }
 
-au FileType go nmap <leader>r <Plug>(go-run)
+nmap <leader>j :call CocAction('diagnosticNext')<cr>
+nmap <leader>k :call CocAction('diagnosticPrevious')<cr>
+nmap <leader>d :call CocActionAsync('jumpDefinition')<cr>
+nnoremap <silent><leader>r :<C-u>call CocAction('jumpReferences')<CR>
+nmap <leader>t <Plug>(coc-references)
+nmap <leader>w <Plug>(coc-references-used)
+
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
-au FileType go nmap <leader>d <Plug>(go-doc)
-au FileType go nmap <leader>e :GoIfErr<CR>
 
 au FileType cpp nmap <leader>c :call SyntasticCheck()<CR>
-au FileType cpp nmap <leader>f :CocFix<CR>
+au FileType cpp nmap <leader>f <Plug>(coc-fix-current)
 au FileType cpp nmap <leader>h :CocCommand clangd.switchSourceHeader<CR>
-au FileType c nmap <leader>f <Plug>(operator-clang-format)
 au FileType c nmap <leader>h :CocCommand clangd.switchSourceHeader<CR>
 
 " Python leader-bindings (Space+Key)
@@ -379,7 +386,8 @@ let g:terraform_fmt_on_save=1
 
 let g:coc_global_extensions = [
   \ 'coc-tsserver',
-  \ 'coc-clangd'
+  \ 'coc-clangd',
+  \ 'coc-rust-analyzer'
   \ ]
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
