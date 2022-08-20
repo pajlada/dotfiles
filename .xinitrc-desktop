@@ -11,7 +11,7 @@ xset dpms 0 0 1500
 [[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap
 
 # Hide mouse when typing
-xbanish & disown
+# xbanish & disown
 
 # Clipboard manager
 parcellite -n & disown
@@ -27,7 +27,7 @@ xrandr --output HDMI-0 --off
 xrandr --output DP-0 --mode 3840x2160 --rotate right --pos 0x0
 
 # 27" 1440p     center
-xrandr --output DP-4 --mode 2560x1440 --pos 2160x2400
+xrandr --output DP-4 --primary --mode 2560x1440 --pos 2160x2400
 
 # 27" 1440p     right
 xrandr --output DP-2 --mode 2560x1440 --pos 4720x2400
