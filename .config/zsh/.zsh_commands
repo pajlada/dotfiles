@@ -199,3 +199,13 @@ pico-mount() {
     sudo mount "$_drive" /mnt/rpi
     echo "$0: Mounted $_drive"
 }
+
+cargo-update-pr() {
+    _branch_name="chore/cargo-update-$(date +%s)"
+    git checkout -b "$_branch_name"
+    cargo update
+    git add Cargo.lock
+    git commit -m "Run cargo update"
+    git push -u origin "$_branch_name"
+    xdg-open "$(gh repo view --json url | jq -r '.url')/pull/new/$_branch_name"
+}
