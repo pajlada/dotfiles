@@ -63,18 +63,6 @@ vim.g.python3_host_prog = "/home/pajlada/.local/share/nvim/venv/bin/python3"
 -- isort
 autocmd("isort for python", [[ FileType python vnoremap <buffer> <C-i> :Isort<CR>]], true)
 
--- coc
-vim.g.coc_global_extensions = {
-    "coc-tsserver",
-    "coc-clangd",
-    "coc-rust-analyzer",
-    "coc-pyright",
-    "coc-prettier",
-    "coc-eslint",
-    "coc-lua",
-}
-vim.g.coc_enable_locationlist = false
-
 -- terraform
 vim.g.terraform_fmt_on_save = true
 
