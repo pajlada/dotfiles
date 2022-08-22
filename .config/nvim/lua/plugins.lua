@@ -1,31 +1,47 @@
 -- Install packer if it's not already installed
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+local packer_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-	packer_bootstrap =
-		vim.fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-	vim.cmd([[packadd packer.nvim]])
+    packer_bootstrap = true
+    vim.fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+    vim.cmd([[packadd packer.nvim]])
 end
 
-return require("packer").startup(function(use)
-	-- Packer can manage itself
-	use("wbthomason/packer.nvim")
+return require("packer").startup({ function(use)
+    -- Packer can manage itself
+    use("wbthomason/packer.nvim")
 
-    -- pretty icons xd
-    use 'kyazdani42/nvim-web-devicons'
+    use({
+        'nvim-lualine/lualine.nvim',
+        config = function()
+            require("lualine").setup({
+                icons_enabled = false,
+                theme = "onedark",
+                sections = {
+                    lualine_b = { 'filename' },
+                    lualine_c = { 'branch', 'diff' },
+                    lualine_x = {},
+                    lualine_y = { 'diagnostics' },
+                }
+            })
+        end,
+    })
 
-	-- Highlighting
-	use({
-		{
-			"nvim-treesitter/nvim-treesitter",
-			requires = {
-				"nvim-treesitter/nvim-treesitter-refactor",
-				"RRethy/nvim-treesitter-textsubjects",
-			},
-			run = ":TSUpdate",
-		},
-		{ "RRethy/nvim-treesitter-endwise" },
-	})
 
+    -- Highlighting
+    use({
+        {
+            "nvim-treesitter/nvim-treesitter",
+            requires = {
+                "nvim-treesitter/nvim-treesitter-refactor",
+                "RRethy/nvim-treesitter-textsubjects",
+            },
+            run = ":TSUpdate",
+        },
+        { "RRethy/nvim-treesitter-endwise" },
+    })
+
+    -- Completion
     use {
         'hrsh7th/nvim-cmp',
         requires = {
@@ -39,113 +55,136 @@ return require("packer").startup(function(use)
             'lukas-reineke/cmp-under-comparator',
             { 'hrsh7th/cmp-nvim-lsp-document-symbol', after = 'nvim-cmp' },
         },
-        config = function() require("config.cmp") end,
-        event = 'InsertEnter *',
+        config = function() require('config.cmp') end,
     }
 
-	-- Theme
-	use("navarasu/onedark.nvim")
+    -- Theme
+    use({
+        "navarasu/onedark.nvim",
+        config = function()
+            require("onedark").setup {
+                style = "darker",
+                colors = {
+                    grey = "#878787", -- define a new color
+                    green = "#00ffaa", -- redefine an existing color
+                },
+                highlights = {
+                    Visual = { bg = "#4a4a4a" },
+                },
+            }
+            require("onedark").load()
+        end
+    })
 
-	use({
-		"iamcco/markdown-preview.nvim",
-		run = "cd app && npm install",
-		setup = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-		end,
-		ft = { "markdown" },
-	})
+    use({
+        "iamcco/markdown-preview.nvim",
+        run = "cd app && npm install",
+        setup = function()
+            vim.g.mkdp_filetypes = { "markdown" }
+        end,
+        ft = { "markdown" },
+    })
 
-	-- Python import sorter
-	use("stsewd/isort.nvim")
+    -- Python import sorter
+    use("stsewd/isort.nvim")
 
-	-- Go plugin (does most things Go-related)
-	use("fatih/vim-go")
+    -- Go plugin (does most things Go-related)
+    use("fatih/vim-go")
 
-	-- Fuzzy file finder (like Ctrl+K in other apps)
-	use("ctrlpvim/ctrlp.vim")
+    -- Fuzzy file finder (like Ctrl+K in other apps)
+    use("ctrlpvim/ctrlp.vim")
 
-	use("editorconfig/editorconfig-vim")
+    use("editorconfig/editorconfig-vim")
 
-	-- Allow plugins to define their own operator
-	use("kana/vim-operator-user")
+    -- Allow plugins to define their own operator
+    use("kana/vim-operator-user")
 
-	-- clang-format plugin
-	use("rhysd/vim-clang-format")
+    -- clang-format plugin
+    use("rhysd/vim-clang-format")
 
-	-- Plug which allows me to press a button to toggle between header and source
-	-- file. Currently bound to LEADER+H
-	use("ericcurtin/CurtineIncSw.vim")
+    -- Plug which allows me to press a button to toggle between header and source
+    -- file. Currently bound to LEADER+H
+    use("ericcurtin/CurtineIncSw.vim")
 
-	use("rust-lang/rust.vim")
+    use("rust-lang/rust.vim")
 
-	-- use({ "neoclide/coc.nvim", branch = "release" })
+    -- use({ "neoclide/coc.nvim", branch = "release" })
 
-	use({
-		"neovim/nvim-lspconfig",
-		"folke/trouble.nvim",
-		"ray-x/lsp_signature.nvim",
-		{
-			"kosayoda/nvim-lightbulb",
-			requires = "antoinemadec/FixCursorHold.nvim",
-		},
-	})
+    use({
+        "neovim/nvim-lspconfig",
+        "folke/trouble.nvim",
+        "ray-x/lsp_signature.nvim",
+        {
+            "kosayoda/nvim-lightbulb",
+            requires = "antoinemadec/FixCursorHold.nvim",
+        },
+    })
 
-	use("p00f/clangd_extensions.nvim")
+    use("p00f/clangd_extensions.nvim")
 
-	use("simrat39/rust-tools.nvim")
+    use {
+        "simrat39/rust-tools.nvim",
+        config = {
+            tools = {
+                inlay_hints = {
+                    auto = true,
+                    only_current_line = true,
+                    -- whether to show parameter hints with the inlay hints or not
+                    -- default: true
+                    show_parameter_hints = false,
+                },
+            },
+        },
+    }
+    use 'simrat39/inlay-hints.nvim'
 
-	use({
-		"jose-elias-alvarez/null-ls.nvim",
-		requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-	})
+    use({
+        "jose-elias-alvarez/null-ls.nvim",
+        requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    })
 
-	-- Plug 'rust-analyzer/rust-analyzer'
+    -- Plug 'rust-analyzer/rust-analyzer'
 
-	use("leafgarland/typescript-vim")
+    use("leafgarland/typescript-vim")
 
-	use("liuchengxu/graphviz.vim")
+    use("liuchengxu/graphviz.vim")
 
-	use("prabirshrestha/async.vim")
+    use("prabirshrestha/async.vim")
 
-	use("martinda/Jenkinsfile-vim-syntax")
+    use("martinda/Jenkinsfile-vim-syntax")
 
-	use("modille/groovy.vim")
+    use("modille/groovy.vim")
 
     use 'rcarriga/nvim-notify'
 
     use {
         "windwp/nvim-autopairs",
+        config = function()
+            require("nvim-autopairs").setup {}
+        end
     }
 
-	-- Plug 'integralist/vim-mypy'
+    -- Plug 'integralist/vim-mypy'
 
-	use("tomtom/tcomment_vim")
+    use("tomtom/tcomment_vim")
 
-	use("sk1418/HowMuch")
+    use("sk1418/HowMuch")
 
-	use("hashivim/vim-terraform")
+    use("hashivim/vim-terraform")
 
-	use("jparise/vim-graphql")
+    use("jparise/vim-graphql")
 
-	use("nvim-treesitter/playground")
+    use("nvim-treesitter/playground")
 
-	use("kevinhwang91/promise-async")
+    use("kevinhwang91/promise-async")
 
-	use({ "ckipp01/stylua-nvim", run = "cargo install stylua" })
+    use({ "ckipp01/stylua-nvim", run = "cargo install stylua" })
 
-     use {
-         'nvim-lualine/lualine.nvim',
-         requires = { 'kyazdani42/nvim-web-devicons' },
-         config = function() -- TODO: Proper config file
-             require("lualine").setup {
-                 options = {
-                     theme = "nord"
-                 }
-             }
-         end
-     }
-
-	if packer_bootstrap then
-	    require('packer').sync()
-	end
-end)
+    if packer_bootstrap then
+        require('packer').sync()
+    end
+end, config = {
+    log = {
+        level = "trace",
+    },
+} })

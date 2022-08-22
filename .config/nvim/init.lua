@@ -94,19 +94,6 @@ vim.opt.wildignore:append({ "*/target/release/*" })
 -- Ignore Unity asset meta-files
 vim.opt.wildignore:append({ "*/Assets/*.meta" })
 
--- styling
-require("onedark").setup {
-    style = "darker",
-    colors = {
-        grey = "#878787", -- define a new color
-        green = "#00ffaa", -- redefine an existing color
-    },
-    highlights = {
-        Visual = { bg = "#4a4a4a" },
-    },
-}
-require("onedark").load()
-
 -- Use ; as :
 -- Very convenient as you don't have to press shift to run commands
 map("n", ";", ":", { noremap = true })
@@ -211,17 +198,19 @@ autocmd("check_for_edits", {
     [[ FocusGained,BufEnter * :silent! checktime ]],
 }, true)
 
-require("plugin_configs")
+autocmd("packer_user_config", {
+    [[ BufWritePost plugins.lua source <afile> | PackerCompile ]]
+}, true)
 
-require('lualine').setup {
-    icons_enabled = false,
-    theme = "onedark",
-    sections = {
-        lualine_b = {'filename'},
-        lualine_c = {'branch', 'diff'},
-        lualine_x = {},
-        lualine_y = {'diagnostics'},
-    }
-}
+-- graphviz (liuchengxu/graphviz.vim)
+-- Compile .dot-files to png
+vim.g.graphviz_output_format = "png"
 
-require("nvim-autopairs").setup {}
+-- Open Graphviz results with sxiv
+vim.g.graphviz_viewer = "sxiv"
+
+-- Automatically compile dot files when saving
+-- XXX: For some reason, setting the output format is not respected so I need to specify png here too
+autocmd("graphviz_autocompile", {
+    [[BufWritePost *.dot GraphvizCompile png]],
+}, true)
