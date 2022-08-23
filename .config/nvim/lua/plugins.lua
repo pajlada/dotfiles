@@ -158,6 +158,8 @@ return require("packer").startup({ function(use)
     }
     use 'simrat39/inlay-hints.nvim'
 
+    use 'nvim-lua/plenary.nvim'
+
     use({
         "jose-elias-alvarez/null-ls.nvim",
         requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
