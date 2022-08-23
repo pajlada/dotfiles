@@ -61,7 +61,9 @@ vim.g.mapleader = " "
 vim.g.python3_host_prog = "/home/pajlada/.local/share/nvim/venv/bin/python3"
 
 -- isort
-autocmd("isort for python", [[ FileType python vnoremap <buffer> <C-i> :Isort<CR>]], true)
+autocmd("isort for python",
+    [[ FileType python vnoremap <buffer> <C-i> :Isort<CR>]],
+    true)
 
 -- terraform
 vim.g.terraform_fmt_on_save = true
