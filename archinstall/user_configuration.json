@@ -60,6 +60,7 @@
         "yarn",
         "npm",
         "pulseaudio-alsa",
+        "dunst",
         "firefox",
         "i3-wm",
         "dmenu",
