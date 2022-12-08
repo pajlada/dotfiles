@@ -148,7 +148,8 @@ return require("packer").startup({ function(use)
                         ["rust-analyzer"] = {
                             -- enable clippy on save
                             checkOnSave = {
-                                command = "clippy"
+                                command = "clippy",
+                                extraArgs = { "--release" },
                             },
                         }
                     }
@@ -207,6 +208,6 @@ return require("packer").startup({ function(use)
     end
 end, config = {
     log = {
-        level = "trace",
+        -- level = "trace",
     },
 } })

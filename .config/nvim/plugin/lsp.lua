@@ -76,8 +76,8 @@ local function on_attach(client)
   buf_keymap(0, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', keymap_opts)
   buf_keymap(0, 'n', '<leader>s', '<cmd>lua vim.lsp.buf.signature_help()<CR>', keymap_opts)
   buf_keymap(0, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', keymap_opts)
-  buf_keymap(0, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', keymap_opts)
-  buf_keymap(0, 'v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', keymap_opts)
+  buf_keymap(0, 'n', '<leader>.', '<cmd>lua vim.lsp.buf.code_action()<CR>', keymap_opts)
+  buf_keymap(0, 'v', '<leader>.', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', keymap_opts)
   buf_keymap(0, 'n', ']e', '<cmd>lua vim.diagnostic.goto_next { float = {scope = "line"} }<cr>', keymap_opts)
   buf_keymap(0, 'n', '[e', '<cmd>lua vim.diagnostic.goto_prev { float = {scope = "line"} }<cr>', keymap_opts)
 
@@ -127,6 +127,7 @@ local servers = {
       semanticHighlighting = true,
     },
   },
+  gopls = {},
   cmake = {},
   cssls = {
     cmd = { 'vscode-css-languageserver', '--stdio' },
@@ -191,12 +192,11 @@ local servers = {
   vimls = {},
 }
 
-local client_capabilities = vim.lsp.protocol.make_client_capabilities()
+local client_capabilities = require('cmp_nvim_lsp').default_capabilities()
 client_capabilities.textDocument.completion.completionItem.snippetSupport = true
 client_capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = { 'documentation', 'detail', 'additionalTextEdits' },
 }
-client_capabilities = require('cmp_nvim_lsp').update_capabilities(client_capabilities)
 client_capabilities.offsetEncoding = { 'utf-16' }
 
 for server, config in pairs(servers) do

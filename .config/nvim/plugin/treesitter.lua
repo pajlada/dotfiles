@@ -1,6 +1,6 @@
 local ts_configs = require("nvim-treesitter.configs")
 ts_configs.setup {
-  ensure_installed = { "cpp", "c", "lua", "rust", "python", "go" },
+  ensure_installed = { "cpp", "c", "lua", "rust", "python", "go", "kotlin" },
   context_commentstring = {
       enable = true,
       enable_autocmd = false,
