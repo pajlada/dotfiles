@@ -81,13 +81,14 @@ zstyle '*' single-ignored show
 # zstyle ':completion:*' menu select
 compinit
 
-HISTSIZE=50000
-SAVEHIST=10000
+HISTSIZE=500000
+SAVEHIST=500000
 HISTFILE="$HOME/.cache/zsh/zsh_history"
 # Share history between terminals
 setopt SHARE_HISTORY
 # Don't store history entries that start with a space
 setopt HIST_IGNORE_SPACE
+
 # Don't close the terminal when pressing CTRL+D
 setopt IGNORE_EOF
 
