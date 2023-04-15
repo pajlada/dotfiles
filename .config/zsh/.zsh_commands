@@ -205,7 +205,9 @@ cargo-update-pr() {
     git checkout -b "$_branch_name"
     cargo update
     git add Cargo.lock
-    git commit -m "Run cargo update"
+    git commit -m "Update cargo packages
+
+Update workspace & non-workspace packages not already handled by dependabot"
     git push -u origin "$_branch_name"
     xdg-open "$(gh repo view --json url | jq -r '.url')/pull/new/$_branch_name"
 }
