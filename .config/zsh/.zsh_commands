@@ -232,3 +232,8 @@ copy-trycmd-tests() {
     >&/dev/null cp "$source_test_name.stdout" "$target_test_name.stdout" || true
     >&/dev/null cp -r "$source_test_name.in" "$target_test_name.in" || true
 }
+
+urlencode() {
+    _url="$1"
+    python3 -c "import urllib.parse;print(urllib.parse.quote('$_url', safe=''))"
+}
