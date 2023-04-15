@@ -108,4 +108,6 @@ export GIT_PRINT_HEADER_EVERY_HUNK=1
 export GIT_RUN_ON_NEW_HUNK="tput reset
 tmux clear-history"
 
+export RUST_LOG="info"
+
 stty -ixon
