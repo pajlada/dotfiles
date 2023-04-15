@@ -211,3 +211,24 @@ Update workspace & non-workspace packages not already handled by dependabot"
     git push -u origin "$_branch_name"
     xdg-open "$(gh repo view --json url | jq -r '.url')/pull/new/$_branch_name"
 }
+
+copy-trycmd-tests() {
+    source_test_name="$1"
+    target_test_name="$2"
+
+    [ -n "$source_test_name" ] || {>&2 echo "Missing source test name"; return 1}
+    [ -n "$target_test_name" ] || {>&2 echo "Missing target test name"; return 1}
+
+    >&2 echo "Copying over tests for $source_test_name to $target_test_name"
+
+    [ -f "$source_test_name.toml" ] || {>&2 echo "No test named $source_test_name.toml found"; return 1}
+    [ ! -f "$target_test_name.toml" ] || {>&2 echo "Target test $target_test_name.toml already exists"; return 1}
+
+    # Required
+    cp "$source_test_name.toml" "$target_test_name.toml" || return 1
+
+    # Optional
+    >&/dev/null cp "$source_test_name.stderr" "$target_test_name.stderr" || true
+    >&/dev/null cp "$source_test_name.stdout" "$target_test_name.stdout" || true
+    >&/dev/null cp -r "$source_test_name.in" "$target_test_name.in" || true
+}
