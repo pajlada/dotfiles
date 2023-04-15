@@ -237,3 +237,7 @@ urlencode() {
     _url="$1"
     python3 -c "import urllib.parse;print(urllib.parse.quote('$_url', safe=''))"
 }
+
+gh-get-latest-numbers() {
+    { gh issue list --state all | head; gh pr list --state all | head; gh api graphql -F owner='{owner}' -F name='{repo}' -f query=' query ($name: String!, $owner: String!) { repository(owner: $owner, name: $name) { discussions(first: 5) { nodes { number title } } } }' | jq -r '.data.repository.discussions.nodes[] | ((.number | tostring) + "    " + .title)'} | sort -r | head
+}
