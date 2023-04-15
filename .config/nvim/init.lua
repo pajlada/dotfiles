@@ -120,7 +120,6 @@ map("n", "<C-Space>", ":ll<CR>", { noremap = true, silent = true })
 -- coc
 map("n", "<leader>j", ":call CocAction('diagnosticNext')<cr>")
 map("n", "<leader>k", ":call CocAction('diagnosticPrevious')<cr>")
-map("n", "<leader>d", ":call CocActionAsync('jumpDefinition')<cr>")
 map("n", "<leader>t", "<Plug>(coc-references)")
 map("n", "<leader>w", "<Plug>(coc-references-used)")
 map("n", "<leader>r", ":<C-u>call CocAction('jumpReferences')<CR>", { noremap = true, silent = true })
@@ -189,12 +188,6 @@ map("n", "<leader>L", ":lua vim.lsp.stop_client(vim.lsp.get_active_clients())<CR
 -- clang_format
 vim.g["clang_format#enable_fallback_style"] = 0
 
--- clang-format extension options
-autocmd("clang-format auto enable", {
-    [[ FileType c ClangFormatAutoEnable ]],
-    [[ FileType cpp ClangFormatAutoEnable ]],
-}, true)
-
 -- Check for edits when focusing vim
 autocmd("check_for_edits", {
     [[ FocusGained,BufEnter * :silent! checktime ]],
@@ -216,3 +209,8 @@ vim.g.graphviz_viewer = "sxiv"
 autocmd("graphviz_autocompile", {
     [[BufWritePost *.dot GraphvizCompile png]],
 }, true)
+
+-- Trying out folds
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevel = 99 -- Open all folds by default
