@@ -66,7 +66,7 @@ return require("packer").startup({
                 require("onedark").setup {
                     style = "darker",
                     colors = {
-                        grey = "#878787", -- define a new color
+                        grey = "#878787",  -- define a new color
                         green = "#00ffaa", -- redefine an existing color
                     },
                     highlights = {
@@ -92,17 +92,19 @@ return require("packer").startup({
         -- Go plugin (does most things Go-related)
         use("fatih/vim-go")
 
+        use("junegunn/fzf.vim")
+
         -- Fuzzy file finder (like Ctrl+K in other apps)
-        use({
-            "ctrlpvim/ctrlp.vim",
-            setup = function()
-                -- Unbind "Next in history" & "Previous in history"
-                vim.g.ctrlp_prompt_mappings = {
-                    ['PrtHistory(-1)'] = {},
-                    ['PrtHistory(1)'] = {},
-                }
-            end,
-        })
+        -- use({
+        --     "ctrlpvim/ctrlp.vim",
+        --     setup = function()
+        --         -- Unbind "Next in history" & "Previous in history"
+        --         vim.g.ctrlp_prompt_mappings = {
+        --             ['PrtHistory(-1)'] = {},
+        --             ['PrtHistory(1)'] = {},
+        --         }
+        --     end,
+        -- })
 
         use("gpanders/editorconfig.nvim")
 
