@@ -27,3 +27,6 @@
     path = ~/.gitcredentials
 [rerere]
 	enabled = true
+
+[commit]
+    verbose = true
