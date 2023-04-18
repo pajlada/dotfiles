@@ -51,3 +51,5 @@ class AddSymbolFileAuto (gdb.Command):
         return ""  # TODO: Raise error when offset is not found?
 AddSymbolFileAuto()
 end
+
+set debuginfod enabled off
