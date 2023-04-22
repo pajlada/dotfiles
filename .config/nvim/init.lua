@@ -220,3 +220,4 @@ vim.g.fzf_preview_window = {}
 
 -- fzf bindings
 vim.keymap.set('n', '<C-p>', ':GFiles<CR>')
+vim.keymap.set('n', '<C-b>', ':Buffers<CR>')
