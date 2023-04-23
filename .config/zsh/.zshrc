@@ -111,3 +111,8 @@ tmux clear-history"
 export RUST_LOG="info"
 
 stty -ixon
+
+if [ -f "$HOME/.cargo/env" ]; then
+    # Rust - only there on my macos installation
+    source "$HOME/.cargo/env"
+fi
