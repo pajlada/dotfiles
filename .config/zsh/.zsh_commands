@@ -241,3 +241,90 @@ urlencode() {
 gh-get-latest-numbers() {
     { gh issue list --state all | head; gh pr list --state all | head; gh api graphql -F owner='{owner}' -F name='{repo}' -f query=' query ($name: String!, $owner: String!) { repository(owner: $owner, name: $name) { discussions(first: 5) { nodes { number title } } } }' | jq -r '.data.repository.discussions.nodes[] | ((.number | tostring) + "    " + .title)'} | sort -r | head
 }
+
+# macOS-specific commands
+if [[ "$OSTYPE" == 'darwin'* ]]; then
+    # Make & install universal dylib of the given library
+    # Commands necessary for C2 on my mac mini to work:
+    #
+    # c2-make-universal-dylib lib/libboost_random-mt.dylib
+    # If this doesn't work, run brew link --overwrite boost
+    #
+    # c2-make-universal-dylib opt/openssl@1.1/lib/libcrypto.dylib
+    # c2-make-universal-dylib opt/openssl@1.1/lib/libssl.dylib
+    # If either of these commands don't work, run brew reinstall openssl@1.1
+    c2-make-universal-dylib() {
+        # Prefix for where to find the ARM64 library
+        local _arm64_homebrew="/opt/homebrew"
+
+        # Prefix for where to find the ARM64 library
+        local _x86_64_homebrew="/opt/homebrew-x86_64"
+
+        # Prefix we use to override the library (should be the base systems directory)
+        local _override_homebrew="${_arm64_homebrew}"
+
+        # Directory where we place the finished universal library
+        local _universal_lib="/opt/universal-lib"
+
+        local _input_lib="$1"
+        if [ -z "${_input_lib}" ]; then
+            echo "usage: $0 [lib-path-relative-to-homebrew] (e.g. $0 lib/libboost_random-mt.dylib)"
+            return
+        fi
+
+        if [ ! -d "${_arm64_homebrew}" ]; then
+            echo "error: The ARM64 homebrew directory (${_arm64_homebrew}) does not exist"
+            return
+        fi
+        if [ ! -d "${_x86_64_homebrew}" ]; then
+            echo "error: The x86_64 homebrew directory (${_x86_64_homebrew}) does not exist"
+            return
+        fi
+        if [ ! -d "${_universal_lib}" ]; then
+            echo "error: The universal lib directory (${_universal_lib}) does not exist"
+            return
+        fi
+
+        if [ ! -w "${_universal_lib}" ]; then
+            echo "error: The current user does not have write permission in the universal lib directory (${_universal_lib})"
+            return
+        fi
+
+        local _input_lib_filename="$(basename "${_input_lib}")"
+
+        local _arm64_lib="${_arm64_homebrew}/${_input_lib}"
+        local _x86_64_lib="${_x86_64_homebrew}/${_input_lib}"
+        local _override_lib="${_override_homebrew}/${_input_lib}"
+
+        local _universal_lib="${_universal_lib}/${_input_lib_filename}"
+
+        if [ -f "${_universal_lib}" ]; then
+            echo "warning: The final output path (${_universal_lib}) already exists, you might run into errors"
+            echo "Some of these errors can be solved by re-linking the original libraries (e.g. brew link --overwrite boost), or re-installing them (e.g. brew reinstall openssl@1.1)"
+            echo ""
+        fi
+
+        if [ ! -f "${_arm64_lib}" ]; then
+            echo "error: The ARM64 library cannot be found at '${_arm64_lib}' (combined prefix '${_arm64_homebrew}' with '${_input_lib})"
+            return
+        fi
+
+        if [ ! -f "${_x86_64_lib}" ]; then
+            echo "error: The x86_64 library cannot be found at '${_x86_64_lib}' (combined prefix '${_arm64_homebrew}' with '${_input_lib})"
+            return
+        fi
+
+        # Create the combined library
+        if ! lipo "${_arm64_lib}" "${_x86_64_lib}" -create -output "${_universal_lib}"; then
+            echo "error: Something went wrong creating the combined library"
+            echo "Some errors can be solved by re-linking the original libraries (e.g. brew link --overwrite boost)"
+            return
+        fi
+
+        echo "Created the combined library at '${_universal_lib}"
+
+        # Override
+        rm -v "${_override_lib}"
+        ln -v -s "${_universal_lib}" "${_override_lib}"
+    }
+fi
