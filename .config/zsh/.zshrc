@@ -116,3 +116,6 @@ if [ -f "$HOME/.cargo/env" ]; then
     # Rust - only there on my macos installation
     source "$HOME/.cargo/env"
 fi
+
+# Include ~/.local/bin in PATH
+export PATH="$PATH:$HOME/.local/bin"
