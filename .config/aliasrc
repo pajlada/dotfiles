@@ -3,7 +3,7 @@ alias tmpdir='cd $(mktemp -d)'
 alias tempdir='tmpdir'
 alias ff='firefox'
 
-alias ls='ls --color=tty'
+alias ls='ls --color=always'
 alias grep='grep --color=auto --exclude-dir={.git,vendor}'
 alias vi='nvim'
 alias vim='nvim'
