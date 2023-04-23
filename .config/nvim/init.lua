@@ -221,3 +221,6 @@ vim.g.fzf_preview_window = {}
 -- fzf bindings
 vim.keymap.set('n', '<C-p>', ':GFiles<CR>')
 vim.keymap.set('n', '<C-b>', ':Buffers<CR>')
+
+-- Make a :W command that is an alias for :w
+vim.cmd("command W w")
