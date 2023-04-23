@@ -119,3 +119,11 @@ fi
 
 # Include ~/.local/bin in PATH
 export PATH="$PATH:$HOME/.local/bin"
+
+if [[ "$OSTYPE" == 'darwin'* ]]; then
+    export PATH="$PATH:/opt/homebrew/bin"
+
+    # feel free to hard-code this if you think this is too slow
+    USER_PYTHON_BIN_PATH="$(python3 -m site --user-base)/bin"
+    export PATH="$PATH:$USER_PYTHON_BIN_PATH"
+fi
