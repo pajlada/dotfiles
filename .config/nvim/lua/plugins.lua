@@ -92,6 +92,7 @@ return require("packer").startup({
         -- Go plugin (does most things Go-related)
         use("fatih/vim-go")
 
+        use("junegunn/fzf")
         use("junegunn/fzf.vim")
 
         -- Fuzzy file finder (like Ctrl+K in other apps)
