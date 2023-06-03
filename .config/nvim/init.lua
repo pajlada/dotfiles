@@ -219,8 +219,12 @@ vim.opt.foldlevel = 99 -- Open all folds by default
 vim.g.fzf_preview_window = {}
 
 -- fzf bindings
-vim.keymap.set('n', '<C-p>', ':GFiles<CR>')
-vim.keymap.set('n', '<C-b>', ':Buffers<CR>')
+vim.keymap.set('n', '<C-p>', function()
+    require('fzf-lua').git_files({ cwd = vim.fn.getcwd() })
+end)
+vim.keymap.set('n', '<C-b>', function()
+    require('fzf-lua').buffers()
+end)
 
 -- Make a :W command that is an alias for :w
 vim.cmd("command W w")

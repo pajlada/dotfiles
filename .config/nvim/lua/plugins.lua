@@ -93,7 +93,13 @@ return require("packer").startup({
         use("fatih/vim-go")
 
         use("junegunn/fzf")
-        use("junegunn/fzf.vim")
+        use { 'ibhagwan/fzf-lua',
+            -- optional for icon support
+            requires = { 'nvim-tree/nvim-web-devicons' }
+        }
+
+        -- use("junegunn/fzf.vim")
+        -- use("vijaymarupudi/nvim-fzf")
 
         -- Fuzzy file finder (like Ctrl+K in other apps)
         -- use({
@@ -202,8 +208,6 @@ return require("packer").startup({
         }
 
         -- Plug 'integralist/vim-mypy'
-
-        use("tomtom/tcomment_vim")
 
         use("sk1418/HowMuch")
 

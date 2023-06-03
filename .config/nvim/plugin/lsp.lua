@@ -216,7 +216,8 @@ local servers = {
         settings = {
             texlab = {
                 build = {
-                    args = { "-lualatex", "-shell-escape", "-file-line-error", "-synctex=1", "-interaction=nonstopmode",
+                    args = { "-lualatex", "-shell-escape", "-file-line-error", "-synctex=1",
+                        "-interaction=nonstopmode",
                         "%f" },
                     onSave = true,
                     forwardSearchAfter = true -- Automatically open after building
