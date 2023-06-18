@@ -21,5 +21,7 @@ if ! getent passwd pajlada >/dev/null; then
             --groups sudo \
             pajlada
         sudo -u pajlada ssh-import-id-gh pajlada
+        echo "enter new password for pajlada user"
+        echo "pajlada ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/pajlada-no-password
     fi
 fi
