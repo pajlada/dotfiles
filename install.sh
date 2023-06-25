@@ -138,3 +138,8 @@ fi
 
 echo "Installing all pacman packages:"
 echo "jq -r '.packages[]' archinstall/user_configuration.json | xargs sudo pacman -S --noconfirm --needed"
+
+if [ "$SHELL" != "zsh" ]; then
+    echo "Shell not detected as zsh, changing it"
+    chsh -s /usr/bin/zsh
+fi
