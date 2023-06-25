@@ -34,4 +34,9 @@ xrandr --output DP-2 --mode 2560x1440 --pos 4720x2400
 
 xsetroot -solid "#333333"
 
+systemctl --user import-environment DISPLAY XAUTHORITY
+if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+   dbus-update-activation-environment DISPLAY XAUTHORITY
+fi
+
 exec i3
