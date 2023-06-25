@@ -124,14 +124,17 @@ fi
 _distro="$(grep '^ID=' /etc/*-release | cut -d= -f2)"
 
 if [ "$_distro" = "arch" ]; then
-    echo "INSTALL YAY"
     if [ ! -d .cloned-yay ]; then
+        echo "Installing yay"
         (
         git clone https://aur.archlinux.org/yay.git .cloned-yay && \
             cd .cloned-yay && \
             makepkg -si --noconfirm
         )
     fi
+
+    # Make sure reflector timer is enabled
+    sudo systemctl enable --now reflector.timer
 fi
 
 if [ ! -f "$HOME/.config/zsh/.zsh_local" ]; then
