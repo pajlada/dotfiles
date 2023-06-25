@@ -58,6 +58,7 @@
     "rsync",
     "keychain",
     "zsh",
+    "vim",
     "neovim",
     "nodejs",
     "prettier",
