@@ -18,6 +18,7 @@
     "qtkeychain-qt5",
     "noto-fonts-emoji",
     "boost",
+    "scrot",
     "gst-plugins-good",
     "htop",
     "jq",
