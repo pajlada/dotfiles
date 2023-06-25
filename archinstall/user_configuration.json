@@ -35,6 +35,8 @@
     "vim",
     "neovim",
     "nodejs",
+    "typescript",
+    "sxiv",
     "prettier",
     "yarn",
     "npm",
@@ -46,14 +48,19 @@
     "i3status",
     "fzf",
     "bash-language-server",
+    "typescript-language-server",
     "parcellite",
     "clang",
     "ninja",
     "go",
     "xterm",
     "cpupower",
+    "barrier-headless",
     "xorg-xrandr",
-    "xorg-xsetroot"
+    "xorg-xsetroot",
+    "mpv",
+    "reflector",
+    "chromium"
   ],
   "profile": {
     "path": "/usr/lib/python3.11/site-packages/archinstall/profiles/xorg.py"
