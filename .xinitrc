@@ -35,4 +35,4 @@ if [ -d "$HOME/.config/xinit/xinitrc.d" ]; then
   unset f
 fi
 
-exec i3
+i3
