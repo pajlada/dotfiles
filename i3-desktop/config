@@ -192,3 +192,6 @@ include `hostname`.conf
 
 # User or system-specific configs can be put here
 include user.config.d/*.conf
+
+default_border pixel 1
+default_floating_border none
