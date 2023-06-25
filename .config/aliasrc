@@ -1,4 +1,4 @@
-alias cleanvim='vim -u NORC'
+alias cleanvim='/usr/bin/vim -u NORC'
 alias tmpdir='cd $(mktemp -d)'
 alias tempdir='tmpdir'
 alias ff='firefox'
