@@ -1,37 +1,11 @@
 {
+  "additional-repositories": [],
   "audio": "pulseaudio",
-  "bootloader": "systemd-bootctl",
-  "config_version": "2.5.0",
+  "config_version": "2.5.6",
   "debug": false,
-  "gfx_driver": "AMD / ATI (open-source)",
-  "harddrives": [],
-  "mirror-region": {
-    "Netherlands": {
-      "http://arch.mirrors.lavatech.top/$repo/os/$arch": true,
-      "http://archlinux.mirror.liteserver.nl/$repo/os/$arch": true,
-      "http://archlinux.mirror.pcextreme.nl/$repo/os/$arch": true,
-      "http://archlinux.mirror.wearetriple.com/$repo/os/$arch": true,
-      "http://ftp.nluug.nl/os/Linux/distr/archlinux/$repo/os/$arch": true,
-      "http://ftp.snt.utwente.nl/pub/os/linux/archlinux/$repo/os/$arch": true,
-      "http://mirror.ams1.nl.leaseweb.net/archlinux/$repo/os/$arch": true,
-      "http://mirror.cj2.nl/archlinux/$repo/os/$arch": true,
-      "http://mirror.koddos.net/archlinux/$repo/os/$arch": true,
-      "http://mirror.lyrahosting.com/archlinux/$repo/os/$arch": true,
-      "http://mirror.mijn.host/archlinux/$repo/os/$arch": true,
-      "http://mirrors.xtom.nl/archlinux/$repo/os/$arch": true,
-      "https://arch.mirrors.lavatech.top/$repo/os/$arch": true,
-      "https://archlinux.mirror.liteserver.nl/$repo/os/$arch": true,
-      "https://archlinux.mirror.pcextreme.nl/$repo/os/$arch": true,
-      "https://archlinux.mirror.wearetriple.com/$repo/os/$arch": true,
-      "https://mirror.ams1.nl.leaseweb.net/archlinux/$repo/os/$arch": true,
-      "https://mirror.cj2.nl/archlinux/$repo/os/$arch": true,
-      "https://mirror.koddos.net/archlinux/$repo/os/$arch": true,
-      "https://mirror.lyrahosting.com/archlinux/$repo/os/$arch": true,
-      "https://mirror.mijn.host/archlinux/$repo/os/$arch": true,
-      "https://mirrors.xtom.nl/archlinux/$repo/os/$arch": true
-    }
-  },
-  "mount_point": null,
+  "hostname": "billy",
+  "no_pkg_lookups": false,
+  "offline": false,
   "packages": [
     "cmake",
     "qt5-multimedia",
@@ -81,13 +55,13 @@
     "xorg-xrandr",
     "xorg-xsetroot"
   ],
-  "plugin": null,
   "profile": {
-    "path": "/usr/lib/python3.10/site-packages/archinstall/profiles/xorg.py"
+    "path": "/usr/lib/python3.11/site-packages/archinstall/profiles/xorg.py"
   },
   "script": "guided",
   "silent": false,
-  "swap": false,
+  "sys-encoding": "utf-8",
+  "sys-language": "en_US",
   "timezone": "Europe/Amsterdam",
-  "version": "2.5.0"
+  "version": "2.5.6"
 }
