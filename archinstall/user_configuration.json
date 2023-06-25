@@ -48,6 +48,7 @@
     "man-db",
     "man-pages",
     "shellcheck",
+    "ccache",
     "xclip",
     "xsel",
     "keepassxc",
