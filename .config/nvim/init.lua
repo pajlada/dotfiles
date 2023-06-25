@@ -160,9 +160,9 @@ autocmd("coc_python", {
 -- Copy to clipboard
 -- SPACE+Y = Yank  (SPACE being leader)
 -- SPACE+P = Paste
-map("v", "<leader>y", '"+y', { silent = true })
-map("v", "<leader>p", '"+p', { silent = true })
-map("n", "<leader>p", '"+p', { silent = true })
+map("v", "<leader>y", '"*y', { silent = false })
+map("v", "<leader>p", '"*p', { silent = true })
+map("n", "<leader>p", '"*p', { silent = true })
 
 -- vim-go
 vim.g.go_fmt_command = "gofmt"
