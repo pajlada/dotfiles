@@ -73,8 +73,11 @@
     "fzf",
     "bash-language-server",
     "parcellite",
+    "clang",
+    "ninja",
     "go",
     "xterm",
+    "cpupower",
     "xorg-xrandr",
     "xorg-xsetroot"
   ],
