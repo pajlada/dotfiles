@@ -1,4 +1,5 @@
-# THIS FILE IS ONLY HERE TO NOT BREAK OLD SYSTEMS :)
+#!/bin/sh
+
 # your mileage may vary with this file
 # the options below are very personalized for my current setup
 
@@ -9,7 +10,7 @@ xset s off
 xset dpms 0 0 1500
 
 # Load my custom keyboard layout (basically standard US layout, but altgr+['; = åäö)
-[[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap
+[ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
 
 # Hide mouse when typing
 # xbanish & disown
@@ -22,7 +23,7 @@ xrandr --dpi 96
 
 # TV
 # xrandr --output HDMI-0 --mode 1920x1080 --pos 2160x0
-xrandr --output HDMI-0 --off
+xrandr --output HDMI-0 --auto
 
 # 24" 4k        left
 xrandr --output DP-0 --mode 3840x2160 --rotate right --pos 0x0
@@ -35,9 +36,15 @@ xrandr --output DP-2 --mode 2560x1440 --pos 4720x2400
 
 xsetroot -solid "#333333"
 
-systemctl --user import-environment DISPLAY XAUTHORITY
-if command -v dbus-update-activation-environment >/dev/null 2>&1; then
-   dbus-update-activation-environment DISPLAY XAUTHORITY
+# Load hostname-specific config
+[ -x "$HOME/.config/xinit/xinitrc-$HOST" ] && . "$HOME/.config/xinit/xinitrc-$HOST"
+
+# Load configs from the xinitrc.d directory
+if [ -d "$HOME/.config/xinit/xinitrc.d" ]; then
+  for f in "$HOME/.config/xinit/xinitrc.d/"?*.sh; do
+    [ -x "$f" ] && . "$f"
+  done
+  unset f
 fi
 
 exec i3

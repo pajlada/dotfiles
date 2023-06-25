@@ -70,8 +70,11 @@ make_home_symlink ".config/aliasrc"
 make_home_symlink ".xserverrc"
 
 # Device-specific symlinks
-make_home_symlink ".xinitrc-${DEVICE}" ".xinitrc"
 make_home_symlink ".Xdefaults-${DEVICE}" ".Xdefaults"
+
+make_home_symlink ".xinitrc" ".xinitrc"
+
+mkdir -p "$HOME/.config/xinit/xinitrc.d"
 
 
 plug_path="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim
@@ -84,6 +87,18 @@ if [ ! -d vim-pixelmuerto-fork ]; then
     echo "Cloning pajlada's fork of pixelmuerto's VIM theme"
     git clone https://github.com/pajlada/vim-pixelmuerto.git vim-pixelmuerto-fork
 fi
+
+if [ ! -d .cloned-st ]; then
+    git clone https://github.com/pajlada/st .cloned-st
+fi
+
+(
+cd .cloned-st && \
+    git pull && \
+    rm -f config.h && \
+    make && \
+    sudo make install
+)
 
 mkdir -p ~/.config/nvim/colors
 cp vim-pixelmuerto-fork/colors/pixelmuerto.vim ~/.config/nvim/colors/
@@ -106,13 +121,13 @@ fi
 _distro="$(grep '^ID=' /etc/*-release | cut -d= -f2)"
 
 if [ "$_distro" = "arch" ]; then
-    if ! command -v yay; then
-        # Install yay
-        # TODO: Check if this works xd
-        echo "Installing yay"
-        _yay_dir="$(mktemp -d)"
-        mkdir -p "$_yay_dir"
-        cd "$_yay_dir" && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin
+    echo "INSTALL YAY"
+    if [ ! -d .cloned-yay ]; then
+        (
+        git clone https://aur.archlinux.org/yay.git .cloned-yay && \
+            cd .cloned-yay && \
+            makepkg -si --noconfirm
+        )
     fi
 fi
 
