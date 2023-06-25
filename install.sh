@@ -54,6 +54,9 @@ make_home_symlink ".config/zsh"
 ## Symlink our .zprofile file into ~/
 make_home_symlink ".zprofile"
 
+## Symlink our .zprofile file into ~/.bash_profile
+make_home_symlink ".bash_profile" ".zprofile"
+
 make_home_symlink ".config/bc"
 
 make_home_symlink ".config/nvim"
