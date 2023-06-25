@@ -42,6 +42,7 @@
     "qt5-svg",
     "boost",
     "gst-plugins-good",
+    "htop",
     "jq",
     "git",
     "tmux",
