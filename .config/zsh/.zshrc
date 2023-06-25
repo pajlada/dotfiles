@@ -100,8 +100,6 @@ select-word-style bash
 export BC_ENV_ARGS="-l $HOME/.config/bc/config"
 export ANSIBLE_NOCOWS=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
-export CHATTERINO_SKIP_DATE_GEN=y
-export CHATTERINO_SKIP_GIT_GEN=y
 
 # For custom-built version of git
 export GIT_PRINT_HEADER_EVERY_HUNK=1
