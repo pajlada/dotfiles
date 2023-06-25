@@ -151,3 +151,13 @@ if [ "$SHELL" != "/usr/bin/zsh" ]; then
     echo "Shell not detected as zsh, changing it"
     chsh -s /usr/bin/zsh
 fi
+
+if [ ! -f /etc/X11/xorg.conf.d/50-pajlada-set-logitech-mouse-speed.conf ]; then
+    echo "Installing Logitech mouse speed xorg config"
+    sudo cp xorg.conf.d/50-pajlada-set-logitech-mouse-speed.conf /etc/X11/xorg.conf.d
+fi
+
+if [ ! -f /etc/X11/xorg.conf.d/50-pajlada-disable-mouse-accel.conf ]; then
+    echo "Installing mouse acceleration disabler"
+    sudo cp xorg.conf.d/50-pajlada-disable-mouse-accel.conf /etc/X11/xorg.conf.d
+fi
