@@ -45,6 +45,7 @@
     "yarn",
     "npm",
     "pulseaudio-alsa",
+    "github-cli",
     "dunst",
     "firefox",
     "i3-wm",
