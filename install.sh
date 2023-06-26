@@ -161,3 +161,6 @@ if [ ! -f /etc/X11/xorg.conf.d/50-pajlada-disable-mouse-accel.conf ]; then
     echo "Installing mouse acceleration disabler"
     sudo cp xorg.conf.d/50-pajlada-disable-mouse-accel.conf /etc/X11/xorg.conf.d
 fi
+
+# Update locale
+sudo localectl set-x11-keymap us pc105 altgr-intl nodeadkeys
