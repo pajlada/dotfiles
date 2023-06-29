@@ -68,6 +68,9 @@
     "xorg-xsetroot",
     "mpv",
     "reflector",
+    "python-pip",
+    "bc",
+    "pyright",
     "chromium"
   ],
   "profile": {
