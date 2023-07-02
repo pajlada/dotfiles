@@ -220,10 +220,17 @@ vim.g.fzf_preview_window = {}
 
 -- fzf bindings
 vim.keymap.set('n', '<C-p>', function()
-    require('fzf-lua').git_files({ cwd = vim.fn.getcwd() })
+    require('fzf-lua').git_files({
+        cwd = vim.fn.getcwd(),
+        previewer = false,
+        scrollbar = false,
+    })
 end)
 vim.keymap.set('n', '<C-b>', function()
-    require('fzf-lua').buffers()
+    require('fzf-lua').buffers({
+        previewer = false,
+        scrollbar = false,
+    })
 end)
 
 -- Make a :W command that is an alias for :w

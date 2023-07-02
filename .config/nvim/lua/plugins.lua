@@ -95,23 +95,15 @@ return require("packer").startup({
         use("junegunn/fzf")
         use { 'ibhagwan/fzf-lua',
             -- optional for icon support
-            requires = { 'nvim-tree/nvim-web-devicons' }
+            requires = { 'nvim-tree/nvim-web-devicons' },
+            config = function()
+                require("fzf-lua").setup({
+                    "max-perf",
+                    global_git_icons = true,
+                    global_file_icons = true,
+                })
+            end,
         }
-
-        -- use("junegunn/fzf.vim")
-        -- use("vijaymarupudi/nvim-fzf")
-
-        -- Fuzzy file finder (like Ctrl+K in other apps)
-        -- use({
-        --     "ctrlpvim/ctrlp.vim",
-        --     setup = function()
-        --         -- Unbind "Next in history" & "Previous in history"
-        --         vim.g.ctrlp_prompt_mappings = {
-        --             ['PrtHistory(-1)'] = {},
-        --             ['PrtHistory(1)'] = {},
-        --         }
-        --     end,
-        -- })
 
         use("gpanders/editorconfig.nvim")
 
