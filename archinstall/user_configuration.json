@@ -55,8 +55,11 @@
     "lldb",
     "gdb",
     "fzf",
+    "selene",
+    "lua-language-server",
     "bash-language-server",
     "typescript-language-server",
+    "vscode-html-languageserver",
     "parcellite",
     "clang",
     "ninja",
@@ -69,8 +72,11 @@
     "mpv",
     "reflector",
     "python-pip",
+    "xdotool",
+    "x11vnc",
     "bc",
     "pyright",
+    "remmina",
     "chromium"
   ],
   "profile": {
