@@ -108,6 +108,8 @@ tmux clear-history"
 
 export RUST_LOG="info"
 
+export CTEST_PARALLEL_LEVEL=30
+
 stty -ixon
 
 if [ -f "$HOME/.cargo/env" ]; then
