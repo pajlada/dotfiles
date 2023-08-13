@@ -1,8 +1,30 @@
 require("plugins")
 
-local utils = require("config.utils")
-local autocmd = utils.autocmd
-local map = utils.map
+local function autocmd(group, cmds, clear)
+    clear = clear == nil and false or clear
+    if type(cmds) == 'string' then
+        cmds = { cmds }
+    end
+    vim.cmd('augroup ' .. group)
+    if clear then
+        vim.cmd [[au!]]
+    end
+    for _, c in ipairs(cmds) do
+        vim.cmd('autocmd ' .. c)
+    end
+    vim.cmd [[augroup END]]
+end
+
+local function map(modes, lhs, rhs, opts)
+    opts = opts or {}
+    opts.noremap = opts.noremap == nil and true or opts.noremap
+    if type(modes) == 'string' then
+        modes = { modes }
+    end
+    for _, mode in ipairs(modes) do
+        vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+    end
+end
 
 vim.opt.showmode = false
 
