@@ -88,11 +88,6 @@ if [ ! -f "$plug_path" ]; then
     curl -fLo "$plug_path" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
-if [ ! -d vim-pixelmuerto-fork ]; then
-    echo "Cloning pajlada's fork of pixelmuerto's VIM theme"
-    git clone https://github.com/pajlada/vim-pixelmuerto.git vim-pixelmuerto-fork
-fi
-
 if [ ! -d .cloned-st ]; then
     git clone https://github.com/pajlada/st .cloned-st
 fi
@@ -104,9 +99,6 @@ cd .cloned-st && \
     make && \
     sudo make install
 )
-
-mkdir -p ~/.config/nvim/colors
-cp vim-pixelmuerto-fork/colors/pixelmuerto.vim ~/.config/nvim/colors/
 
 make_home_symlink "i3-$DEVICE" .config/i3
 make_home_symlink "i3status-$DEVICE" .config/i3status
