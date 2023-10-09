@@ -1,3 +1,8 @@
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+vim.opt.termguicolors = true
+
 -- Install packer if it's not already installed
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 local packer_bootstrap = false
@@ -47,16 +52,134 @@ require("packer").startup({
             'hrsh7th/nvim-cmp',
             requires = {
                 'L3MON4D3/LuaSnip',
-                { 'hrsh7th/cmp-buffer',                  after = 'nvim-cmp' },
                 'hrsh7th/cmp-nvim-lsp',
                 { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
-                { 'hrsh7th/cmp-path',                    after = 'nvim-cmp' },
-                { 'hrsh7th/cmp-nvim-lua',                after = 'nvim-cmp' },
                 { 'saadparwaiz1/cmp_luasnip',            after = 'nvim-cmp' },
+
+                -- https://github.com/lukas-reineke/cmp-under-comparator
+                -- Makes python completions for class methods sort better
+                -- It ensures methods prefixed with __ aren't always on top
                 'lukas-reineke/cmp-under-comparator',
                 { 'hrsh7th/cmp-nvim-lsp-document-symbol', after = 'nvim-cmp' },
             },
-            config = function() require('config.cmp') end,
+            config = function()
+                local cmp = require 'cmp'
+                local luasnip = require 'luasnip'
+
+                local has_words_before = function()
+                    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+                    return col ~= 0 and
+                        vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
+                end
+
+                local cmp_kinds = {
+                    Text = '  ',
+                    Method = '  ',
+                    Function = '  ',
+                    Constructor = '  ',
+                    Field = '  ',
+                    Variable = '  ',
+                    Class = '  ',
+                    Interface = '  ',
+                    Module = '  ',
+                    Property = '  ',
+                    Unit = '  ',
+                    Value = '  ',
+                    Enum = '  ',
+                    Keyword = '  ',
+                    Snippet = '  ',
+                    Color = '  ',
+                    File = '  ',
+                    Reference = '  ',
+                    Folder = '  ',
+                    EnumMember = '  ',
+                    Constant = '  ',
+                    Struct = '  ',
+                    Event = '  ',
+                    Operator = '  ',
+                    TypeParameter = '  ',
+                }
+
+                cmp.setup {
+                    preselect = cmp.PreselectMode.None,
+                    completion = { completeopt = 'menu,menuone,noinsert' },
+                    sorting = {
+                        comparators = {
+                            -- function(entry1, entry2)
+                            --   local score1 = entry1.completion_item.score
+                            --   local score2 = entry2.completion_item.score
+                            --   if score1 and score2 then
+                            --     return (score1 - score2) < 0
+                            --   end
+                            -- end,
+
+                            -- The built-in comparators:
+                            cmp.config.compare.offset,
+                            cmp.config.compare.exact,
+                            cmp.config.compare.score,
+                            require("clangd_extensions.cmp_scores"),
+                            require('cmp-under-comparator').under,
+                            cmp.config.compare.kind,
+                            cmp.config.compare.sort_text,
+                            cmp.config.compare.length,
+                            cmp.config.compare.order,
+                        },
+                    },
+                    snippet = {
+                        expand = function(args)
+                            luasnip.lsp_expand(args.body)
+                        end,
+                    },
+                    formatting = {
+                        format = function(_, vim_item)
+                            vim_item.kind = (cmp_kinds[vim_item.kind] or '') .. vim_item.kind
+                            vim_item.abbr = string.sub(vim_item.abbr, 1, vim.fn.winwidth(0) - 40)
+                            return vim_item
+                        end,
+                    },
+                    mapping = {
+                        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+                        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+                        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+                        ['<C-y>'] = cmp.config.disable,
+                        ['<C-e>'] = cmp.mapping {
+                            i = cmp.mapping.abort(),
+                            c = cmp.mapping.close(),
+                        },
+                        ['<cr>'] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Replace },
+                        ['<C-n>'] = cmp.mapping(function(fallback)
+                            if cmp.visible() then
+                                cmp.select_next_item()
+                            elseif luasnip.expand_or_jumpable() then
+                                luasnip.expand_or_jump()
+                            elseif has_words_before() then
+                                cmp.complete()
+                            else
+                                fallback()
+                            end
+                        end, { 'i', 's' }),
+                        ['<C-p>'] = cmp.mapping(function(fallback)
+                            if cmp.visible() then
+                                cmp.select_prev_item()
+                            elseif luasnip.jumpable(-1) then
+                                luasnip.jump(-1)
+                            else
+                                fallback()
+                            end
+                        end, { 'i', 's' }),
+                    },
+                    sources = {
+                        {
+                            name = 'nvim_lsp_signature_help',
+                            entry_filter = function(entry, ctx)
+                                return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Text'
+                            end,
+                        },
+                        { name = 'nvim_lsp' },
+                        { name = 'luasnip' },
+                    },
+                }
+            end,
         }
 
         -- Theme
@@ -101,6 +224,63 @@ require("packer").startup({
                     "max-perf",
                     global_git_icons = true,
                     global_file_icons = true,
+                })
+            end,
+        }
+
+        use { 'nvim-tree/nvim-tree.lua',
+            -- optional for icon support
+            requires = { 'nvim-tree/nvim-web-devicons' },
+            config = function()
+                require("nvim-tree").setup({
+                    on_attach = function(bufnr)
+                        local api = require("nvim-tree.api")
+
+                        local function opts(desc)
+                            return {
+                                desc = 'nvim-tree: ' .. desc,
+                                buffer = bufnr,
+                                noremap = true,
+                                silent = true,
+                                nowait = true
+                            }
+                        end
+
+                        local function edit_or_open()
+                            local node = api.tree.get_node_under_cursor()
+
+                            if node.nodes ~= nil then
+                                -- expand or collapse folder
+                                api.node.open.edit()
+                            else
+                                -- open file
+                                api.node.open.edit()
+                                -- Close the tree if file was opened
+                                api.tree.close()
+                            end
+                        end
+
+                        -- open as vsplit on current node
+                        local function vsplit_preview()
+                            local node = api.tree.get_node_under_cursor()
+
+                            if node.nodes ~= nil then
+                                -- expand or collapse folder
+                                api.node.open.edit()
+                            else
+                                -- open file as vsplit
+                                api.node.open.vertical()
+                            end
+
+                            -- Finally refocus on tree if it was lost
+                            api.tree.focus()
+                        end
+                        vim.keymap.set("n", "l", edit_or_open, opts("Edit Or Open"))
+                        vim.keymap.set("n", "L", vsplit_preview, opts("Vsplit Preview"))
+                        vim.keymap.set("n", "h", api.tree.close, opts("Close"))
+                        vim.keymap.set("n", "<Esc>", api.tree.close, opts("Close"))
+                        vim.keymap.set("n", "H", api.tree.collapse_all, opts("Collapse All"))
+                    end
                 })
             end,
         }
@@ -250,9 +430,9 @@ local function map(modes, lhs, rhs, opts)
     end
 end
 
+
 vim.opt.showmode = false
 
-vim.opt.termguicolors = true
 
 -- Enable line numbers
 vim.opt.number = true
@@ -369,6 +549,13 @@ map("n", "<leader>k", ":call CocAction('diagnosticPrevious')<cr>")
 map("n", "<leader>t", "<Plug>(coc-references)")
 map("n", "<leader>w", "<Plug>(coc-references-used)")
 map("n", "<leader>r", ":<C-u>call CocAction('jumpReferences')<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<C-s>", function()
+    local api = require("nvim-tree.api")
+
+    return api.tree.toggle()
+    -- return vim.fn["NvimTreeToggle"]()
+end)
 
 vim.keymap.set("n", "<C-f>", function()
     return vim.fn["coc#float#has_scroll"]() and vim.fn["coc#float#scroll"](1) or t("<C-f>")
@@ -627,6 +814,8 @@ local function on_attach(client, bufnr)
                 vim.api.nvim_feedkeys(keys, "n", false)
             end
         end, keymap_opts)
+    else
+        -- print(client.name .. " does not support formatting :(")
     end
 
     cmd 'augroup lsp_aucmds'
@@ -680,6 +869,7 @@ local servers = {
     ghcide = {},
     html = { cmd = { 'vscode-html-languageserver', '--stdio' } },
     pyright = {},
+    -- ruff_lsp = { },
     rust_analyzer = {},
     lua_ls = {
         cmd = { 'lua-language-server' },
@@ -802,7 +992,8 @@ null_ls.setup {
         --null_fmt.stylua,
         --null_fmt.trim_whitespace,
         -- null_fmt.yapf,
-        null_fmt.black
+        null_fmt.black,
+        -- null_fmt.ruff,
         --null_act.gitsigns,
         --null_act.refactoring.with { filetypes = { 'javascript', 'typescript', 'lua', 'python', 'c', 'cpp' } },
     },
