@@ -179,10 +179,10 @@ focus_wrapping no
 mouse_warping none
 
 # Make the currently focused window a scratchpad
-bindsym $mod+Shift+o move scratchpad
+# bindsym $mod+Shift+o move scratchpad
 
 # Show the first scratchpad window
-bindsym $mod+o scratchpad show
+bindsym $mod+o border toggle
 
 # Requires i3 4.20
 # NOTE: These configs cannot override values that have been set in here
