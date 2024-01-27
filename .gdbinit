@@ -52,4 +52,6 @@ class AddSymbolFileAuto (gdb.Command):
 AddSymbolFileAuto()
 end
 
+set pagination off
+
 set debuginfod enabled off

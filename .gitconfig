@@ -10,7 +10,7 @@
 	rebase = true
 
 [alias]
-    st = status
+    st = status --ignore-submodules=dirty
     ci = commit --verbose
     co = checkout
     df = diff
