@@ -127,3 +127,6 @@ if [[ "$OSTYPE" == 'darwin'* ]]; then
     USER_PYTHON_BIN_PATH="$(python3 -m site --user-base)/bin"
     export PATH="$PATH:$USER_PYTHON_BIN_PATH"
 fi
+
+# Disable IO_URING usage in UV packages, which can cause neovim to freeze your computer upon suspension
+export UV_USE_IO_URING=0
