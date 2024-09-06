@@ -755,7 +755,7 @@ local servers = {
         },
         -- prefer_null_ls = false,
     },
-    tsserver = {},
+    ts_ls = {},
     vimls = {},
 }
 
