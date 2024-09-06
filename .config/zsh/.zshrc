@@ -120,6 +120,9 @@ fi
 # Include ~/.local/bin in PATH
 export PATH="$PATH:$HOME/.local/bin"
 
+# Include ~/.cargo/bin in PATH
+export PATH="$PATH:$HOME/.cargo/bin"
+
 if [[ "$OSTYPE" == 'darwin'* ]]; then
     export PATH="$PATH:/opt/homebrew/bin"
 
