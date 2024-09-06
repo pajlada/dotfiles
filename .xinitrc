@@ -35,4 +35,6 @@ if [ -d "$HOME/.config/xinit/xinitrc.d" ]; then
   unset f
 fi
 
+xbindkeys
+
 i3
