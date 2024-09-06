@@ -30,3 +30,6 @@
 
 [commit]
     verbose = true
+
+[includeIf "hasconfig:remote.*.url:git@github.com:Chatterino/chatterino2*"]
+    path = ~/.gitsigning
