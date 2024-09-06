@@ -21,6 +21,8 @@ else
 fi
 
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
+# Aliases that are maybe system-specific and not meant to be part of the git repo
+[ -f "$HOME/.config/aliasrc_local" ] && source "$HOME/.config/aliasrc_local"
 
 [ -f "$HOME/.config/zsh/.zsh_local" ] && source "$HOME/.config/zsh/.zsh_local"
 [ -f "$HOME/.config/zsh/.zsh_commands" ] && source "$HOME/.config/zsh/.zsh_commands"
