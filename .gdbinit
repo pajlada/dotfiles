@@ -55,6 +55,7 @@ end
 set pagination off
 
 set debuginfod enabled off
+# set debuginfod enabled on
 
 # Disable thread-events (i.e. New Thread... & Thread ... exited messages)
 set print thread-events off
