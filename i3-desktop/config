@@ -37,6 +37,7 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
+# toggle between the last-focused workspace
 bindsym $mod+b workspace back_and_forth
 
 # alternatively, you can use the cursor keys:
