@@ -118,7 +118,7 @@ if [ -f "$HOME/.cargo/env" ]; then
 fi
 
 # Include ~/.local/bin in PATH
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$HOME/.local/bin:$PATH"
 
 # Include ~/.cargo/bin in PATH
 export PATH="$PATH:$HOME/.cargo/bin"
