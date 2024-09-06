@@ -24,6 +24,7 @@ fi
 # Aliases that are maybe system-specific and not meant to be part of the git repo
 [ -f "$HOME/.config/aliasrc_local" ] && source "$HOME/.config/aliasrc_local"
 
+# ZSH configurations that are not meant to be part of the git repo
 [ -f "$HOME/.config/zsh/.zsh_local" ] && source "$HOME/.config/zsh/.zsh_local"
 [ -f "$HOME/.config/zsh/.zsh_commands" ] && source "$HOME/.config/zsh/.zsh_commands"
 [ -f "$HOME/.config/zsh/.zsh_bindkeys" ] && source "$HOME/.config/zsh/.zsh_bindkeys"
