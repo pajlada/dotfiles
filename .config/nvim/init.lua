@@ -250,6 +250,7 @@ require("lazy").setup({
             opts = {
                 ensure_installed = {
                     "stylua",
+                    "json-lsp", -- Provides vscode-json-languageservice https://github.com/Microsoft/vscode-json-languageservice
                 },
             },
         },
