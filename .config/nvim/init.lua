@@ -251,6 +251,8 @@ require("lazy").setup({
                 ensure_installed = {
                     "stylua",
                     "json-lsp", -- Provides vscode-json-languageservice https://github.com/Microsoft/vscode-json-languageservice
+                    "typescript-language-server",
+                    "cmake-language-server",
                 },
             },
         },
@@ -291,8 +293,8 @@ require("lazy").setup({
 
         {
             "mrcjkb/rustaceanvim",
-            version = "^4",
-            ft = { "rust" },
+            version = "^5",
+            lazy = false, -- This plugin is already lazy
         },
 
         "nvim-lua/plenary.nvim",
@@ -500,9 +502,9 @@ end, { silent = true, noremap = true })
 -- Copy to clipboard
 -- SPACE+Y = Yank  (SPACE being leader)
 -- SPACE+P = Paste
-map("v", "<leader>y", '"*y', { silent = false })
-map("v", "<leader>p", '"*p', { silent = true })
-map("n", "<leader>p", '"*p', { silent = true })
+map("v", "<leader>y", '"+y', { silent = false })
+map("v", "<leader>p", '"+p', { silent = true })
+map("n", "<leader>p", '"+p', { silent = true })
 
 -- vim-go
 vim.g.go_fmt_command = "gofmt"
@@ -692,13 +694,32 @@ local function shared_on_attach(client, bufnr)
 end
 
 vim.g.rustaceanvim = {
+    -- Plugin configuration
+    tools = {
+    },
+    -- LSP configuration
     server = {
         on_attach = shared_on_attach,
+        default_settings = {
+            -- rust-analyzer language server configuration
+            ['rust-analyzer'] = {
+            },
+        },
+    },
+    -- DAP configuration
+    dap = {
     },
 }
 
+-- vim.g.rustaceanvim = {
+--     server = {
+--         on_attach = shared_on_attach,
+--     },
+-- }
+
 local servers = {
     bashls = {},
+    astro = {},
     clangd = {
         on_attach = function()
             require("clangd_extensions.inlay_hints").setup_autocmd()
@@ -737,7 +758,7 @@ local servers = {
     },
     ghcide = {},
     html = { cmd = { "vscode-html-languageserver", "--stdio" } },
-    -- pyright = {},
+    pyright = {},
     ruff = {},
     -- rust_analyzer = {},
     lua_ls = {
@@ -842,3 +863,14 @@ dap.configurations.cpp = {
         stopAtBeginningOfMainSubprogram = false,
     },
 }
+
+-- TEMPORARY WORKAROUND
+for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
+    local default_diagnostic_handler = vim.lsp.handlers[method]
+    vim.lsp.handlers[method] = function(err, result, context, config)
+        if err ~= nil and err.code == -32802 then
+            return
+        end
+        return default_diagnostic_handler(err, result, context, config)
+    end
+end
