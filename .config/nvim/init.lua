@@ -18,50 +18,78 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local old_untested_plugins = {
-
-    -- Python import sorter
-    "stsewd/isort.nvim",
-
-    -- Go plugin (does most things Go-related)
-    "fatih/vim-go",
-
-    -- Allow plugins to define their own operator
-    "kana/vim-operator-user",
-    "rust-lang/rust.vim",
-}
-
 require("lazy").setup({
     spec = {
-        { "nvim-tree/nvim-web-devicons",        lazy = true },
-
+        -- Random functionality
+        "nvim-tree/nvim-web-devicons",
         "mfussenegger/nvim-dap",
-
+        "junegunn/fzf",
         {
-            "nvim-neo-tree/neo-tree.nvim",
-            branch = "v3.x",
-            dependencies = {
-                "nvim-lua/plenary.nvim",
-                "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-                "MunifTanjim/nui.nvim",
-                -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
-            },
-        },
-
-        {
-            "nvim-lualine/lualine.nvim",
+            "ibhagwan/fzf-lua",
+            -- optional for icon support
             config = function()
-                require("lualine").setup({
-                    icons_enabled = false,
-                    theme = "onedark",
-                    sections = {
-                        lualine_b = { "filename" },
-                        lualine_c = { "branch", "diff" },
-                        lualine_x = {},
-                        lualine_y = { "diagnostics" },
-                    },
+                require("fzf-lua").setup({
+                    "max-perf",
+                    global_git_icons = true,
+                    global_file_icons = true,
                 })
             end,
+        },
+        "rcarriga/nvim-notify",
+        {
+            "windwp/nvim-autopairs",
+            config = true,
+        },
+        -- Adds a tab of all compiler errors, accessible through :Trouble
+        -- {
+        --     "folke/trouble.nvim",
+        --     config = true,
+        -- },
+
+        -- LSP
+        "nvim-lua/lsp-status.nvim",
+        "neovim/nvim-lspconfig",
+        -- {
+        --     "mrcjkb/rustaceanvim",
+        --     version = "^5",
+        --     lazy = false, -- This plugin is already lazy
+        -- },
+        {
+            "ray-x/lsp_signature.nvim",
+            opts = {
+                bind = true,
+                handler_opts = {
+                    border = "rounded",
+                },
+            },
+            config = true,
+        },
+        {
+            "p00f/clangd_extensions.nvim",
+            lazy = true,
+            config = function() end,
+            opts = {
+                ast = {
+                    --These require codicons (https://github.com/microsoft/vscode-codicons)
+                    role_icons = {
+                        type = "",
+                        declaration = "",
+                        expression = "",
+                        specifier = "",
+                        statement = "",
+                        ["template argument"] = "",
+                    },
+                    kind_icons = {
+                        Compound = "",
+                        Recovery = "",
+                        TranslationUnit = "",
+                        PackExpansion = "",
+                        TemplateTypeParm = "",
+                        TemplateTemplateParm = "",
+                        TemplateParamObject = "",
+                    },
+                },
+            },
         },
 
         -- Highlighting
@@ -96,26 +124,6 @@ require("lazy").setup({
         -- Adds "end" to function() in lua, and some other languages
         "RRethy/nvim-treesitter-endwise",
 
-        -- Theme
-        {
-            "navarasu/onedark.nvim",
-            config = function()
-                require("onedark").setup({
-                    style = "darker",
-                    colors = {
-                        grey = "#878787",
-                        green = "#00ffaa",
-                    },
-                    highlights = {
-                        Visual = { bg = "#4a4a4a" },
-                    },
-                })
-                require("onedark").load()
-            end,
-        },
-
-        { "tpope/vim-fugitive" },
-
         -- Auto/tab-completions
         { "L3MON4D3/LuaSnip" },
         { "hrsh7th/cmp-nvim-lsp" },
@@ -128,7 +136,6 @@ require("lazy").setup({
         "lukas-reineke/cmp-under-comparator",
         "hrsh7th/cmp-nvim-lsp-document-symbol",
 
-        -- Completion
         {
             "hrsh7th/nvim-cmp",
             config = function()
@@ -222,6 +229,41 @@ require("lazy").setup({
             end,
         },
 
+        -- Styling
+        {
+            "nvim-lualine/lualine.nvim",
+            config = function()
+                require("lualine").setup({
+                    icons_enabled = false,
+                    theme = "onedark",
+                    sections = {
+                        lualine_b = { "filename" },
+                        -- lualine_c = { "branch", "diff" },
+                        lualine_c = { "require'lsp-status'.status()" },
+                        lualine_x = {},
+                        lualine_y = { "diagnostics" },
+                    },
+                })
+            end,
+        },
+        {
+            "navarasu/onedark.nvim",
+            config = function()
+                require("onedark").setup({
+                    style = "darker",
+                    colors = {
+                        grey = "#878787",
+                        green = "#00ffaa",
+                    },
+                    highlights = {
+                        Visual = { bg = "#4a4a4a" },
+                    },
+                })
+                require("onedark").load()
+            end,
+        },
+
+        -- Language-specific things
         {
             "iamcco/markdown-preview.nvim",
             lazy = true,
@@ -231,108 +273,6 @@ require("lazy").setup({
                 vim.fn["mkdp#util#install"]()
             end,
         },
-
-        "junegunn/fzf",
-        {
-            "ibhagwan/fzf-lua",
-            -- optional for icon support
-            config = function()
-                require("fzf-lua").setup({
-                    "max-perf",
-                    global_git_icons = true,
-                    global_file_icons = true,
-                })
-            end,
-        },
-
-        {
-            "williamboman/mason.nvim",
-            opts = {
-                ensure_installed = {
-                    "stylua",
-                    "json-lsp", -- Provides vscode-json-languageservice https://github.com/Microsoft/vscode-json-languageservice
-                    "typescript-language-server",
-                    "cmake-language-server",
-                },
-            },
-        },
-        "williamboman/mason-lspconfig.nvim",
-        "neovim/nvim-lspconfig",
-
-        -- Adds a tab of all compiler errors, accessible through :Trouble
-        "folke/trouble.nvim",
-        "ray-x/lsp_signature.nvim",
-
-        {
-            "p00f/clangd_extensions.nvim",
-            lazy = true,
-            config = function() end,
-            opts = {
-                ast = {
-                    --These require codicons (https://github.com/microsoft/vscode-codicons)
-                    role_icons = {
-                        type = "",
-                        declaration = "",
-                        expression = "",
-                        specifier = "",
-                        statement = "",
-                        ["template argument"] = "",
-                    },
-                    kind_icons = {
-                        Compound = "",
-                        Recovery = "",
-                        TranslationUnit = "",
-                        PackExpansion = "",
-                        TemplateTypeParm = "",
-                        TemplateTemplateParm = "",
-                        TemplateParamObject = "",
-                    },
-                },
-            },
-        },
-
-        {
-            "mrcjkb/rustaceanvim",
-            version = "^5",
-            lazy = false, -- This plugin is already lazy
-        },
-
-        "nvim-lua/plenary.nvim",
-
-        -- { "jose-elias-alvarez/null-ls.nvim" },
-
-        -- Plug 'rust-analyzer/rust-analyzer'
-
-        "leafgarland/typescript-vim",
-
-        "liuchengxu/graphviz.vim",
-
-        "prabirshrestha/async.vim",
-
-        "martinda/Jenkinsfile-vim-syntax",
-
-        "modille/groovy.vim",
-
-        "rcarriga/nvim-notify",
-
-        {
-            "windwp/nvim-autopairs",
-            config = function()
-                require("nvim-autopairs").setup({})
-            end,
-        },
-
-        -- Plug 'integralist/vim-mypy'
-
-        "sk1418/HowMuch",
-
-        "hashivim/vim-terraform",
-
-        "jparise/vim-graphql",
-
-        "nvim-treesitter/playground",
-
-        "kevinhwang91/promise-async",
     },
     defaults = {
         -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
@@ -421,14 +361,6 @@ vim.opt.undofile = true
 vim.opt.undolevels = 1000
 vim.opt.undoreload = 10000
 
-vim.g.python3_host_prog = "/home/pajlada/.local/share/nvim/venv/bin/python3"
-
--- isort
-autocmd("isort for python", [[ FileType python vnoremap <buffer> <C-i> :Isort<CR>]], true)
-
--- terraform
-vim.g.terraform_fmt_on_save = true
-
 -- Ignore various cache/vendor folders
 vim.opt.wildignore:append({
     "*/node_modules/*",
@@ -495,10 +427,6 @@ vim.keymap.set("n", "K", function()
     end
 end, { silent = true, noremap = true })
 
-vim.keymap.set("n", "<C-h>", function()
-    vim.fn.CocAction("doHover")
-end, { silent = true, noremap = true })
-
 -- Copy to clipboard
 -- SPACE+Y = Yank  (SPACE being leader)
 -- SPACE+P = Paste
@@ -506,27 +434,22 @@ map("v", "<leader>y", '"+y', { silent = false })
 map("v", "<leader>p", '"+p', { silent = true })
 map("n", "<leader>p", '"+p', { silent = true })
 
--- vim-go
-vim.g.go_fmt_command = "gofmt"
-vim.g.go_fmt_options = {
-    gofmt = "-s",
-}
-
-autocmd("vim_go_bindings", {
-    [[ FileType go nmap <leader>b <Plug>(go-build) ]],
-    [[ FileType go nmap <leader>t <Plug>(go-test) ]],
-    [[ FileType go nmap <leader>c <Plug>(go-coverage) ]],
-}, true)
-
--- clang_format
-vim.g["clang_format#enable_fallback_style"] = 0
-
 -- Check for edits when focusing vim
 autocmd("check_for_edits", {
     [[ FocusGained,BufEnter * :silent! checktime ]],
 }, true)
 
--- graphviz (liuchengxu/graphviz.vim)
+-- Trying out folds
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevel = 99 -- Open all folds by default
+
+-- Make a :W command that is an alias for :w
+vim.cmd("command W w")
+
+---- Plugin configs
+
+--- graphviz
 -- Compile .dot-files to png
 vim.g.graphviz_output_format = "png"
 
@@ -539,11 +462,7 @@ autocmd("graphviz_autocompile", {
     [[BufWritePost *.dot GraphvizCompile png]],
 }, true)
 
--- Trying out folds
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevel = 99 -- Open all folds by default
-
+--- fzf
 -- fzf config
 vim.g.fzf_preview_window = {}
 
@@ -569,73 +488,9 @@ vim.keymap.set("n", "<C-k>", function()
     })
 end)
 
--- Make a :W command that is an alias for :w
-vim.cmd("command W w")
-
--- Configure LSP
-local lspconfig = require("lspconfig")
--- local null_ls = require("null-ls")
-local trouble = require("trouble")
-
--- require("clangd_extensions.config").setup({
---     extensions = { inlay_hints = { only_current_line = false, show_variable_name = true } },
--- })
-
-local lsp = vim.lsp
--- local cmd = vim.cmd
-
-local sign_define = vim.fn.sign_define
-sign_define("DiagnosticSignError", { text = "✗", texthl = "DiagnosticSignError" })
-sign_define("DiagnosticSignWarn", { text = "!", texthl = "DiagnosticSignWarn" })
-sign_define("DiagnosticSignInformation", { text = "", texthl = "DiagnosticSignInfo" })
-sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
-
-trouble.setup({})
-
--- Global config for diagnostics
-vim.diagnostic.config({
-    underline = true,
-    virtual_text = true,
-    signs = false,
-    severity_sort = false,
-})
-
--- Show hover popup with a border
-lsp.handlers["textDocument/hover"] = lsp.with(vim.lsp.handlers.hover, {
-    border = "rounded",
-})
-
-local async_formatting = function(bufnr)
-    bufnr = bufnr or vim.api.nvim_get_current_buf()
-
-    vim.lsp.buf_request(bufnr, "textDocument/formatting", vim.lsp.util.make_formatting_params({}),
-        function(err, res, ctx)
-            if err then
-                local err_msg = type(err) == "string" and err or err.message
-                -- you can modify the log message / level (or ignore it completely)
-                vim.notify("formatting: " .. err_msg, vim.log.levels.WARN)
-                return
-            end
-
-            -- don't apply results if buffer is unloaded or has been modified
-            if not vim.api.nvim_buf_is_loaded(bufnr) or vim.api.nvim_buf_get_option(bufnr, "modified") then
-                return
-            end
-
-            if res then
-                local client = vim.lsp.get_client_by_id(ctx.client_id)
-                vim.lsp.util.apply_text_edits(res, bufnr, client and client.offset_encoding or "utf-16")
-                vim.api.nvim_buf_call(bufnr, function()
-                    vim.cmd("silent noautocmd update")
-                end)
-            end
-        end)
-end
-
-require("lsp_signature").setup({ bind = true, handler_opts = { border = "single" } })
 local function shared_on_attach(client, bufnr)
     local keymap_opts = { noremap = true, silent = true, buffer = bufnr }
-    require("lsp_signature").on_attach({ bind = true, handler_opts = { border = "single" } })
+    -- require("lsp_signature").on_attach({ bind = true, handler_opts = { border = "rounded" } })
     vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", keymap_opts)
     vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", keymap_opts)
     vim.keymap.set("n", "gTD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", keymap_opts)
@@ -693,9 +548,11 @@ local function shared_on_attach(client, bufnr)
     vim.cmd("augroup END")
 end
 
+--- Rustaceanvim
 vim.g.rustaceanvim = {
     -- Plugin configuration
     tools = {
+        enable_clippy = true,
     },
     -- LSP configuration
     server = {
@@ -703,6 +560,14 @@ vim.g.rustaceanvim = {
         default_settings = {
             -- rust-analyzer language server configuration
             ['rust-analyzer'] = {
+                cargo = {
+                    allFeatures = true,
+                    loadOutDirsFromCheck = true,
+                    buildScripts = {
+                        enable = true,
+                    },
+                },
+                checkOnSave = true,
             },
         },
     },
@@ -711,13 +576,31 @@ vim.g.rustaceanvim = {
     },
 }
 
--- vim.g.rustaceanvim = {
---     server = {
---         on_attach = shared_on_attach,
---     },
--- }
+--- dap
+local dap = require("dap")
+dap.adapters.gdb = {
+    type = "executable",
+    command = "gdb",
+    args = { "-i", "dap" }
+}
+dap.configurations.cpp = {
+    {
+        name = "Launch",
+        type = "gdb",
+        request = "launch",
+        program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = "${workspaceFolder}",
+        stopAtBeginningOfMainSubprogram = false,
+    },
+}
+
+--- lspconfig
+local lspconfig = require("lspconfig")
 
 local servers = {
+    rust_analyzer = {},
     bashls = {},
     astro = {},
     clangd = {
@@ -760,7 +643,6 @@ local servers = {
     html = { cmd = { "vscode-html-languageserver", "--stdio" } },
     pyright = {},
     ruff = {},
-    -- rust_analyzer = {},
     lua_ls = {
         cmd = { "lua-language-server" },
         settings = {
@@ -808,61 +690,6 @@ for server, config in pairs(servers) do
     config.capabilities = vim.tbl_deep_extend("keep", config.capabilities or {}, client_capabilities)
     lspconfig[server].setup(config)
 end
-
--- null-ls setup
--- local null_fmt = null_ls.builtins.formatting
--- local null_diag = null_ls.builtins.diagnostics
--- null_ls.setup({
---     debug = true,
---     sources = {
---         null_diag.actionlint,
---         -- null_diag.cppcheck,
---         -- null_diag.proselint,
---         -- null_diag.pylint,
---         null_diag.selene,
---         null_diag.shellcheck,
---         --null_diag.teal,
---         -- null_diag.vale,
---         --null_diag.vint,
---         --null_diag.write_good.with { filetypes = { 'markdown', 'tex' } },
---         null_fmt.clang_format,
---         -- null_fmt.cmake_format,
---         --null_fmt.isort,
---         null_fmt.prettier,
---         null_fmt.rustfmt,
---         --null_fmt.shfmt,
---         null_fmt.stylua,
---         --null_fmt.trim_whitespace,
---         -- null_fmt.yapf,
---         null_fmt.black,
---         -- null_fmt.ruff,
---     },
---     on_attach = on_attach,
--- })
-
-autocmd("coc_cpp", {
-    [[ FileType cpp nmap <leader>h :ClangdSwitchSourceHeader<CR>]],
-    [[ FileType c nmap <leader>h :ClangdSwitchSourceHeader<CR>]],
-}, true)
-
-local dap = require("dap")
-dap.adapters.gdb = {
-    type = "executable",
-    command = "gdb",
-    args = { "-i", "dap" }
-}
-dap.configurations.cpp = {
-    {
-        name = "Launch",
-        type = "gdb",
-        request = "launch",
-        program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-        end,
-        cwd = "${workspaceFolder}",
-        stopAtBeginningOfMainSubprogram = false,
-    },
-}
 
 -- TEMPORARY WORKAROUND
 for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
