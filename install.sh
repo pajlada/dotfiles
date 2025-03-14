@@ -100,6 +100,7 @@ cd .cloned-st && \
     sudo make install
 )
 
+make_home_symlink "sway" .config/sway
 make_home_symlink "i3-$DEVICE" .config/i3
 make_home_symlink "i3status-$DEVICE" .config/i3status
 
