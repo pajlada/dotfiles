@@ -103,15 +103,47 @@ scrot-qr() {
 }
 
 scrot-clipboard() {
-    _path=$(mktemp -u /tmp/scrot-clipboard-XXXXXX.png)
+    if [ -n "$WAYLAND_DISPLAY" ]; then
+        # wayland screenshot
+        DELAY="0"
+        pos="$(slurp)"
+        while [[ $# -gt 0 ]]; do
+          case $1 in
+            -d|--delay)
+              DELAY="$2"
+              shift # past argument
+              shift # past value
+              ;;
+            -*|--*)
+              echo "Unknown option $1"
+              exit 1
+              ;;
+            *)
+              echo "Unknown positional arg $1"
+              exit 1
+              ;;
+          esac
+        done
 
-    >&2 echo "Select portion to screenshot"
+        if [[ "$DELAY" -gt "0" ]]; then
+            echo "delay "$DELAY" seconds"
+            sleep "$DELAY"
+        fi
 
-    scrot -s $@ "$_path" || return
+        grim -g "$pos" - | wl-copy
 
-    xclip -selection clipboard -target image/png "$_path" || return
+        echo "DELAY: $DELAY"
+    else
+        _path=$(mktemp -u /tmp/scrot-clipboard-XXXXXX.png)
 
-    >&2 echo "Saved to clipboard"
+        >&2 echo "Select portion to screenshot"
+
+        scrot -s $@ "$_path" || return
+
+        xclip -selection clipboard -target image/png "$_path" || return
+
+        >&2 echo "Saved to clipboard"
+    fi
 }
 
 screen-record-clipboard() {
