@@ -509,6 +509,12 @@ local function shared_on_attach(client, bufnr)
     vim.keymap.set("v", "<leader>.", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", keymap_opts)
     vim.keymap.set("n", "]e", '<cmd>lua vim.diagnostic.goto_next { float = {scope = "line"} }<cr>', keymap_opts)
     vim.keymap.set("n", "[e", '<cmd>lua vim.diagnostic.goto_prev { float = {scope = "line"} }<cr>', keymap_opts)
+    vim.keymap.set("n", "]f",
+        '<cmd>lua vim.diagnostic.goto_next { severity = vim.diagnostic.severity.ERROR, float = {scope = "line"} }<cr>',
+        keymap_opts)
+    vim.keymap.set("n", "[f",
+        '<cmd>lua vim.diagnostic.goto_prev { severity = vim.diagnostic.severity.ERROR, float = {scope = "line"} }<cr>',
+        keymap_opts)
     -- vim.keymap.set('n', '<leader>d', '<cmd>lua vim.diagnostic.open_float()<cr>', keymap_opts)
 
     if client.supports_method("textDocument/formatting") then
