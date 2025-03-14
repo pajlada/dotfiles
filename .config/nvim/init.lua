@@ -474,6 +474,10 @@ vim.keymap.set("n", "<C-p>", function()
         cwd = vim.fn.getcwd(),
         previewer = false,
         scrollbar = false,
+        file_ignore_patterns = {
+            ".*.png",
+            ".*.wav",
+        },
     })
 end)
 vim.keymap.set("n", "<C-b>", function()
