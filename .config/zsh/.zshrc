@@ -136,3 +136,6 @@ fi
 
 # Ensure CMake always outputs color diagnostics. Especially useful when building with Ninja
 export CMAKE_COLOR_DIAGNOSTICS="ON"
+
+# fixes runelite not scaling correctly on sway
+export _JAVA_AWT_WM_NONREPARENTING=1
