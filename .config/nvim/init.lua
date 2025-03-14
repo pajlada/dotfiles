@@ -30,8 +30,10 @@ require("lazy").setup({
             config = function()
                 require("fzf-lua").setup({
                     "max-perf",
-                    global_git_icons = true,
-                    global_file_icons = true,
+                    defaults = {
+                        git_icons = true,
+                        file_icons = true,
+                    },
                 })
             end,
         },
