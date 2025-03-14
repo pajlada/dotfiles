@@ -133,3 +133,6 @@ if [[ "$OSTYPE" == 'darwin'* ]]; then
     USER_PYTHON_BIN_PATH="$(python3 -m site --user-base)/bin"
     export PATH="$PATH:$USER_PYTHON_BIN_PATH"
 fi
+
+# Ensure CMake always outputs color diagnostics. Especially useful when building with Ninja
+export CMAKE_COLOR_DIAGNOSTICS="ON"
