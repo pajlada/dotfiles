@@ -608,6 +608,14 @@ dap.configurations.cpp = {
     },
 }
 
+--- clangd
+autocmd("clangd_toggle_source_header", {
+    [[ FileType cpp nmap <leader>h :ClangdSwitchSourceHeader<CR>]],
+    [[ FileType c nmap <leader>h :ClangdSwitchSourceHeader<CR>]],
+}, true)
+
+
+
 --- lspconfig
 local lspconfig = require("lspconfig")
 
@@ -617,8 +625,7 @@ local servers = {
     astro = {},
     clangd = {
         on_attach = function()
-            require("clangd_extensions.inlay_hints").setup_autocmd()
-            require("clangd_extensions.inlay_hints").set_inlay_hints()
+            -- vim.lsp.inlay_hint.enable()
             require("clangd_extensions").hint_aucmd_set_up = true
         end,
         -- prefer_null_ls = true,
@@ -637,6 +644,7 @@ local servers = {
             completeUnimported = true,
             semanticHighlighting = true,
         },
+        filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "hpp" },
     },
     gopls = {},
     cmake = {},
