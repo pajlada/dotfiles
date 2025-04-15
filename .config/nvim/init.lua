@@ -152,7 +152,7 @@ require("lazy").setup({
 
                 cmp.setup({
                     preselect = cmp.PreselectMode.None,
-                    completion = { completeopt = "menu,menuone,noinsert" },
+                    completion = { completeopt = "menu,menuone,noinsert,noselect" },
                     sorting = {
                         comparators = {
                             -- function(entry1, entry2)
@@ -186,7 +186,7 @@ require("lazy").setup({
                             return vim_item
                         end,
                     },
-                    mapping = {
+                    mapping = cmp.mapping.preset.insert({
                         ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
                         ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
                         ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
@@ -216,7 +216,7 @@ require("lazy").setup({
                                 fallback()
                             end
                         end, { "i", "s" }),
-                    },
+                    }),
                     sources = {
                         {
                             name = "nvim_lsp_signature_help",
