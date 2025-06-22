@@ -13,3 +13,5 @@ alias qgrep='qreset; grep'
 alias checkmake='make'
 
 alias yay="nice -n 19 yay"
+
+alias bc="qalc"
