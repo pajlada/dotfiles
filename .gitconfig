@@ -2,6 +2,7 @@
     pager = "less -x5,9"
     editor = "nvim"
     symlinks = true
+    whitespace = trailing-space
 
 [push]
     default = simple
