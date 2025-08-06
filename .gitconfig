@@ -25,6 +25,7 @@
 
 [alias]
     st = status --ignore-submodules=dirty
+    sts = status --ignore-submodules=dirty --short
     ci = commit --verbose
     co = checkout
     df = diff
