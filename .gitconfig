@@ -43,6 +43,7 @@
     path = ~/.gitcredentials
 [rerere]
 	enabled = true
+    autoUpdate = true
 
 [commit]
     verbose = true
