@@ -16,6 +16,9 @@
 [tag]
     sort = -version:refname
 
+[diff]
+    algorithm = histogram # just testing
+
 [alias]
     st = status --ignore-submodules=dirty
     ci = commit --verbose
