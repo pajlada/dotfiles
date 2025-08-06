@@ -10,6 +10,9 @@
 [pull]
 	rebase = true
 
+[branch]
+    sort = -committerdate
+
 [alias]
     st = status --ignore-submodules=dirty
     ci = commit --verbose
