@@ -22,6 +22,7 @@ require("lazy").setup({
     spec = {
         -- Random functionality
         "nvim-tree/nvim-web-devicons",
+        "chrisbra/improvedft",
         "mfussenegger/nvim-dap",
         "junegunn/fzf",
         {
@@ -90,6 +91,14 @@ require("lazy").setup({
                         TemplateTemplateParm = "",
                         TemplateParamObject = "",
                     },
+                },
+            },
+        },
+        {
+            "williamboman/mason.nvim",
+            opts = {
+                ensure_installed = {
+                    "tinymist",
                 },
             },
         },
@@ -275,6 +284,12 @@ require("lazy").setup({
                 vim.fn["mkdp#util#install"]()
             end,
         },
+
+        {
+            "izocha/graphviz.nvim",
+            ft = { "dot" },
+            config = true
+        },
     },
     defaults = {
         -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
@@ -355,6 +370,8 @@ vim.opt.listchars = {
     extends = ">",
     tab = "  ",
 }
+
+-- vim.opt.spell = true
 
 -- vim.opt.statusline = "%f%m%r%h%w [%{&ff}] %=[%03.3b/%02.2B] [POS=%04v]"
 
@@ -442,27 +459,24 @@ autocmd("check_for_edits", {
 }, true)
 
 -- Trying out folds
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevel = 99 -- Open all folds by default
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldlevel = 99 -- Open all folds by default
 
 -- Make a :W command that is an alias for :w
 vim.cmd("command W w")
 
 ---- Plugin configs
-
---- graphviz
--- Compile .dot-files to png
-vim.g.graphviz_output_format = "png"
-
--- Open Graphviz results with sxiv
-vim.g.graphviz_viewer = "sxiv"
+require("graphviz").setup({
+    format = "png",
+    preview = "png",
+})
 
 -- Automatically compile dot files when saving
 -- XXX: For some reason, setting the output format is not respected so I need to specify png here too
-autocmd("graphviz_autocompile", {
-    [[BufWritePost *.dot GraphvizCompile png]],
-}, true)
+-- autocmd("graphviz_autocompile", {
+--     [[BufWritePost *.dot GraphExport]],
+-- }, true)
 
 --- fzf
 -- fzf config
@@ -623,6 +637,17 @@ local servers = {
     rust_analyzer = {},
     bashls = {},
     astro = {},
+    tinymist = {
+        -- for typst
+        settings = {
+            formatterMode = "typstyle",
+            exportPdf = "never",
+            semanticTokens = "disable",
+        },
+        init_options = {
+            provideFormatter = false,
+        },
+    },
     clangd = {
         on_attach = function()
             -- vim.lsp.inlay_hint.enable()
@@ -681,6 +706,7 @@ local servers = {
     },
     ts_ls = {},
     vimls = {},
+    -- typos_lsp = {},
 }
 
 local client_capabilities = {
@@ -721,3 +747,16 @@ for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) d
         return default_diagnostic_handler(err, result, context, config)
     end
 end
+
+-- custom functions
+local function Palc(opts)
+    local view = vim.fn.winsaveview()
+
+    for lnum = opts.line1, opts.line2 do
+        vim.fn.cursor(lnum, 1)
+        vim.cmd("norm <h^df]xwwlvi(x^I    pa, # wwwhD")
+    end
+
+    vim.fn.winrestview(view)
+end
+vim.api.nvim_create_user_command("Palc", Palc, { range = true })
