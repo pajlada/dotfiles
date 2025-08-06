@@ -126,24 +126,18 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-# resize window (you can also use the mouse for that)
 mode "resize" {
-    # These bindings trigger as soon as you enter the resize mode
+    # normal speed
+    bindsym h resize grow width 15 px
+    bindsym j resize shrink height 15 px
+    bindsym k resize grow height 15 px
+    bindsym l resize shrink width 15 px
 
-    # Left  or H: grow the window’s width.
-    # Down  or J: shrink the window’s width.
-    # Up    or K: grow the window’s height.
-    # Right or L: shrink the window’s height.
-    bindsym h resize grow width 5 px or 5 ppt
-    bindsym j resize shrink height 5 px or 5 ppt
-    bindsym k resize grow height 5 px or 5 ppt
-    bindsym l resize shrink width 5 px or 5 ppt
-
-    # same bindings, but for the arrow keys
-    bindsym Left resize grow width 10 px or 10 ppt
-    bindsym Down resize shrink height 10 px or 10 ppt
-    bindsym Up resize grow height 10 px or 10 ppt
-    bindsym Right resize shrink width 10 px or 10 ppt
+    # slow speed
+    bindsym Shift+h resize grow width 1 px
+    bindsym Shift+j resize shrink height 1 px
+    bindsym Shift+k resize grow height 1 px
+    bindsym Shift+l resize shrink width 1 px
 
     # back to normal: Enter or Escape or $mod+r
     bindsym Return mode "default"
