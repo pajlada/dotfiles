@@ -147,6 +147,10 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+mode "passthrough" {
+    bindsym $mod+Escape mode "default"
+}
+
 set $bar_background_color #000000
 bar {
     swaybar_command swaybar
