@@ -179,8 +179,8 @@ mouse_warping none
 # Make the currently focused window a scratchpad
 # bindsym $mod+Shift+o move scratchpad
 
-# Show the first scratchpad window
-bindsym $mod+o border toggle
+# Toggle window title
+bindsym $mod+ctrl+t border toggle
 
 # Requires i3 4.20
 # NOTE: These configs cannot override values that have been set in here
@@ -198,9 +198,21 @@ default_floating_border none
 # billy-specific
 bindsym $mod+d exec fuzzel
 
-bindsym $mod+t exec alacritty -e tmux
-bindsym $mod+y exec alacritty
-bindsym $mod+return exec alacritty
+bindsym $mod+t exec footclient tmux
+bindsym $mod+y exec foot
+bindsym $mod+return exec footclient tmux
+
+bindsym $mod+ctrl+p exec slurp > /tmp/grim_region
+bindsym $mod+shift+p exec grim -g "$(cat /tmp/grim_region)" "$HOME/Pictures/grim/unsorted_$(date +"%Y%m%d_%Hh%Mm%Ss").png"
+bindsym $mod+ctrl+shift+p exec zz-grim-current-window "$HOME/Pictures/grim/unsorted_$(date +"%Y%m%d_%Hh%Mm%Ss").png"
+bindsym $mod+p exec grim -g "$(slurp)" "$HOME/Pictures/grim/unsorted_$(date +"%Y%m%d_%Hh%Mm%Ss").png"
+
+bindsym $mod+ctrl+o exec slurp > /tmp/grim_region
+bindsym $mod+shift+o exec grim -g "$(cat /tmp/grim_region)" - | wl-copy
+bindsym $mod+ctrl+shift+o exec zz-grim-current-window - | wl-copy
+bindsym $mod+o exec grim -g "$(slurp)" - | wl-copy
+
+bindsym $mod+ctrl+shift+i exec zz-wf-recorder-current-window | wl-copy -t text/uri-list
 
 # bindsym $mod+t exec foot tmux
 # bindsym $mod+y exec foot
