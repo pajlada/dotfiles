@@ -13,6 +13,9 @@
 [branch]
     sort = -committerdate
 
+[tag]
+    sort = -version:refname
+
 [alias]
     st = status --ignore-submodules=dirty
     ci = commit --verbose
