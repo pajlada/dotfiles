@@ -60,6 +60,7 @@ make_home_symlink ".bash_profile" ".zprofile"
 make_home_symlink ".config/bc"
 
 make_home_symlink ".config/nvim"
+make_home_symlink ".config/foot"
 
 make_home_symlink ".config/parcellite"
 
