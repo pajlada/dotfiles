@@ -50,7 +50,6 @@ require("lazy").setup({
         -- },
 
         -- LSP
-        "nvim-lua/lsp-status.nvim",
         "neovim/nvim-lspconfig",
         -- {
         --     "mrcjkb/rustaceanvim",
@@ -250,7 +249,7 @@ require("lazy").setup({
                     sections = {
                         lualine_b = { "filename" },
                         -- lualine_c = { "branch", "diff" },
-                        lualine_c = { "require'lsp-status'.status()" },
+                        lualine_c = {},
                         lualine_x = {},
                         lualine_y = { "diagnostics" },
                     },
