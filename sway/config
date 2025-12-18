@@ -9,14 +9,6 @@ font $font_name $font_size
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# start a terminal
-# X11
-# bindsym $mod+t exec st tmux
-# X11
-# bindsym $mod+y exec st
-bindsym $mod+Shift+t exec urxvt -pe tabbed
-# bindsym $mod+Shift+t exec urxvt
-
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -179,9 +171,6 @@ mouse_warping none
 # Make the currently focused window a scratchpad
 # bindsym $mod+Shift+o move scratchpad
 
-# Toggle window title
-bindsym $mod+ctrl+t border toggle
-
 # Requires i3 4.20
 # NOTE: These configs cannot override values that have been set in here
 include config.d/*.conf
@@ -194,28 +183,38 @@ include user.config.d/*.conf
 default_border pixel 1
 default_floating_border none
 
-# SWAY
-# billy-specific
 bindsym $mod+d exec fuzzel
 
+# mod+t: Spawn terminal with tmux
 bindsym $mod+t exec footclient tmux
-bindsym $mod+y exec foot
-bindsym $mod+return exec footclient tmux
+# mod+shift+t: Spawn terminal without tmux
+bindsym $mod+shift+t exec foot
+# mod+ctrl+t: Toggle/Cycle between window title modes
+bindsym $mod+ctrl+t border toggle
 
-bindsym $mod+ctrl+p exec slurp > /tmp/grim_region
-bindsym $mod+shift+p exec grim -g "$(cat /tmp/grim_region)" "$HOME/Pictures/grim/unsorted_$(date +"%Y%m%d_%Hh%Mm%Ss").png"
-bindsym $mod+ctrl+shift+p exec zz-grim-current-window "$HOME/Pictures/grim/unsorted_$(date +"%Y%m%d_%Hh%Mm%Ss").png"
+# mod+i: Request region, then take screenshot of that region and open it with imv
+bindsym $mod+i exec grim -g "$(slurp)" - | imv -
+
+# mod+p: Request region, then take screenshot of that region and save to ~/Pictures/grim/
 bindsym $mod+p exec grim -g "$(slurp)" "$HOME/Pictures/grim/unsorted_$(date +"%Y%m%d_%Hh%Mm%Ss").png"
+# mod+ctrl+p: Save region for use in future commands
+bindsym $mod+ctrl+p exec slurp > /tmp/grim_region
+# mod+shift+p: Use previously saved region, then take screenshot of that region and save to ~/Pictures/grim/
+bindsym $mod+shift+p exec grim -g "$(cat /tmp/grim_region)" "$HOME/Pictures/grim/unsorted_$(date +"%Y%m%d_%Hh%Mm%Ss").png"
+# mod+ctrl+shift+p: Request region of the currently selected window, then take screenshot of that region and save to ~/Pictures/grim/
+bindsym $mod+ctrl+shift+p exec zz-grim-current-window "$HOME/Pictures/grim/unsorted_$(date +"%Y%m%d_%Hh%Mm%Ss").png"
 
-bindsym $mod+ctrl+o exec slurp > /tmp/grim_region
-bindsym $mod+shift+o exec grim -g "$(cat /tmp/grim_region)" - | wl-copy
-bindsym $mod+ctrl+shift+o exec zz-grim-current-window - | wl-copy
+# mod+o: Request region, then take screenshot of that region and save to clipboard
 bindsym $mod+o exec grim -g "$(slurp)" - | wl-copy
+# mod+ctrl+o: Save region for use in future commands
+bindsym $mod+ctrl+o exec slurp > /tmp/grim_region
+# mod+shift+o: Use previously saved region, then take screenshot of that region and save to clipboard
+bindsym $mod+shift+o exec grim -g "$(cat /tmp/grim_region)" - | wl-copy
+# mod+ctrl+shift+o: Request region of the currently selected window, then take screenshot of that region and save to clipboard
+bindsym $mod+ctrl+shift+o exec zz-grim-current-window - | wl-copy
 
+# mod+ctrl+shift+i: Request region of the currently selected window, then start recording it. Recording stops when the user clicks the dunst notification, after which the path to the file (for easy pasting into things like Discord) is saved to the clipboard
 bindsym $mod+ctrl+shift+i exec zz-wf-recorder-current-window | wl-copy -t text/uri-list
-
-# bindsym $mod+t exec foot tmux
-# bindsym $mod+y exec foot
 
 # include /etc/sway/config.d/*
 # from /etc/sway/config.d/50-systemd-user.conf
