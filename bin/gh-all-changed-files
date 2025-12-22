@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+gh pr list --state open --json number \
+  | jq -r '.[].number' \
+  | xargs -I{} gh pr view {} --json number,title,files \
+  | jq -s -r --arg repo "$(gh repo view --json nameWithOwner --jq .nameWithOwner)" '
+      map({number, title, files: [.files[].path]})
+      | map(.files[] as $f | {file: $f, pr: .number, title: .title})
+      | group_by(.file)
+      | map({
+          file: .[0].file,
+          prs: map("https://github.com/\($repo)/pull/\(.pr) (\(.title))")
+        })
+      | .[]
+      | "\(.file):\n  - \(.prs | join("\n  - "))"
+    '

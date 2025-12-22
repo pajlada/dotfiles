@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -eu
+
+_wf_recorder_raw_path="/tmp/wf-recorder-raw.mp4"
+_wf_recorder_path="/tmp/wf-recorder.mp4"
+
+active_window_region="$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')"
+
+>&2 echo "Executing wf-recorder"
+
+>/dev/null wf-recorder --codec libx264 -g "$active_window_region" -f "$_wf_recorder_raw_path" -y &
+_recorder_pid="$!"
+
+notify-send "Click to stop recording" --wait
+
+kill "$_recorder_pid"
+wait
+>&2 ffmpeg -y -i "$_wf_recorder_raw_path" -an -c:v copy "$_wf_recorder_path"
+printf "copy\nfile://%s" "${_wf_recorder_path}"
+>&2 echo "done recording"

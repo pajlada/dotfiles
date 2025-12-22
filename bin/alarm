@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+set -e
+
+export AUDIODEV='alsa_output.usb-Burr-Brown_from_TI_USB_Audio_CODEC-00.analog-stereo-output'
+
+_play_pids=()
+
+# kill sox in case it's still running
+cleanup() {
+    for pid in "${_play_pids[@]}"; do
+        kill "$pid" 2>/dev/null
+    done
+    exit 0
+}
+
+# play the note with sox, and wait for it to finish
+play_note() {
+    play -n -c1 synth sin %-12 sin %-9 sin %-5 sin %-2 vol 0.1 fade h 0.1 1 0.1 2>/dev/null &
+    _play_pids+=($!)
+    wait "${_play_pids[-1]}"
+}
+
+trap cleanup SIGINT
+
+# convert input (e.g. 10m or 1h30m) to seconds
+to_seconds() {
+    local input="$1"
+    local total=0
+    declare -i total
+    for string in $(echo "$input" | grep -o "[[:digit:]]\+[hms]"); do
+        [[ $string =~ ([[:digit:]]+)([hms]) ]]
+        local num="${BASH_REMATCH[1]}"
+        local unit="${BASH_REMATCH[2]}"
+        case $unit in
+            h) total+=$((num * 3600)) ;;
+            m) total+=$((num * 60)) ;;
+            s) total+=$((num)) ;;
+        esac
+    done
+    echo "$total"
+}
+
+_sleep_duration="$1"
+
+if [ -z "$_sleep_duration" ]; then
+    >&2 echo "usage: '$(basename "$0") 5m' to play an alarm after 5 minutes"
+    exit 1
+fi
+
+shift
+
+_message="$*"
+duration_secs=$(to_seconds "$_sleep_duration")
+
+
+printf "[$(date +'%H:%M:%S')] Sleeping for %s (%d seconds)" "$_sleep_duration" "$duration_secs"
+if [ -z "$_message" ]; then
+    printf "\n"
+else
+    printf ": %s\n" "$_message"
+fi
+for ((i=duration_secs; i>0; i--)); do
+    printf "\r%02d:%02d remaining" $((i / 60)) $((i % 60))
+    sleep 1
+done
+
+echo ""
+
+_i=0
+
+while true; do
+    if [ -z "$_message" ]; then
+        echo "[$(date +'%H:%M:%S')] Time is up"
+    else
+        echo "[$(date +'%H:%M:%S')] $_message"
+    fi
+    play_note
+    sleep 2
+
+    if [[ "$((i%3))" = "0" ]]; then
+        if [ -z "$_message" ]; then
+            spd-say "time is up"
+        else
+            spd-say "$_message"
+        fi
+        sleep 2
+    fi
+
+    i=$((i+1))
+done

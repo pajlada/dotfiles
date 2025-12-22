@@ -1,0 +1,7 @@
+#!/bin/sh
+
+active_window_region="$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')"
+
+>&2 echo "Executing grim with params: $@"
+
+grim -g "$active_window_region" $@
