@@ -5,16 +5,25 @@ vim.opt.termguicolors = true
 
 vim.g.mapleader = " "
 
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
-        lazypath,
-    })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+        vim.api.nvim_echo({
+            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+            { out, "WarningMsg" },
+            { "\nPress any key to exit..." },
+        }, true, {})
+        vim.fn.getchar()
+        os.exit(1)
+    end
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -154,8 +163,8 @@ require("lazy").setup({
 
                 local has_words_before = function()
                     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-                    return col ~= 0 and
-                        vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+                    return col ~= 0
+                        and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
                 end
 
                 cmp.setup({
@@ -267,6 +276,9 @@ require("lazy").setup({
                     },
                     highlights = {
                         Visual = { bg = "#4a4a4a" },
+                        LspReferenceText = { bg = "#303830" },
+                        LspReferenceRead = { bg = "#303830" },
+                        LspReferenceWrite = { bg = "#383030" },
                     },
                 })
                 require("onedark").load()
@@ -287,7 +299,7 @@ require("lazy").setup({
         {
             "izocha/graphviz.nvim",
             ft = { "dot" },
-            config = true
+            config = true,
         },
     },
     defaults = {
@@ -355,6 +367,9 @@ vim.opt.modeline = true
 
 -- Disable swap files
 vim.opt.swapfile = false
+
+-- CursorHold after 500ms instead of default 4000ms
+vim.o.updatetime = 500
 
 vim.opt.termguicolors = true
 
@@ -435,16 +450,6 @@ vim.keymap.set("n", "<C-s>", function()
     -- return vim.fn["NvimTreeToggle"]()
 end)
 
-vim.keymap.set("n", "K", function()
-    local filetype = vim.bo.filetype
-
-    if filetype == "vim" or filetype == "help" then
-        vim.api.nvim_command("h " .. filetype)
-    else
-        vim.api.nvim_command("!" .. vim.bo.keywordprg .. " " .. vim.fn.expand("<cword>"))
-    end
-end, { silent = true, noremap = true })
-
 -- Copy to clipboard
 -- SPACE+Y = Yank  (SPACE being leader)
 -- SPACE+P = Paste
@@ -484,6 +489,18 @@ vim.g.fzf_preview_window = {}
 -- fzf bindings
 vim.keymap.set("n", "<C-p>", function()
     require("fzf-lua").git_files({
+        -- TODO: this doesn't work, stupid llm shit
+        --         cmd = [[bash -c '
+        --     git ls-files --exclude-standard |
+        --       awk '{
+        --         score = 0
+        --         if ($0 ~ /^tests\//) score += 10    # deprioritize tests
+        --         if ($0 ~ /\.(c|cc|cpp)$/) score += 1 # deprioritize sources
+        --         print score "\t" $0
+        --       }' |
+        --       sort -k1,1n -k2,2 |
+        --       cut -f2-
+        --   ']],
         cwd = vim.fn.getcwd(),
         previewer = false,
         scrollbar = false,
@@ -507,72 +524,6 @@ vim.keymap.set("n", "<C-k>", function()
     })
 end)
 
-local function shared_on_attach(client, bufnr)
-    local keymap_opts = { noremap = true, silent = true, buffer = bufnr }
-    -- require("lsp_signature").on_attach({ bind = true, handler_opts = { border = "rounded" } })
-    vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", keymap_opts)
-    vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", keymap_opts)
-    vim.keymap.set("n", "gTD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", keymap_opts)
-    vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", keymap_opts)
-    vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", keymap_opts)
-    vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", keymap_opts)
-    vim.keymap.set("n", "<leader>s", "<cmd>lua vim.lsp.buf.signature_help()<CR>", keymap_opts)
-    vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", keymap_opts)
-    vim.keymap.set("n", "<leader>.", "<cmd>lua vim.lsp.buf.code_action()<CR>", keymap_opts)
-    vim.keymap.set("v", "<leader>.", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", keymap_opts)
-    vim.keymap.set("n", "]e", '<cmd>lua vim.diagnostic.goto_next { float = {scope = "line"} }<cr>', keymap_opts)
-    vim.keymap.set("n", "[e", '<cmd>lua vim.diagnostic.goto_prev { float = {scope = "line"} }<cr>', keymap_opts)
-    vim.keymap.set("n", "]f",
-        '<cmd>lua vim.diagnostic.goto_next { severity = vim.diagnostic.severity.ERROR, float = {scope = "line"} }<cr>',
-        keymap_opts)
-    vim.keymap.set("n", "[f",
-        '<cmd>lua vim.diagnostic.goto_prev { severity = vim.diagnostic.severity.ERROR, float = {scope = "line"} }<cr>',
-        keymap_opts)
-    -- vim.keymap.set('n', '<leader>d', '<cmd>lua vim.diagnostic.open_float()<cr>', keymap_opts)
-
-    if client.supports_method("textDocument/formatting") then
-        -- Set up auto formatting on save
-        vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            group = augroup,
-            buffer = bufnr,
-            callback = function()
-                -- sync
-                vim.lsp.buf.format({ bufnr = bufnr })
-
-                -- async
-                -- async_formatting()
-            end,
-        })
-
-        -- Manual formatting bindings
-        vim.keymap.set("n", "<leader>f", function()
-            vim.lsp.buf.format({ async = true })
-        end, keymap_opts)
-        vim.keymap.set("v", "<leader>f", function()
-            local params = vim.lsp.util.make_given_range_params()
-            params.async = true
-            vim.lsp.buf.format(params)
-
-            --
-            if vim.fn.mode() ~= "n" then
-                local keys = vim.api.nvim_replace_termcodes("<esc>", true, true, true)
-                vim.api.nvim_feedkeys(keys, "n", false)
-            end
-        end, keymap_opts)
-    else
-        print("client DOES NOT support formatting")
-    end
-
-    vim.cmd("augroup lsp_aucmds")
-    if client.server_capabilities.documentHighlightProvider then
-        vim.cmd("au CursorHold <buffer> lua vim.lsp.buf.document_highlight()")
-        vim.cmd("au CursorMoved <buffer> lua vim.lsp.buf.clear_references()")
-    end
-
-    vim.cmd("augroup END")
-end
-
 --- Rustaceanvim
 vim.g.rustaceanvim = {
     -- Plugin configuration
@@ -581,10 +532,9 @@ vim.g.rustaceanvim = {
     },
     -- LSP configuration
     server = {
-        on_attach = shared_on_attach,
         default_settings = {
             -- rust-analyzer language server configuration
-            ['rust-analyzer'] = {
+            ["rust-analyzer"] = {
                 cargo = {
                     allFeatures = true,
                     loadOutDirsFromCheck = true,
@@ -597,8 +547,7 @@ vim.g.rustaceanvim = {
         },
     },
     -- DAP configuration
-    dap = {
-    },
+    dap = {},
 }
 
 --- dap
@@ -606,7 +555,7 @@ local dap = require("dap")
 dap.adapters.gdb = {
     type = "executable",
     command = "gdb",
-    args = { "-i", "dap" }
+    args = { "-i", "dap" },
 }
 dap.configurations.cpp = {
     {
@@ -614,7 +563,7 @@ dap.configurations.cpp = {
         type = "gdb",
         request = "launch",
         program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
         end,
         cwd = "${workspaceFolder}",
         stopAtBeginningOfMainSubprogram = false,
@@ -627,125 +576,8 @@ autocmd("clangd_toggle_source_header", {
     [[ FileType c nmap <leader>h :ClangdSwitchSourceHeader<CR>]],
 }, true)
 
-
-
---- lspconfig
-local lspconfig = require("lspconfig")
-
-local servers = {
-    rust_analyzer = {},
-    bashls = {},
-    astro = {},
-    tinymist = {
-        -- for typst
-        settings = {
-            formatterMode = "typstyle",
-            exportPdf = "never",
-            semanticTokens = "disable",
-        },
-        init_options = {
-            provideFormatter = false,
-        },
-    },
-    clangd = {
-        on_attach = function()
-            -- vim.lsp.inlay_hint.enable()
-            require("clangd_extensions").hint_aucmd_set_up = true
-        end,
-        -- prefer_null_ls = true,
-        cmd = {
-            "clangd",
-            "--background-index",
-            "--clang-tidy",
-            "--completion-style=bundled",
-            "--header-insertion=iwyu",
-            "--cross-file-rename",
-        },
-        -- handlers = lsp_status.extensions.clangd.setup(),
-        init_options = {
-            clangdFileStatus = true,
-            usePlaceholders = true,
-            completeUnimported = true,
-            semanticHighlighting = true,
-        },
-        filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "hpp" },
-    },
-    gopls = {},
-    cmake = {},
-    jsonls = {
-        -- prefer_null_ls = true,
-        init_options = {
-            provideFormatter = false,
-        },
-    },
-    cssls = {
-        cmd = { "vscode-css-languageserver", "--stdio" },
-        filetypes = { "css", "scss", "less", "sass" },
-        root_dir = lspconfig.util.root_pattern("package.json", ".git"),
-    },
-    ghcide = {},
-    html = { cmd = { "vscode-html-languageserver", "--stdio" } },
-    pyright = {},
-    ruff = {},
-    lua_ls = {
-        cmd = { "lua-language-server" },
-        settings = {
-            Lua = {
-                diagnostics = { globals = { "vim" } },
-                runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
-                workspace = {
-                    library = {
-                        [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                        [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-                    },
-                },
-            },
-        },
-        -- prefer_null_ls = false,
-    },
-    ts_ls = {},
-    vimls = {},
-    -- typos_lsp = {},
-}
-
-local client_capabilities = {
-    offsetEncoding = { "utf-16" },
-}
--- client_capabilities.textDocument.completion.completionItem.snippetSupport = true
--- client_capabilities.textDocument.completion.completionItem.resolveSupport = {
---     properties = { "documentation", "detail", "additionalTextEdits" },
--- }
--- client_capabilities.offsetEncoding = { "utf-16" }
-
-for server, config in pairs(servers) do
-    if type(config) == "function" then
-        config = config()
-    end
-
-    if config.on_attach then
-        local old_on_attach = config.on_attach
-        config.on_attach = function(client, bufnr)
-            old_on_attach(client, bufnr)
-            shared_on_attach(client, bufnr)
-        end
-    else
-        config.on_attach = shared_on_attach
-    end
-
-    config.capabilities = vim.tbl_deep_extend("keep", config.capabilities or {}, client_capabilities)
-    lspconfig[server].setup(config)
-end
-
--- TEMPORARY WORKAROUND
-for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
-    local default_diagnostic_handler = vim.lsp.handlers[method]
-    vim.lsp.handlers[method] = function(err, result, context, config)
-        if err ~= nil and err.code == -32802 then
-            return
-        end
-        return default_diagnostic_handler(err, result, context, config)
-    end
-end
+-- The lua/user/lspconfig.lua contains most LSP-related functionality
+require("user.lspconfig")
 
 -- custom functions
 local function Palc(opts)
