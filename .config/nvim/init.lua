@@ -60,11 +60,6 @@ require("lazy").setup({
 
         -- LSP
         "neovim/nvim-lspconfig",
-        -- {
-        --     "mrcjkb/rustaceanvim",
-        --     version = "^5",
-        --     lazy = false, -- This plugin is already lazy
-        -- },
         {
             "ray-x/lsp_signature.nvim",
             opts = {
@@ -523,32 +518,6 @@ vim.keymap.set("n", "<C-k>", function()
         scrollbar = false,
     })
 end)
-
---- Rustaceanvim
-vim.g.rustaceanvim = {
-    -- Plugin configuration
-    tools = {
-        enable_clippy = true,
-    },
-    -- LSP configuration
-    server = {
-        default_settings = {
-            -- rust-analyzer language server configuration
-            ["rust-analyzer"] = {
-                cargo = {
-                    allFeatures = true,
-                    loadOutDirsFromCheck = true,
-                    buildScripts = {
-                        enable = true,
-                    },
-                },
-                checkOnSave = true,
-            },
-        },
-    },
-    -- DAP configuration
-    dap = {},
-}
 
 --- dap
 local dap = require("dap")
