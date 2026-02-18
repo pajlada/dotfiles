@@ -41,7 +41,7 @@ require("lazy").setup({
                 require("fzf-lua").setup({
                     "max-perf",
                     defaults = {
-                        git_icons = true,
+                        git_icons = false,
                         file_icons = true,
                     },
                 })
@@ -538,12 +538,6 @@ dap.configurations.cpp = {
         stopAtBeginningOfMainSubprogram = false,
     },
 }
-
---- clangd
-autocmd("clangd_toggle_source_header", {
-    [[ FileType cpp nmap <leader>h :ClangdSwitchSourceHeader<CR>]],
-    [[ FileType c nmap <leader>h :ClangdSwitchSourceHeader<CR>]],
-}, true)
 
 -- The lua/user/lspconfig.lua contains most LSP-related functionality
 require("user.lspconfig")

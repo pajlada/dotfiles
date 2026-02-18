@@ -117,107 +117,31 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 --- Lua
--- Lua language server, mostly used for neovim stuff. from https://github.com/neovim/nvim-lspconfig/blob/d696e36d5792daf828f8c8e8d4b9aa90c1a10c2a/lsp/lua_ls.lua
-vim.lsp.config("lua_ls", {
-    on_init = function(client)
-        if client.workspace_folders then
-            local path = client.workspace_folders[1].name
-            if
-                path ~= vim.fn.stdpath("config")
-                and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc"))
-            then
-                return
-            end
-        end
-
-        client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most
-                -- likely LuaJIT in the case of Neovim)
-                version = "LuaJIT",
-                -- Tell the language server how to find Lua modules same way as Neovim
-                -- (see `:h lua-module-load`)
-                path = {
-                    "lua/?.lua",
-                    "lua/?/init.lua",
-                },
-            },
-            -- Make the server aware of Neovim runtime files
-            workspace = {
-                checkThirdParty = false,
-                library = {
-                    vim.env.VIMRUNTIME,
-                    -- Depending on the usage, you might want to add additional paths
-                    -- here.
-                    -- '${3rd}/luv/library'
-                    -- '${3rd}/busted/library'
-                },
-                -- Or pull in all of 'runtimepath'.
-                -- NOTE: this is a lot slower and will cause issues when working on
-                -- your own configuration.
-                -- See https://github.com/neovim/nvim-lspconfig/issues/3189
-                -- library = {
-                --   vim.api.nvim_get_runtime_file('', true),
-                -- }
-            },
-            format = {
-                -- use stylua instead
-                enable = false,
-            },
-        })
-    end,
-    settings = {
-        Lua = {
-            format = {
-                enable = false,
-            },
-        },
-    },
-})
--- using stylua for lua code formatting
-vim.lsp.config("stylua", {})
+-- configuration in after/lsp/stylua.lua and after/lsp/lua_ls.lua
 vim.lsp.enable({ "stylua", "lua_ls" })
+
+--- C++
+--- configuration in after/lsp/clangd.lua
+vim.lsp.enable("clangd")
+
+--- typst
+--- configuration in after/lsp/tinymist.lua
+vim.lsp.enable("tinymist")
+
+--- Go
+--- using default nvim-lspconfig configuration
+vim.lsp.enable("gopls")
+
+--- Rust
+vim.lsp.config("rust_analyzer", {})
+vim.lsp.enable("rust_analyzer")
+
+vim.lsp.enable("gh_actions_ls")
 
 -- Unsorted
 local servers = {
-    rust_analyzer = {},
     bashls = {},
     astro = {},
-    tinymist = {
-        -- for typst
-        settings = {
-            formatterMode = "typstyle",
-            exportPdf = "never",
-            semanticTokens = "disable",
-        },
-        init_options = {
-            provideFormatter = false,
-        },
-    },
-    clangd = {
-        on_attach = function()
-            -- vim.lsp.inlay_hint.enable()
-            require("clangd_extensions").hint_aucmd_set_up = true
-        end,
-        -- prefer_null_ls = true,
-        cmd = {
-            "clangd",
-            "--background-index",
-            "--clang-tidy",
-            "--completion-style=bundled",
-            "--header-insertion=iwyu",
-            "--cross-file-rename",
-        },
-        -- handlers = lsp_status.extensions.clangd.setup(),
-        init_options = {
-            clangdFileStatus = true,
-            usePlaceholders = true,
-            completeUnimported = true,
-            semanticHighlighting = true,
-        },
-        filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "hpp" },
-    },
-    gopls = {},
     jsonls = {
         -- prefer_null_ls = true,
         init_options = {
