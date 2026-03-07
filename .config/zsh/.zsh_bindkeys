@@ -15,8 +15,10 @@ bindkey "^J" accept-line
 bindkey "^K" kill-line
 bindkey "^L" clear-screen
 bindkey "^M" accept-line
+bindkey "^J" down-line-or-history
 bindkey "^N" down-line-or-history
 bindkey "^O" accept-line-and-down-history
+# bindkey "^K" up-line-or-history
 bindkey "^P" up-line-or-history
 bindkey "^Q" push-line
 bindkey "^R" history-incremental-search-backward
@@ -31,7 +33,7 @@ zle -N edit-command-line
 bindkey "^W" edit-command-line
 bindkey "^X^F" vi-find-next-char
 bindkey "^X^J" vi-join
-bindkey "^X^K" kill-buffer
+# bindkey "^X^K" kill-buffer
 bindkey "^X^N" infer-next-history
 bindkey "^X^O" overwrite-mode
 bindkey "^X^R" _read_comp
@@ -150,3 +152,4 @@ bindkey "!"-"~" self-insert
 bindkey "^?" backward-delete-char
 bindkey "\M-^@"-"\M-^?" self-insert
 
+# bindkey -e '\ek' undefined-key
