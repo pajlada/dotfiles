@@ -2,3 +2,8 @@
 .tabbrowser-tab .tab-close-button {
     visibility: collapse !important;
 }
+
+/* Show bookmark bar despite being in fullscreen */
+:root[inFullscreen] #PersonalToolbar {
+    visibility: visible !important;
+}
