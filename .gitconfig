@@ -23,6 +23,12 @@
     auto = true
     strategy = incremental
 
+[help]
+    autocorrect = prompt
+
+[column]
+    ui = auto
+
 [alias]
     st = status --ignore-submodules=dirty
     sts = status --ignore-submodules=dirty --short
@@ -50,3 +56,5 @@
 
 [includeIf "hasconfig:remote.*.url:git@github.com:Chatterino/chatterino2*"]
     path = ~/.gitsigning
+[init]
+	defaultBranch = main
