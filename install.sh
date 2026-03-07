@@ -64,6 +64,8 @@ make_home_symlink ".config/foot"
 
 make_home_symlink ".config/parcellite"
 
+make_home_symlink ".config/git"
+
 # Bulk install various dotfiles
 dotfiles=".gitconfig .Xmodmap .gdbinit .tmux.conf"
 for dotfile in $dotfiles; do

@@ -53,7 +53,9 @@
 
 [commit]
     verbose = true
-    template = .gitmessage
+
+[includeIf "hasconfig:remote.*.url:git@github.com:pajlada/dotfiles*"]
+    path = ~/.config/git/repo-gitmessage-template
 
 [includeIf "hasconfig:remote.*.url:git@github.com:Chatterino/chatterino2*"]
     path = ~/.gitsigning
