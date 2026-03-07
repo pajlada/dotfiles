@@ -23,11 +23,13 @@ else
 fi
 
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
+
 # Aliases that are maybe system-specific and not meant to be part of the git repo
 [ -f "$HOME/.config/aliasrc_local" ] && source "$HOME/.config/aliasrc_local"
 
 # ZSH configurations that are not meant to be part of the git repo
 [ -f "$HOME/.config/zsh/.zsh_local" ] && source "$HOME/.config/zsh/.zsh_local"
+
 [ -f "$HOME/.config/zsh/.zsh_commands" ] && source "$HOME/.config/zsh/.zsh_commands"
 [ -f "$HOME/.config/zsh/.zsh_bindkeys" ] && source "$HOME/.config/zsh/.zsh_bindkeys"
 
@@ -127,6 +129,9 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Include ~/.cargo/bin in PATH
 export PATH="$PATH:$HOME/.cargo/bin"
+
+# Append dotfiles scripts to PATH
+export PATH="$PATH:$HOME/git/dotfiles/scripts"
 
 if [[ "$OSTYPE" == 'darwin'* ]]; then
     export PATH="$PATH:/opt/homebrew/bin"
