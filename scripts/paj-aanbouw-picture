@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# This script exists to clean up my PXL images so they have the same image format as Romy's pictures
+
+rename -v 'PXL_' 'IMG' ./PXL_*.jpg 2>/dev/null
+rename -v '.MP' '' ./IMG*.jpg
+rename -v '_' '' ./IMG*.jpg
+
+for f in ./IMG*_*.jpg; do
+    new_name="$(echo "$f" | sed 's/\([0-9]\{8\}[0-9]\{6\}\)[0-9]\{3\}\.jpg/\1.jpg/')"
+    if [ ! "$f" = "$new_name" ]; then
+        echo "Renaming $f to $new_name"
+        mv "$f" "$new_name"
+    fi
+done
