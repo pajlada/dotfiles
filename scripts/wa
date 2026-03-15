@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ -z "$WA_APPID" ]; then
+    if [ -f "$HOME/.env/wa-credentials" ]; then
+        . "$HOME/.env/wa-credentials"
+    fi
+
+    if [ -z "$WA_APPID" ]; then
+        >&2 echo "Failed to load Wolfram Alpha credentials, expected them to be set to WA_APPID in $HOME/.env/wa-credentials"
+        exit 1
+    fi
+fi
+
+curl -s -w '\n' --get --data-urlencode "i=$*" "https://api.wolframalpha.com/v1/result?appid=${WA_APPID}&units=metric"
