@@ -56,6 +56,10 @@ shift
 _message="$*"
 duration_secs=$(to_seconds "$_sleep_duration")
 
+tput reset
+if [ -n "$TMUX" ]; then
+    tmux clear-history
+fi
 
 printf "[$(date +'%H:%M:%S')] Sleeping for %s\n" "$_sleep_duration"
 if [ -n "$_message" ]; then
