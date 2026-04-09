@@ -61,7 +61,7 @@ if [ -n "$TMUX" ]; then
     tmux clear-history
 fi
 
-printf "[$(date +'%H:%M:%S')] Sleeping for %s\n" "$_sleep_duration"
+printf "[$(date +'%H:%M:%S')] ⏰ %s\n" "$_sleep_duration"
 if [ -n "$_message" ]; then
     printf "%s\n" "$_message"
 fi
