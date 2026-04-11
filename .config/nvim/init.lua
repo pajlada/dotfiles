@@ -108,35 +108,57 @@ require("lazy").setup({
 
         -- Highlighting
         {
-            "nvim-treesitter/nvim-treesitter",
-            build = ":TSUpdate",
+            "romus204/tree-sitter-manager.nvim",
+            dependencies = {}, -- tree-sitter CLI must be installed system-wide
             config = function()
-                local configs = require("nvim-treesitter.configs")
-
-                configs.setup({
+                require("tree-sitter-manager").setup({
                     ensure_installed = {
                         "cmake",
                         "cpp",
-                        "c_sharp",
+                        -- "c_sharp",
                         "c",
                         "lua",
                         "rust",
                         "python",
                         "go",
                     },
-                    context_commentstring = {
-                        enable = true,
-                        enable_autocmd = false,
-                    },
-                    highlight = { enable = true, use_languagetree = true },
-                    indent = { enable = false },
-                    endwise = { enable = true },
+                    -- Optional: custom paths
+                    -- parser_dir = vim.fn.stdpath("data") .. "/site/parser",
+                    -- query_dir = vim.fn.stdpath("data") .. "/site/queries",
                 })
             end,
-            opts = {},
         },
-        -- Adds "end" to function() in lua, and some other languages
-        "RRethy/nvim-treesitter-endwise",
+        -- {
+        --     "nvim-treesitter/nvim-treesitter",
+        --     build = ":TSUpdate",
+        --     config = function()
+        --         -- require("nvim-treesitter").install({ "cpp" })
+        --         local configs = require("nvim-treesitter.configs")
+
+        --         configs.setup({
+        --             ensure_installed = {
+        --                 "cmake",
+        --                 "cpp",
+        --                 "c_sharp",
+        --                 "c",
+        --                 "lua",
+        --                 "rust",
+        --                 "python",
+        --                 "go",
+        --             },
+        --             context_commentstring = {
+        --                 enable = true,
+        --                 enable_autocmd = false,
+        --             },
+        --             highlight = { enable = true, use_languagetree = true },
+        --             indent = { enable = false },
+        --             endwise = { enable = true },
+        --         })
+        --     end,
+        --     opts = {},
+        -- },
+        -- -- Adds "end" to function() in lua, and some other languages
+        -- "RRethy/nvim-treesitter-endwise",
 
         -- Auto/tab-completions
         { "L3MON4D3/LuaSnip" },
