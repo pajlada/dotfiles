@@ -44,6 +44,8 @@ echo "Install symlinks as device $DEVICE"
 
 mkdir -p "$HOME/.config"
 
+mkdir -p "$HOME/.config/systemd/user"
+
 # zsh
 ## Create zsh config dir
 mkdir -p "$HOME/.cache/zsh"
@@ -65,6 +67,8 @@ make_home_symlink ".config/foot"
 make_home_symlink ".config/parcellite"
 
 make_home_symlink ".config/git"
+
+make_home_symlink ".config/systemd/user/foot-server.service"
 
 # Bulk install various dotfiles
 dotfiles=".gitconfig .Xmodmap .gdbinit .tmux.conf"

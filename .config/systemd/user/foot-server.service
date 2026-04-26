@@ -1,0 +1,11 @@
+[Unit]
+Description=Foot Server
+
+[Service]
+Environment=XDG_SESSION_TYPE=wayland
+ExecStart=/usr/bin/foot --server
+RestartSec=2
+Restart=always
+
+[Install]
+WantedBy=default.target
