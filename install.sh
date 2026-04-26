@@ -85,18 +85,6 @@ make_home_symlink ".xinitrc" ".xinitrc"
 mkdir -p "$HOME/.config/xinit/xinitrc.d"
 
 
-if [ ! -d .cloned-st ]; then
-    git clone https://github.com/pajlada/st .cloned-st
-fi
-
-(
-cd .cloned-st && \
-    git pull && \
-    rm -f config.h && \
-    make && \
-    sudo make install
-)
-
 make_home_symlink "sway" .config/sway
 make_home_symlink "i3-$DEVICE" .config/i3
 make_home_symlink "i3status-$DEVICE" .config/i3status
