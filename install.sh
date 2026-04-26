@@ -85,12 +85,6 @@ make_home_symlink ".xinitrc" ".xinitrc"
 mkdir -p "$HOME/.config/xinit/xinitrc.d"
 
 
-plug_path="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim
-if [ ! -f "$plug_path" ]; then
-    echo "Installing vim-plug..."
-    curl -fLo "$plug_path" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
-
 if [ ! -d .cloned-st ]; then
     git clone https://github.com/pajlada/st .cloned-st
 fi
